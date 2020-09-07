@@ -34,7 +34,7 @@
         />
       </div>
 
-      <button class="btn btn-lg btn-outline-primary btn-block mb-3" type="submit">Submit</button>
+      <button class="btn btn-lg btn-primary btn-block mb-3" type="submit">Submit</button>
 
       <div class="text-center mb-3">
         <p>

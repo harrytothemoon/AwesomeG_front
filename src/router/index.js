@@ -2,9 +2,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import NotFound from '../views/NotFound.vue'
 import SignIn from '../views/SignIn.vue'
+import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 const routes = [
+  {
+    path: '/',
+    name: 'root',
+    redirect: '/home'
+  },
   {
     path: '/signin',
     name: 'sign-in',
@@ -16,6 +22,26 @@ const routes = [
     component: () => import('../views/SignUp.vue')
   },
   {
+    path: '/home',
+    name: 'home',
+    component: Home
+  },
+  {
+    path: '/home/about',
+    name: 'home-about',
+    component: () => import('../views/About.vue')
+  },
+  {
+    path: '/home/qa',
+    name: 'home-Qa',
+    component: () => import('../views/Qa.vue')
+  },
+  {
+    path: '/users/teachers',
+    name: 'users-teacher',
+    component: () => import('../views/Teachers.vue')
+  },
+  {
     path: '*',
     name: 'not-found',
     component: NotFound
@@ -23,6 +49,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  linkExactActiveClass: 'active',
   routes
 })
 

@@ -5,6 +5,60 @@
         <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
       </div>
 
+      <!-- <div class="form-check form-check-inline">
+        <label class="form-check-label" for="optionsRadios1">
+          <input
+            type="radio"
+            class="form-check-input"
+            name="optionsRadios"
+            id="optionsRadios1"
+            value="student"
+            checked
+          />
+          Student
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <label class="form-check-label" for="optionsRadios2">
+          <input
+            type="radio"
+            class="form-check-input"
+            name="optionsRadios"
+            id="optionsRadios2"
+            value="option2"
+          />
+          Teacher
+        </label>
+      </div>-->
+
+      <fieldset class="form-group">
+        <div class="form-label-group mb-2 d-flex justify-content-around">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              v-model="role"
+              type="radio"
+              name="role"
+              id="gridRadios1"
+              value="student"
+              checked
+            />
+            <label class="form-check-label pl-3" for="gridRadios1">Student</label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              v-model="role"
+              type="radio"
+              name="role"
+              id="gridRadios2"
+              value="teacher"
+            />
+            <label class="form-check-label pl-3" for="gridRadios2">Teacher</label>
+          </div>
+        </div>
+      </fieldset>
+
       <div class="form-label-group mb-2">
         <label for="name">Name</label>
         <input
@@ -79,6 +133,7 @@
 export default {
   data() {
     return {
+      role: "",
       name: "",
       email: "",
       password: "",
@@ -88,6 +143,7 @@ export default {
   methods: {
     handleSubmit() {
       const data = JSON.stringify({
+        role: this.role,
         name: this.name,
         email: this.email,
         password: this.password,
