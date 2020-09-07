@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary border-0">
     <router-link class="navbar-brand" to="/">Awesome G</router-link>
 
     <button

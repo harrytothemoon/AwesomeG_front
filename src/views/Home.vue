@@ -1,9 +1,49 @@
 <template>
   <div class="container py-5">
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center mt-5">
+      <div class="card bg-dark border-0 rounded" style="width:1000px;height:500px;" id="ask">
+        <roter-link style="cursor:pointer">
+          <img
+            src="https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=60"
+            class="card-img"
+            alt="#"
+            style="height:500px;filter: blur(1px)"
+          />
+          <div
+            class="card-img-overlay d-flex flex-column justify-content-center align-items-center"
+          >
+            <h3 class="card-text display-3" style="color:#353866">I'm a student</h3>
+            <br />
+            <h1 class="card-text display-4" style="color:#353866">Ask</h1>
+            <br />
+            <h4 class="card-text">Math / Chemical / Physical</h4>
+          </div>
+        </roter-link>
+      </div>
+      <div class="card bg-dark border-0 rounded" style="width:1000px;height:500px" id="solve">
+        <roter-link style="cursor:pointer">
+          <img
+            src="https://images.unsplash.com/photo-1532007271951-c487760934ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=60"
+            class="card-img"
+            alt="#"
+            style="height:500px;filter: blur(1px)"
+            id="img1"
+          />
+          <div
+            class="card-img-overlay d-flex flex-column justify-content-center align-items-center"
+          >
+            <h3 class="card-text display-3" style="color:#F6B352">I'm a teacher</h3>
+            <br />
+            <h1 class="card-text display-4" style="color:#F6B352">Solve</h1>
+            <br />
+            <h4 class="card-text">Math / Chemical / Physical</h4>
+          </div>
+        </roter-link>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center mt-5">
       <NavTabs />
     </div>
-    <h1 class="mt-5">Home -</h1>
   </div>
 </template>
 
@@ -15,3 +55,23 @@ export default {
   },
 };
 </script>
+
+<style>
+#ask,
+#solve {
+  width: 1000px;
+  height: 500px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+#ask img,
+#solve img {
+  width: 100%;
+  transition: 0.2s all ease-in-out;
+}
+#ask:hover img,
+#solve:hover img {
+  transform: scale(1.3);
+}
+</style>

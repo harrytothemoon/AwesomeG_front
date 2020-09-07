@@ -1,6 +1,6 @@
 <template>
   <ul class="nav nav-pills">
-    <li v-for="tab in tabs" :key="tab.id" class="nav-item ml-3">
+    <li v-for="tab in tabs" :key="tab.id" class="nav-item ml-3" style="color:azure">
       <router-link class="nav-link" :to="tab.path">{{tab.title}}</router-link>
     </li>
   </ul>
