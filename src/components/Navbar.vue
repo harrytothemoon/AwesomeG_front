@@ -24,7 +24,7 @@
         <template v-if="isAuthenticated">
           <!-- is user is login -->
           <router-link to="#" class="text-white mr-3 nav-link">Hello, {{currentUser.name || '訪客'}} !</router-link>
-          <button type="button" class="btn btn-sm btn-primary my-2 my-sm-0">Sign out</button>
+          <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0">Sign out</button>
         </template>
       </div>
     </div>

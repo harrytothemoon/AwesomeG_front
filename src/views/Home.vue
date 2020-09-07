@@ -1,8 +1,11 @@
 <template>
   <div class="container py-5">
+    <div class="d-flex justify-content-center mt-2">
+      <NavTabs />
+    </div>
     <div class="d-flex justify-content-center mt-5">
       <div class="card bg-dark border-0 rounded" style="width:1000px;height:500px;" id="ask">
-        <roter-link style="cursor:pointer">
+        <router-link to="/student/questions">
           <img
             src="https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=60"
             class="card-img"
@@ -18,10 +21,10 @@
             <br />
             <h4 class="card-text">Math / Chemical / Physical</h4>
           </div>
-        </roter-link>
+        </router-link>
       </div>
       <div class="card bg-dark border-0 rounded" style="width:1000px;height:500px" id="solve">
-        <roter-link style="cursor:pointer">
+        <router-link to="/teacher/questions">
           <img
             src="https://images.unsplash.com/photo-1532007271951-c487760934ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=60"
             class="card-img"
@@ -36,13 +39,10 @@
             <br />
             <h1 class="card-text display-4" style="color:#F6B352">Solve</h1>
             <br />
-            <h4 class="card-text">Math / Chemical / Physical</h4>
+            <h4 class="card-text" style="color:azure">Math / Chemical / Physical</h4>
           </div>
-        </roter-link>
+        </router-link>
       </div>
-    </div>
-    <div class="d-flex justify-content-center mt-5">
-      <NavTabs />
     </div>
   </div>
 </template>

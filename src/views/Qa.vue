@@ -1,9 +1,9 @@
 <template>
   <div class="container py-5">
-    <h1 class="mt-5">Q & A</h1>
-    <div class="d-flex justify-content-center mt-5">
+    <div class="d-flex justify-content-center mt-2">
       <NavTabs />
     </div>
+    <h1 class="mt-5 text-center">Q & A</h1>
   </div>
 </template>
 
