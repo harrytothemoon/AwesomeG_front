@@ -1,11 +1,11 @@
 <template>
-  <div class="card text-white mb-3" style="max-width: 20rem;background-color:#a3a1a1">
-    <h1 class="card-header">Subject</h1>
+  <div class="card text-white mb-3" style="max-width: 15rem;background-color:#c9d6de">
+    <h2 class="card-header">Subject</h2>
     <div class="card-body">
       <ul class="nav nav-pills flex-column">
         <li class="nav-item">
           <router-link class="nav-link active" :to="{ name: 'teachers' }">
-            <h3>All</h3>
+            <h4>All</h4>
           </router-link>
         </li>
         <li v-for="subject in subjects" :key="subject.id" class="nav-item">
@@ -13,7 +13,7 @@
             class="nav-link"
             :to="{ name: 'teachers', query: { subjectId: subject.id } }"
           >
-            <h3>{{ subject.name }}</h3>
+            <h4>{{ subject.name }}</h4>
           </router-link>
         </li>
       </ul>
