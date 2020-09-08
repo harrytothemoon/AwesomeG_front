@@ -42,6 +42,16 @@ const routes = [
     component: () => import('../views/Teachers.vue')
   },
   {
+    path: '/student/questions',
+    name: 'student-question',
+    component: () => import('../views/MyQuestion.vue')
+  },
+  {
+    path: '/teacher/questions',
+    name: 'teacher-question',
+    component: () => import('../views/Questions.vue')
+  },
+  {
     path: '*',
     name: 'not-found',
     component: NotFound
