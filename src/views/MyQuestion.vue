@@ -43,7 +43,7 @@
                       style="font-size:14px;color:gray"
                     >{{question.Scope.name}}</span>
                   </h3>
-                  <p style="height:80px">{{question.description}}</p>
+                  <p style="height:80px">{{question.description | ellipsis}}</p>
                   <br />
                   <h6 class="text-right" style="color:#4F86C6">{{question.createdAt | fromNow}}.</h6>
                 </div>
@@ -90,7 +90,7 @@
 <script>
 import { v4 as uuidv4 } from "uuid";
 import NavTabs from "./../components/NavTabs";
-import moment from "moment";
+import { Filter } from "./../utils/mixins";
 const dummyData = {
   questions: [
     {
@@ -290,15 +290,7 @@ export default {
       this.questions = dummyData.questions;
     },
   },
-  filters: {
-    fromNow(datetime) {
-      if (!datetime) {
-        return "-";
-      }
-      // 使用 moment 提供的 fromNow 方法
-      return moment(datetime).fromNow();
-    },
-  },
+  mixins: [Filter],
 };
 </script>
 

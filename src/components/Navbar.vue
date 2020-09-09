@@ -1,18 +1,19 @@
 <template>
   <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary border-0">
     <router-link class="navbar-brand" to="/">Awesome G</router-link>
-
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon" />
-    </button>
+    <template v-if="isAuthenticated">
+      <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0 ml-4">
+        <h6 class="m-0">Sign out</h6>
+      </button>
+    </template>
+    <template v-else>
+      <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0 ml-4 mr-2">
+        <h6 class="m-0">Sign in</h6>
+      </button>
+      <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0 ml-2">
+        <h6 class="m-0">Sign up</h6>
+      </button>
+    </template>
     <div id="navbarSupportedContent" class="navbar-collapse collapse">
       <div class="ml-auto d-flex align-items-center">
         <!-- is user is admin -->
@@ -25,12 +26,18 @@
         </router-link>
         <template v-if="isAuthenticated">
           <!-- is user is login -->
-          <router-link to="#" class="text-white mr-3 nav-link">
-            <h6 class="m-0">Hello, {{currentUser.name || '訪客'}} !</h6>
+          <router-link to="#" class="text-white mr-1 p-0 nav-link">
+            <h6 class="m-0">
+              Hello, {{currentUser.name || '訪客'}} !
+              <img
+                class="rounded-circle ml-2"
+                :src="currentUser.image"
+                alt="Card image cap"
+                width="40px"
+                height="40px"
+              />
+            </h6>
           </router-link>
-          <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0">
-            <h6 class="m-0">Sign out</h6>
-          </button>
         </template>
       </div>
     </div>
@@ -44,7 +51,7 @@ const dummyUser = {
     id: 1,
     name: "Harry",
     email: "root@example.com",
-    image: "https://i.pravatar.cc/300",
+    image: "https://i.imgur.com/H37kxPH.jpeg",
     role: "admin",
   },
   isAuthenticated: true,

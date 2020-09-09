@@ -90,7 +90,7 @@
 <script>
 import NavTabs from "./../components/NavTabs";
 import FilterBar from "./../components/FilterBar";
-import moment from "moment";
+import { Filter } from "./../utils/mixins";
 const dummyData1 = {
   subjects: [
     {
@@ -369,22 +369,7 @@ export default {
       this.answers = dummyData3.answers;
     },
   },
-  filters: {
-    fromNow(datetime) {
-      if (!datetime) {
-        return "-";
-      }
-      // 使用 moment 提供的 fromNow 方法
-      return moment(datetime).fromNow();
-    },
-    ellipsis(value) {
-      if (!value) return "";
-      if (value.length > 80) {
-        return value.slice(0, 80) + " ...";
-      }
-      return value;
-    },
-  },
+  mixins: [Filter],
 };
 </script>
 
