@@ -6,38 +6,26 @@
     <div class="d-flex flex-column justify-content-center mt-5">
       <!-- navtag -->
       <ul class="nav nav-tabs">
-        <li class="nav-item w-50">
-          <router-link class="nav-link text-center" data-toggle="tab" to="#myquestions">
-            <h3>My Questions</h3>
-          </router-link>
-        </li>
-        <li class="nav-item w-50">
-          <router-link class="nav-link text-center" data-toggle="tab" to="#solvedquestions">
-            <h3>Solved Questions</h3>
+        <li v-for="tab in tabs" :key="tab.id" class="nav-item w-50">
+          <router-link class="nav-link text-center" :to="tab.path">
+            <h3>{{tab.title}}</h3>
           </router-link>
         </li>
       </ul>
-      <!-- <div id="myTabContent" class="tab-content">
-        <div class="tab-pane fade active show" id="home">
-          <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
-        </div>
-        <div class="tab-pane fade" id="profile">
-          <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
-        </div>
-      </div>-->
-      <!-- card -->
       <div class="jumbotron bg-primary" style="border-radius: 0px; border:6px inset #b6b8ba">
         <div
+          v-for="question in questions"
+          :key="question.id"
           class="card border-primary mb-3 text-primary"
           style="max-width: 80vw;height: 15vw;background-color:#fffbf0"
         >
           <div class="card-body row p-0 pl-2 pr-2">
             <div class="left-side d-flex align-items-center col-6 border-right">
-              <div class="row">
-                <div class="col-5">
+              <div class="row w-100">
+                <div class="col-5 mt-1">
                   <img
                     class="rounded"
-                    src="https://i.imgur.com/Z2Y73FUb.jpg"
+                    :src="question.image"
                     alt="Card image cap"
                     width="180px"
                     height="180px"
@@ -45,30 +33,45 @@
                 </div>
                 <div class="col-7">
                   <h3 style="color:#c03546">
-                    Math
-                    <span style="font-size:16px">10th</span>
+                    {{question.Subject.name}}
+                    <span
+                      style="font-size:14px;color:gray"
+                    >{{question.Scope.name}}</span>
                   </h3>
-                  <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+                  <p style="height:80px">{{question.description}}</p>
                   <br />
-                  <h5 class="text-right" style="color:#4F86C6">2 minutes ago.</h5>
+                  <h6 class="text-right" style="color:#4F86C6">{{question.createdAt | fromNow}}.</h6>
                 </div>
               </div>
             </div>
             <div class="right-side text-center col-6">
-              <h1 class="border-bottom">Status</h1>
+              <h3 class="border-bottom" style="color:#004e66">Status</h3>
               <div class="row">
-                <div class="col-3 mt-2 ml-4">
+                <div v-if="question.Answer.User.avatar" class="col-3 mt-2 ml-4">
                   <img
                     class="rounded-circle"
-                    src="https://i.imgur.com/r9XLQNIb.jpg"
+                    :src="question.Answer.User.avatar"
                     alt="Card image cap"
                     width="100px"
                     height="100px"
                   />
                 </div>
-                <div class="col-8">
-                  <h4 class="text-left">Ｍr. Harry</h4>
-                  <h1 style="color:#c03546">Working on it !</h1>
+                <div v-else class="col-3 mt-2 ml-4">
+                  <img
+                    class="rounded-circle"
+                    src="https://i.imgflip.com/213ss9.jpg"
+                    alt="Card image cap"
+                    width="100px"
+                    height="100px"
+                  />
+                </div>
+                <div v-if="question.Answer.User.name" class="col-8">
+                  <h4 class="text-left">{{question.Answer.User.name}}</h4>
+                  <h1 style="color:#c03546">{{question.Status.name}}</h1>
+                </div>
+                <div v-else class="col-8">
+                  <br />
+                  <h1 class="mt-2" style="color:#c03546">{{question.Status.name}}</h1>
                 </div>
               </div>
             </div>
@@ -80,10 +83,216 @@
 </template>
 
 <script>
+import { v4 as uuidv4 } from "uuid";
 import NavTabs from "./../components/NavTabs";
+import moment from "moment";
+const dummyData = {
+  questions: [
+    {
+      id: 6,
+      description: "This is postman first test.",
+      image: "https://i.imgur.com/ndwUsWvb.jpg",
+      UserId: 1,
+      SubjectId: 3,
+      ScopeId: 8,
+      StatusId: 2,
+      AnswerId: 2,
+      createdAt: "2020-09-05T15:17:54.000Z",
+      updatedAt: "2020-09-05T15:17:54.000Z",
+      Status: {
+        id: 2,
+        name: "working on it !",
+        createdAt: "2020-09-05T15:12:13.000Z",
+        updatedAt: "2020-09-05T15:12:13.000Z",
+      },
+      Answer: {
+        id: 2,
+        answer: "",
+        image: "",
+        UserId: 4,
+        QuestionId: 6,
+        createdAt: "2020-09-05T15:26:38.000Z",
+        updatedAt: "2020-09-05T15:27:11.000Z",
+        User: {
+          id: 4,
+          name: "Yvonne King",
+          email: "user2@example.com",
+          password:
+            "$2a$10$zSKk9Rc4Wm2t9zwLESl4X.rmxpGW2gadfEdSpVH40M4NLVmyZohN.",
+          introduction: null,
+          role: "teacher",
+          avatar:
+            "https://loremflickr.com/320/240/people/?lock=12.575275831175459",
+          gender: null,
+          quantity: null,
+          grade: null,
+          bankaccount: null,
+          createdAt: "2020-09-05T15:12:13.000Z",
+          updatedAt: "2020-09-05T15:12:13.000Z",
+        },
+      },
+      Subject: {
+        id: 3,
+        name: "Chemical",
+        createdAt: "2020-09-05T15:12:13.000Z",
+        updatedAt: "2020-09-05T15:12:13.000Z",
+      },
+      Scope: {
+        id: 8,
+        name: "middle school 2nd",
+        createdAt: "2020-09-05T15:12:13.000Z",
+        updatedAt: "2020-09-05T15:12:13.000Z",
+      },
+    },
+    {
+      id: 7,
+      description: "This is postman second test.",
+      image: "https://i.imgur.com/VXEzRi4.png",
+      UserId: 1,
+      SubjectId: 2,
+      ScopeId: 10,
+      StatusId: 3,
+      AnswerId: 3,
+      createdAt: "2020-09-05T16:22:36.000Z",
+      updatedAt: "2020-09-05T16:22:36.000Z",
+      Status: {
+        id: 3,
+        name: "done",
+        createdAt: "2020-09-05T15:12:13.000Z",
+        updatedAt: "2020-09-05T15:12:13.000Z",
+      },
+      Answer: {
+        id: 3,
+        answer: "postman solve test",
+        image: "https://i.imgur.com/eZv9Bya.jpeg",
+        UserId: 5,
+        QuestionId: 7,
+        createdAt: "2020-09-05T15:26:38.000Z",
+        updatedAt: "2020-09-05T15:27:11.000Z",
+        User: {
+          id: 5,
+          name: "Orlando Steuber PhD",
+          email: "user3@example.com",
+          password:
+            "$2a$10$M89tguOMO1fSNoSqUWki3uyGeUIBmR14cY2./jZU57kptqJSLeD2S",
+          introduction: null,
+          role: "teacher",
+          avatar:
+            "https://loremflickr.com/320/240/people/?lock=98.62510707357808",
+          gender: null,
+          quantity: null,
+          grade: null,
+          bankaccount: null,
+          createdAt: "2020-09-05T15:12:13.000Z",
+          updatedAt: "2020-09-05T15:12:13.000Z",
+        },
+      },
+      Subject: {
+        id: 2,
+        name: "Physical",
+        createdAt: "2020-09-05T15:12:13.000Z",
+        updatedAt: "2020-09-05T15:12:13.000Z",
+      },
+      Scope: {
+        id: 10,
+        name: "high school 1st",
+        createdAt: "2020-09-05T15:12:13.000Z",
+        updatedAt: "2020-09-05T15:12:13.000Z",
+      },
+    },
+    {
+      id: 8,
+      description: "This is postman third test.",
+      image: "https://i.imgur.com/zZlGXCDb.jpg",
+      UserId: 1,
+      SubjectId: 1,
+      ScopeId: 12,
+      StatusId: 1,
+      AnswerId: null,
+      createdAt: "2020-09-05T16:22:36.000Z",
+      updatedAt: "2020-09-05T16:22:36.000Z",
+      Status: {
+        id: 1,
+        name: "wait for teacher ...",
+        createdAt: "2020-09-05T15:12:13.000Z",
+        updatedAt: "2020-09-05T15:12:13.000Z",
+      },
+      Answer: {
+        id: null,
+        answer: null,
+        image: null,
+        UserId: null,
+        QuestionId: null,
+        createdAt: null,
+        updatedAt: null,
+        User: {
+          id: null,
+          name: null,
+          email: null,
+          password: null,
+          introduction: null,
+          role: null,
+          avatar: null,
+          gender: null,
+          quantity: null,
+          grade: null,
+          bankaccount: null,
+          createdAt: null,
+          updatedAt: null,
+        },
+      },
+      Subject: {
+        id: 1,
+        name: "Math",
+        createdAt: "2020-09-05T15:12:13.000Z",
+        updatedAt: "2020-09-05T15:12:13.000Z",
+      },
+      Scope: {
+        id: 12,
+        name: "high school 3rd",
+        createdAt: "2020-09-05T15:12:13.000Z",
+        updatedAt: "2020-09-05T15:12:13.000Z",
+      },
+    },
+  ],
+};
 export default {
   components: {
     NavTabs,
+  },
+  data() {
+    return {
+      tabs: [
+        {
+          id: uuidv4(),
+          title: "My Questions",
+          path: "/student/questions",
+        },
+        {
+          id: uuidv4(),
+          title: "Solved Questions",
+          path: "/student/solvedquestions",
+        },
+      ],
+      questions: [],
+    };
+  },
+  created() {
+    this.fetchFeeds();
+  },
+  methods: {
+    fetchFeeds() {
+      this.questions = dummyData.questions;
+    },
+  },
+  filters: {
+    fromNow(datetime) {
+      if (!datetime) {
+        return "-";
+      }
+      // 使用 moment 提供的 fromNow 方法
+      return moment(datetime).fromNow();
+    },
   },
 };
 </script>
