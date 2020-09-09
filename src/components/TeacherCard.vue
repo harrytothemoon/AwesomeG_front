@@ -17,7 +17,7 @@
         <div class="card-footer w-75" style="background-color:#fffbf0">
           <!-- <button type="button" class="btn btn-danger like mr-2">Unlike</button>
           <button type="button" class="btn btn-primary like mr-2">Like</button>-->
-          <span class="badge badge-secondary" style="cursor:default">
+          <span class="badge badge-info" style="cursor:default; background-color:#c03546">
             <h5>Solved: {{teacher.Answers.length}}</h5>
           </span>
         </div>

@@ -12,11 +12,16 @@
           </router-link>
         </li>
       </ul>
-      <div class="jumbotron bg-primary" style="border-radius: 0px; border:6px inset #b6b8ba">
+      <div class="jumbotron bg-primary pt-1" style="border-radius: 0px; border:6px inset #b6b8ba">
+        <div class="text-center mt-2">
+          <button type="button" class="btn btn-info btn-lg">
+            <h2 class="m-0">+ Ask more</h2>
+          </button>
+        </div>
         <div
           v-for="question in questions"
           :key="question.id"
-          class="card border-primary mb-3 text-primary"
+          class="card border-primary mt-3 text-primary"
           style="max-width: 80vw;height: 15vw;background-color:#fffbf0"
         >
           <div class="card-body row p-0 pl-2 pr-2">

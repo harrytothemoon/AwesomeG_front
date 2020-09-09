@@ -19,12 +19,18 @@
         <router-link
           v-if="currentUser.role === 'admin'"
           to="#"
-          class="nav-link text-white mr-3"
-        >Back Ground</router-link>
+          class="nav-link text-white mr-3 border-bottom border-dark"
+        >
+          <h6 class="m-0">Back Ground</h6>
+        </router-link>
         <template v-if="isAuthenticated">
           <!-- is user is login -->
-          <router-link to="#" class="text-white mr-3 nav-link">Hello, {{currentUser.name || '訪客'}} !</router-link>
-          <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0">Sign out</button>
+          <router-link to="#" class="text-white mr-3 nav-link">
+            <h6 class="m-0">Hello, {{currentUser.name || '訪客'}} !</h6>
+          </router-link>
+          <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0">
+            <h6 class="m-0">Sign out</h6>
+          </button>
         </template>
       </div>
     </div>
