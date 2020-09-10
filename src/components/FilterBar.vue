@@ -3,18 +3,19 @@
     <h2 class="card-header">Subject</h2>
     <div class="card-body">
       <ul class="nav nav-pills flex-column">
-        <li class="nav-item">
-          <router-link class="nav-link active" :to="{ name: 'teachers' }">
+        <li class="nav-item" style="cursor:pointer">
+          <a class="nav-link" :class="{ active: subjectId === 0}" @click="setVisibility(0)">
             <h4>All</h4>
-          </router-link>
+          </a>
         </li>
-        <li v-for="subject in subjects" :key="subject.id" class="nav-item">
-          <router-link
+        <li v-for="subject in subjects" :key="subject.id" class="nav-item" style="cursor:pointer">
+          <a
             class="nav-link"
-            :to="{ name: 'teachers', query: { subjectId: subject.id } }"
+            :class="{ active: subjectId === subject.id}"
+            @click="setVisibility(subject.id)"
           >
             <h4>{{ subject.name }}</h4>
-          </router-link>
+          </a>
         </li>
       </ul>
     </div>
@@ -27,6 +28,18 @@ export default {
     subjects: {
       type: Array,
       required: true,
+    },
+  },
+  data() {
+    return {
+      subjectId: "",
+    };
+  },
+  methods: {
+    setVisibility(subjectId) {
+      console.log(subjectId);
+      this.subjectId = subjectId;
+      this.$emit("after-filter", this.subjectId);
     },
   },
 };

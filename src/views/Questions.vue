@@ -7,7 +7,7 @@
     </div>
     <div class="row">
       <div class="col-3">
-        <FilterBar :subjects="subjects" />
+        <FilterBar :subjects="subjects" @after-filter="handleAfterFilter" />
       </div>
       <div class="col-5">
         <div
@@ -16,7 +16,7 @@
         >
           <h1 class="text-center">Questions</h1>
           <div
-            v-for="question in questions"
+            v-for="question in fiteredQuestion"
             :key="question.id"
             class="card border-primary text-primary p-2 m-1"
             style="max-width: 450px; height: 215px; background-color: #fffbf0"
@@ -350,6 +350,7 @@ export default {
       answers: [],
       targetId: "",
       uploadId: "",
+      subjectId: "",
     };
   },
   created() {
@@ -377,6 +378,9 @@ export default {
         console.log(name + ": " + value);
       }
     },
+    handleAfterFilter(subjectId) {
+      this.subjectId = subjectId;
+    },
   },
   computed: {
     getQuestion() {
@@ -393,6 +397,15 @@ export default {
       return this.answers.filter(
         (answer) => Number(answer.Question.StatusId) === 2
       );
+    },
+    fiteredQuestion() {
+      if (this.subjectId) {
+        return this.questions.filter(
+          (question) => question.SubjectId === this.subjectId
+        );
+      } else {
+        return this.questions;
+      }
     },
   },
 };
