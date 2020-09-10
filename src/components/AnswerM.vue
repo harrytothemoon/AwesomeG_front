@@ -71,7 +71,7 @@
             <button
               class="btn btn-primary btn-block mb-3 w-25 mx-auto"
               type="submit"
-              style="background-color:#3b8686"
+              style="background-color:#c03546"
             >
               <h4 class="m-0">Solve it !</h4>
             </button>

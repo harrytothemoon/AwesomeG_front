@@ -7,10 +7,23 @@
     <div class="d-flex flex-column justify-content-center mt-5">
       <!-- navtag -->
       <ul class="nav nav-tabs">
-        <li v-for="tab in tabs" :key="tab.id" class="nav-item w-50">
-          <router-link class="nav-link text-center" :to="tab.path">
-            <h3>{{tab.title}}</h3>
-          </router-link>
+        <li class="nav-item w-50" style="cursor:pointer">
+          <a
+            class="nav-link text-center"
+            @click="setVisibility('unSolved')"
+            :class="{active:visibility === 'unSolved'}"
+          >
+            <h3>My Questions</h3>
+          </a>
+        </li>
+        <li class="nav-item w-50" style="cursor:pointer">
+          <a
+            class="nav-link text-center"
+            @click="setVisibility('Solved')"
+            :class="{active:visibility === 'Solved'}"
+          >
+            <h3>Solved Questions</h3>
+          </a>
         </li>
       </ul>
       <div
@@ -28,7 +41,7 @@
           </button>
         </div>
         <div
-          v-for="question in questions"
+          v-for="question in filteredQuestions"
           :key="question.id"
           class="card border-primary mt-3 text-primary"
           style="max-width: 80vw;height: 15vw;background-color:#fffbf0"
@@ -97,7 +110,6 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from "uuid";
 import NavTabs from "./../components/NavTabs";
 import PostQuestionM from "./../components/PostQuestionM";
 import { Filter } from "./../utils/mixins";
@@ -375,28 +387,28 @@ const dummyData3 = {
     },
   ],
 };
+const filters = {
+  unSolved: (questions) =>
+    questions.filter(
+      (question) => question.StatusId === 1 || question.StatusId === 2
+    ),
+  Solved: (questions) =>
+    questions.filter(
+      (question) => question.StatusId === 3 || question.StatusId === 4
+    ),
+};
 export default {
+  mixins: [Filter],
   components: {
     NavTabs,
     PostQuestionM,
   },
   data() {
     return {
-      tabs: [
-        {
-          id: uuidv4(),
-          title: "My Questions",
-          path: "/student/questions",
-        },
-        {
-          id: uuidv4(),
-          title: "Solved Questions",
-          path: "/student/solvedquestions",
-        },
-      ],
       questions: [],
       subjects: [],
       scopes: [],
+      visibility: "unSolved",
     };
   },
   created() {
@@ -414,8 +426,16 @@ export default {
         console.log(name + ": " + value);
       }
     },
+    setVisibility(visibility) {
+      console.log(visibility);
+      this.visibility = visibility;
+    },
   },
-  mixins: [Filter],
+  computed: {
+    filteredQuestions() {
+      return filters[this.visibility](this.questions);
+    },
+  },
 };
 </script>
 
