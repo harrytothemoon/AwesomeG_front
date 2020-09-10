@@ -1,6 +1,7 @@
 <template>
   <div class="container py-5">
     <div class="d-flex justify-content-center mt-2">
+      <PostQuestionM :subjects="subjects" :scopes="scopes" @after-submit="handleAfterSubmit" />
       <NavTabs />
     </div>
     <div class="d-flex flex-column justify-content-center mt-5">
@@ -17,7 +18,12 @@
         style="border-radius: 0px; border:6px inset #b6b8ba;height:650px"
       >
         <div class="text-center mt-2">
-          <button type="button" class="btn btn-info btn-lg">
+          <button
+            type="button"
+            class="btn btn-info btn-lg"
+            data-toggle="modal"
+            data-target="#postQ"
+          >
             <h2 class="m-0">+ Ask more</h2>
           </button>
         </div>
@@ -93,8 +99,9 @@
 <script>
 import { v4 as uuidv4 } from "uuid";
 import NavTabs from "./../components/NavTabs";
+import PostQuestionM from "./../components/PostQuestionM";
 import { Filter } from "./../utils/mixins";
-const dummyData = {
+const dummyData1 = {
   questions: [
     {
       id: 6,
@@ -264,9 +271,114 @@ const dummyData = {
     },
   ],
 };
+const dummyData2 = {
+  subjects: [
+    {
+      id: 1,
+      name: "Math",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+    {
+      id: 2,
+      name: "Physical",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+    {
+      id: 3,
+      name: "Chemical",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+  ],
+};
+const dummyData3 = {
+  scopes: [
+    {
+      id: 1,
+      name: "primary school 1st",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+    {
+      id: 2,
+      name: "primary school 2nd",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+    {
+      id: 3,
+      name: "primary school 3rd",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+    {
+      id: 4,
+      name: "primary school 4th",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+    {
+      id: 5,
+      name: "primary school 5th",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+    {
+      id: 6,
+      name: "primary school 6th",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+    {
+      id: 7,
+      name: "middle school 1st",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+    {
+      id: 8,
+      name: "middle school 2nd",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+    {
+      id: 9,
+      name: "middle school 3rd",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+    {
+      id: 10,
+      name: "high school 1st",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+    {
+      id: 11,
+      name: "high school 2nd",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+    {
+      id: 12,
+      name: "high school 3rd",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+    {
+      id: 13,
+      name: "university or others",
+      createdAt: "2020-09-05T15:12:13.000Z",
+      updatedAt: "2020-09-05T15:12:13.000Z",
+    },
+  ],
+};
 export default {
   components: {
     NavTabs,
+    PostQuestionM,
   },
   data() {
     return {
@@ -283,6 +395,8 @@ export default {
         },
       ],
       questions: [],
+      subjects: [],
+      scopes: [],
     };
   },
   created() {
@@ -290,7 +404,15 @@ export default {
   },
   methods: {
     fetchFeeds() {
-      this.questions = dummyData.questions;
+      this.questions = dummyData1.questions;
+      this.subjects = dummyData2.subjects;
+      this.scopes = dummyData3.scopes;
+    },
+    handleAfterSubmit(formData) {
+      // TODO: 透過 API 將表單資料送到伺服器
+      for (let [name, value] of formData.entries()) {
+        console.log(name + ": " + value);
+      }
     },
   },
   mixins: [Filter],
