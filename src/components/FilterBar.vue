@@ -32,7 +32,7 @@ export default {
   },
   data() {
     return {
-      subjectId: "",
+      subjectId: 0,
     };
   },
   methods: {

@@ -6,7 +6,7 @@
     <h1 class="mb-5 text-center mt-5">T e a c h e r s</h1>
     <div class="row">
       <div class="col-3">
-        <FilterBar :subjects="subjects" />
+        <FilterBar :subjects="subjects" @after-filter="handleAfterFilter" />
       </div>
       <div class="col-9">
         <TeacherCard :teachers="teachers" />
@@ -152,6 +152,7 @@ export default {
     return {
       teachers: [],
       subjects: [],
+      subjectId: 0,
     };
   },
   created() {
@@ -161,6 +162,21 @@ export default {
     fetchFeeds() {
       this.teachers = dummyData1.teachers;
       this.subjects = dummyData2.subjects;
+    },
+    handleAfterFilter(subjectId) {
+      this.subjectId = subjectId;
+    },
+  },
+  computed: {
+    //TODO 老師新增教學科目
+    fiteredTeacher() {
+      if (this.subjectId) {
+        return this.teachers.filter((teacher) =>
+          [teacher.SubjectId].includes(this.subjectId)
+        );
+      } else {
+        return this.teachers;
+      }
     },
   },
 };

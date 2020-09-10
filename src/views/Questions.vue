@@ -350,7 +350,7 @@ export default {
       answers: [],
       targetId: "",
       uploadId: "",
-      subjectId: "",
+      subjectId: 0,
     };
   },
   created() {
