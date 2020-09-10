@@ -1,10 +1,10 @@
 <template>
   <div
     class="modal fade"
-    id="postQ"
+    id="answerUpload"
     tabindex="-1"
     role="dialog"
-    aria-labelledby="postQLabel"
+    aria-labelledby="answerUploadLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog text-primary text-center" role="document" style="max-width:650px">
@@ -14,53 +14,33 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <h1 class="modal-title" id="postQLabel" style="color:#c03546">Ask your question</h1>
         <div class="modal-body mt-2">
+          <div class="card mb-3 border-0 d-flex flex-row rounded">
+            <img
+              class="rounded"
+              :src="uploadAnswer.Question.image"
+              alt="Card image cap"
+              height="200px"
+              width="300px"
+            />
+            <div class="card-body">
+              <h4
+                class="card-title mb-0"
+                style="color:#c03546"
+              >{{uploadAnswer.Question.Subject.name}}</h4>
+              <small class="text-mute mb-3">{{uploadAnswer.Question.Scope.name}}</small>
+              <p class="card-text">{{uploadAnswer.Question.description}}</p>
+            </div>
+          </div>
           <form class="w-100" @submit.prevent.stop="handleSubmit">
-            <div class="form-group">
-              <label for="subject">
-                <h4>Subject</h4>
-              </label>
-              <select
-                class="form-control w-75 mx-auto"
-                id="subject"
-                required
-                name="subject"
-                style="cursor:pointer"
-              >
-                <option value selected disabled>Please Choose</option>
-                <option
-                  v-for="subject in subjects"
-                  :key="subject.id"
-                  :value="subject.id"
-                >{{subject.name}}</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="scope">
-                <h4>Scope</h4>
-              </label>
-              <select
-                class="form-control w-75 mx-auto"
-                id="scope"
-                required
-                name="scope"
-                style="cursor:pointer"
-              >
-                <option value selected disabled>Please Choose</option>
-                <option v-for="scope in scopes" :key="scope.id" :value="scope.id">{{scope.name}}</option>
-              </select>
-            </div>
+            <input name="questionId" type="hidden" :value="uploadAnswer.Question.id" />
             <div class="row mt-4">
               <div class="form-group col-6">
-                <label for="description">
-                  <h4>Question's Description</h4>
-                </label>
                 <textarea
                   class="form-control"
                   id="description"
-                  rows="7"
-                  placeholder="Please describe your question..."
+                  rows="8"
+                  placeholder="Please describe your answer..."
                   name="description"
                   v-model="description"
                 ></textarea>
@@ -68,7 +48,7 @@
 
               <div class="form-group col-6">
                 <label for="image">
-                  <h4>Question's Image</h4>
+                  <h4>Answer's Image</h4>
                 </label>
                 <input
                   id="image"
@@ -91,9 +71,9 @@
             <button
               class="btn btn-primary btn-block mb-3 w-25 mx-auto"
               type="submit"
-              style="background-color:#c03546"
+              style="background-color:#3b8686"
             >
-              <h4 class="m-0">Submit</h4>
+              <h4 class="m-0">Solve it !</h4>
             </button>
           </form>
         </div>
@@ -105,19 +85,13 @@
 <script>
 export default {
   props: {
-    subjects: {
-      type: Array,
-      required: true,
-    },
-    scopes: {
+    uploadAnswer: {
       type: Array,
       required: true,
     },
   },
   data() {
     return {
-      subject: "",
-      scope: "",
       description: "",
       image: "",
     };

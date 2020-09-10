@@ -1,6 +1,8 @@
 <template>
   <div class="container py-4">
     <div class="d-flex justify-content-center mt-2">
+      <QestionDetailM :getQuestion="getQuestion" @after-submit="handleAfterSubmitPost" />
+      <AnswerM :uploadAnswer="uploadAnswer" @after-submit="handleAfterSubmitPut" />
       <NavTabs />
     </div>
     <div class="row">
@@ -45,9 +47,12 @@
             </div>
             <div class="text-center">
               <button
+                @click="setVisibility(question.id)"
                 type="button"
                 class="btn btn-secondary text-center pb-0"
                 style="background-color:#c03546"
+                data-toggle="modal"
+                data-target="#questionD"
               >
                 <h4>Solve !</h4>
               </button>
@@ -62,7 +67,7 @@
         >
           <h1 class="text-center">Your Work</h1>
           <div
-            v-for="answer in answers"
+            v-for="answer in showWorkAnswer"
             :key="answer.id"
             class="card border-primary text-primary p-2 m-1"
             style="max-width: 350px;height: 150px;background-color:#fffbf0"
@@ -74,11 +79,23 @@
                   style="font-size:14px;color:gray"
                 >{{answer.Question.Scope.name}}</span>
               </h4>
-              <p style="height:60px">{{answer.Question.description | ellipsis}}</p>
-              <h6 class="text-right" style="color:#4F86C6">
-                <span style="color:black">Case is taken :</span>
-                {{answer.createdAt | fromNow}}
-              </h6>
+              <p class="mb-0" style="height:60px">{{answer.Question.description | ellipsis}}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <button
+                  @click="clickUpload(answer.Question.id)"
+                  type="button"
+                  class="btn btn-secondary text-center pb-0 ml-2"
+                  data-toggle="modal"
+                  data-target="#answerUpload"
+                  style="background-color:#c03546"
+                >
+                  <h6 class="m-0">Upload</h6>
+                </button>
+                <h6 class="d-inline text-right m-2" style="color:#4F86C6">
+                  <span style="color:black">Case is taken :</span>
+                  {{answer.createdAt | fromNow}}
+                </h6>
+              </div>
             </div>
           </div>
         </div>
@@ -90,6 +107,8 @@
 <script>
 import NavTabs from "./../components/NavTabs";
 import FilterBar from "./../components/FilterBar";
+import QestionDetailM from "./../components/QestionDetailM";
+import AnswerM from "./../components/AnswerM";
 import { Filter } from "./../utils/mixins";
 const dummyData1 = {
   subjects: [
@@ -118,7 +137,7 @@ const dummyData2 = {
     {
       id: 1,
       description:
-        "Sequi odio minus qui. Perferendis dicta fugiat voluptas sit et. Excepturi unde reprehenderit consequatur.",
+        "Sequi odio minus qui. Perferendis dicta fugiat voluptas sit et. Excepturi unde reprehenderit consequatur. Fugiat quam veritatis ullam autem ipsa et quidem maiores. Iusto qui dolor natus id quo adipisci. Cumque dicta qui nostrum veritatis.",
       image:
         "https://loremflickr.com/320/240/question/?lock=26.667716872704084",
       UserId: 13,
@@ -142,7 +161,7 @@ const dummyData2 = {
       },
       Status: {
         id: 1,
-        name: "wait for teacher ...",
+        name: "wait for a teacher ...",
         createdAt: "2020-09-05T15:12:13.000Z",
         updatedAt: "2020-09-05T15:12:13.000Z",
       },
@@ -174,7 +193,7 @@ const dummyData2 = {
       },
       Status: {
         id: 1,
-        name: "wait for teacher ...",
+        name: "wait for a teacher ...",
         createdAt: "2020-09-05T15:12:13.000Z",
         updatedAt: "2020-09-05T15:12:13.000Z",
       },
@@ -204,38 +223,7 @@ const dummyData2 = {
       },
       Status: {
         id: 1,
-        name: "wait for teacher ...",
-        createdAt: "2020-09-05T15:12:13.000Z",
-        updatedAt: "2020-09-05T15:12:13.000Z",
-      },
-    },
-    {
-      id: 4,
-      description:
-        "Aut facilis consequatur alias velit. Maxime consequuntur facere at. Est officiis consectetur quos asperiores. Dolor qui itaque aperiam nemo culpa consectetur ut.",
-      image: "https://loremflickr.com/320/240/question/?lock=40.08937818432135",
-      UserId: 10,
-      SubjectId: 3,
-      ScopeId: 2,
-      StatusId: 1,
-      AnswerId: null,
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-      Subject: {
-        id: 3,
-        name: "Chemical",
-        createdAt: "2020-09-05T15:12:13.000Z",
-        updatedAt: "2020-09-05T15:12:13.000Z",
-      },
-      Scope: {
-        id: 2,
-        name: "primary school 2nd",
-        createdAt: "2020-09-05T15:12:13.000Z",
-        updatedAt: "2020-09-05T15:12:13.000Z",
-      },
-      Status: {
-        id: 1,
-        name: "wait for teacher ...",
+        name: "wait for a teacher ...",
         createdAt: "2020-09-05T15:12:13.000Z",
         updatedAt: "2020-09-05T15:12:13.000Z",
       },
@@ -265,7 +253,7 @@ const dummyData2 = {
       },
       Status: {
         id: 1,
-        name: "wait for teacher ...",
+        name: "wait for a teacher ...",
         createdAt: "2020-09-05T15:12:13.000Z",
         updatedAt: "2020-09-05T15:12:13.000Z",
       },
@@ -292,7 +280,7 @@ const dummyData3 = {
         SubjectId: 2,
         ScopeId: 1,
         StatusId: 3,
-        AnswerId: null,
+        AnswerId: 1,
         createdAt: "2020-09-05T15:12:13.000Z",
         updatedAt: "2020-09-05T15:27:11.000Z",
         Subject: {
@@ -326,10 +314,10 @@ const dummyData3 = {
         UserId: 10,
         SubjectId: 3,
         ScopeId: 2,
-        StatusId: 1,
-        AnswerId: null,
+        StatusId: 2,
+        AnswerId: 4,
         createdAt: "2020-09-05T15:12:13.000Z",
-        updatedAt: "2020-09-05T15:12:13.000Z",
+        updatedAt: "2020-09-10T13:43:09.000Z",
         Subject: {
           id: 3,
           name: "Chemical",
@@ -347,16 +335,21 @@ const dummyData3 = {
   ],
 };
 export default {
-  name: "teacher question",
+  name: "teacherQuestion",
+  mixins: [Filter],
   components: {
     NavTabs,
     FilterBar,
+    QestionDetailM,
+    AnswerM,
   },
   data() {
     return {
       subjects: [],
       questions: [],
       answers: [],
+      targetId: "",
+      uploadId: "",
     };
   },
   created() {
@@ -368,8 +361,40 @@ export default {
       this.questions = dummyData2.questions;
       this.answers = dummyData3.answers;
     },
+    setVisibility(id) {
+      this.targetId = id;
+    },
+    clickUpload(id) {
+      this.uploadId = id;
+    },
+    handleAfterSubmitPost(Data) {
+      // TODO: 透過 API 將表單資料送到伺服器
+      console.log(Data);
+    },
+    handleAfterSubmitPut(formData) {
+      // TODO: 透過 API 將表單資料送到伺服器
+      for (let [name, value] of formData.entries()) {
+        console.log(name + ": " + value);
+      }
+    },
   },
-  mixins: [Filter],
+  computed: {
+    getQuestion() {
+      return this.questions.filter(
+        (question) => Number(question.id) === Number(this.targetId)
+      )[0];
+    },
+    uploadAnswer() {
+      return this.answers.filter(
+        (answer) => Number(answer.Question.id) === Number(this.uploadId)
+      )[0];
+    },
+    showWorkAnswer() {
+      return this.answers.filter(
+        (answer) => Number(answer.Question.StatusId) === 2
+      );
+    },
+  },
 };
 </script>
 
