@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import NotFound from '../views/NotFound.vue'
-import SignIn from '../views/SignIn.vue'
+// import SignIn from '../views/SignIn.vue'
 import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
@@ -11,16 +11,16 @@ const routes = [
     name: 'root',
     redirect: '/home'
   },
-  {
-    path: '/signin',
-    name: 'sign-in',
-    component: SignIn
-  },
-  {
-    path: '/signup',
-    name: 'sign-up',
-    component: () => import('../views/SignUp.vue')
-  },
+  // {
+  //   path: '/signin',
+  //   name: 'sign-in',
+  //   component: SignIn
+  // },
+  // {
+  //   path: '/signup',
+  //   name: 'sign-up',
+  //   component: () => import('../views/SignUp.vue')
+  // },
   {
     path: '/home',
     name: 'home',

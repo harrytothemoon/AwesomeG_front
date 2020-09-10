@@ -12,7 +12,10 @@
           </router-link>
         </li>
       </ul>
-      <div class="jumbotron bg-primary pt-1" style="border-radius: 0px; border:6px inset #b6b8ba">
+      <div
+        class="jumbotron bg-primary pt-1 overflow-auto"
+        style="border-radius: 0px; border:6px inset #b6b8ba;height:650px"
+      >
         <div class="text-center mt-2">
           <button type="button" class="btn btn-info btn-lg">
             <h2 class="m-0">+ Ask more</h2>

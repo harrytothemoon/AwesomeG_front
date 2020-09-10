@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <Navbar />
+    <SignInM />
+    <SignUpM />
     <main role="main" class="mt-5">
       <router-view />
     </main>
@@ -11,9 +13,13 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 import Navbar from "./components/Navbar";
+import SignInM from "./components/SignInM";
+import SignUpM from "./components/SignUpM";
 export default {
   components: {
     Navbar,
+    SignInM,
+    SignUpM,
   },
 };
 </script>
