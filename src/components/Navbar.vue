@@ -36,7 +36,10 @@
         </router-link>
         <template v-if="isAuthenticated">
           <!-- is user is login -->
-          <router-link to="#" class="text-white mr-1 p-0 nav-link">
+          <router-link
+            :to="{name: 'user', params: {id: currentUser.id}}"
+            class="text-white mr-1 p-0 nav-link"
+          >
             <h6 class="m-0">
               Hello, {{currentUser.name || '訪客'}} !
               <img

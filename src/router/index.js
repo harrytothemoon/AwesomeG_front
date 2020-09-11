@@ -42,6 +42,11 @@ const routes = [
     component: () => import('../views/Teachers.vue')
   },
   {
+    path: '/users/:id',
+    name: 'user',
+    component: () => import('../views/UserProfile.vue')
+  },
+  {
     path: '/student/questions',
     name: 'student-question',
     component: () => import('../views/MyQuestion.vue')
