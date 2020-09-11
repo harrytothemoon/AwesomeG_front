@@ -1,7 +1,21 @@
 <template>
-  <div class="container py-5 text-primary">
+  <div class="container py-5 text-primary" style="max-width:950px">
+    <ProductM @after-submit="handleAfterSubmit" />
+    <ul class="nav nav-tabs mt-1 mb-4 d-flex justify-content-center">
+      <li class="nav-item w-25" style="cursor:pointer">
+        <router-link :to="{name: 'user', params: {id: user.id}}" class="nav-link text-center">
+          <h4>My Information</h4>
+        </router-link>
+      </li>
+      <li class="nav-item w-25" style="cursor:pointer">
+        <router-link :to="{name: 'orders', params: {id: user.id}}" class="nav-link text-center">
+          <h4>My Orders</h4>
+        </router-link>
+      </li>
+    </ul>
+
     <div class="row">
-      <div class="col-4 mt-1 d-flex justify-content-center align-items-center">
+      <div class="col-3 mt-1 d-flex justify-content-start align-items-center">
         <img
           class="rounded-circle"
           :src="user.avatar"
@@ -10,7 +24,7 @@
           height="200px"
         />
       </div>
-      <div class="col-3 mt-1 d-flex flex-column align-items-start justify-content-center">
+      <div class="col-4 mt-1 d-flex flex-column align-items-start justify-content-center">
         <h2>
           Role :
           <span>{{user.role}}</span>
@@ -30,61 +44,53 @@
       </div>
     </div>
 
-    <div>
-      <ul class="nav nav-tabs mt-5">
-        <li class="nav-item w-25" style="cursor:pointer">
-          <a class="nav-link text-center active">
-            <h4>Information</h4>
-          </a>
-        </li>
-        <!-- <li class="nav-item w-50" style="cursor:pointer">
-        <a class="nav-link text-center">
-          <h3>Solved Questions</h3>
-        </a>
-        </li>-->
-      </ul>
-
-      <div class="card d-flex flex-row row border-0" style="background-color:#fffbf0">
-        <div class="col-6 m-2">
-          <h3>Gender</h3>
-          <h5>{{user.gender}}</h5>
-          <h3>Email</h3>
-          <h5>{{user.email}}</h5>
-          <h3>Password</h3>
-          <h5>{{user.password}}</h5>
-          <template v-if="user.role === 'teacher'">
-            <h3>Bank Account</h3>
-            <h5>{{user.bankaccount}}</h5>
-          </template>
-          <template v-else>
-            <h3>Grade</h3>
-            <h5>{{user.grade}}</h5>
-          </template>
-        </div>
-        <div v-if="user.role === 'teacher'" class="col-5 m-2">
-          <h3>About Me</h3>
-          <div class="card rounded p-3" style="height:270px">
-            <h5>{{user.introduction}}</h5>
-          </div>
-        </div>
-        <div v-else class="col-5 m-2">
-          <h3>Available Questions</h3>
-          <h5>{{user.quantity}}</h5>
-          <br />
-          <button
-            type="button"
-            class="btn btn-success btn-lg ml-4"
-            style="height:150px;width:350px"
-          >
-            <h1 class="m-0 display-3">Deposit !</h1>
-          </button>
+    <div class="card d-flex flex-row row border-0 mt-5" style="background-color:#fffbf0">
+      <div class="col-6 m-2">
+        <h3>Gender</h3>
+        <h5>{{user.gender}}</h5>
+        <h3>Email</h3>
+        <h5>{{user.email}}</h5>
+        <h3>Password</h3>
+        <h5>{{user.password}}</h5>
+        <template v-if="user.role === 'teacher'">
+          <h3>Bank Account</h3>
+          <h5>{{user.bankaccount}}</h5>
+        </template>
+        <template v-else>
+          <h3>Grade</h3>
+          <h5>{{user.grade}}</h5>
+        </template>
+      </div>
+      <div v-if="user.role === 'teacher'" class="col-5 m-2">
+        <h3>About Me</h3>
+        <div class="card rounded p-3" style="height:270px">
+          <h5>{{user.introduction}}</h5>
         </div>
       </div>
+      <div v-else class="col-5 m-2">
+        <h3>Available Questions</h3>
+        <h5>{{user.quantity}}</h5>
+        <br />
+        <button
+          type="button"
+          class="btn btn-success btn-lg ml-5"
+          style="height:150px;max-width:350px"
+          data-toggle="modal"
+          data-target="#product"
+        >
+          <h1 class="m-0 display-3">Deposit !</h1>
+        </button>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+      <NavTabs />
     </div>
   </div>
 </template>
 
 <script>
+import ProductM from "../components/ProductM";
+import NavTabs from "../components/NavTabs";
 const dummyData = {
   user: {
     id: 1,
@@ -191,6 +197,10 @@ const dummyData = {
 
 export default {
   name: "User",
+  components: {
+    ProductM,
+    NavTabs,
+  },
   data() {
     return {
       user: {
@@ -212,10 +222,10 @@ export default {
   },
   created() {
     const { id: userId } = this.$route.params;
-    this.fetchRestaurant(userId);
+    this.fetchUser(userId);
   },
   methods: {
-    fetchRestaurant(userId) {
+    fetchUser(userId) {
       console.log("fetchUser id: ", userId);
 
       this.user = {
@@ -233,6 +243,12 @@ export default {
       };
       this.answers = dummyData.user.Answers.length;
       this.questions = dummyData.user.Questions.length;
+    },
+    handleAfterSubmit(formData) {
+      // TODO: 透過 API 將表單資料送到伺服器
+      for (let [name, value] of formData.entries()) {
+        console.log(name + ": " + value);
+      }
     },
   },
 };
