@@ -2,6 +2,7 @@
   <div class="container py-5">
     <div class="d-flex justify-content-center mt-2">
       <PostQuestionM :subjects="subjects" :scopes="scopes" @after-submit="handleAfterSubmit" />
+      <AnswerDetailM :getQuestion="getQuestion" />
       <NavTabs />
     </div>
     <div class="d-flex flex-column justify-content-center mt-5">
@@ -92,9 +93,22 @@
                     height="100px"
                   />
                 </div>
-                <div v-if="question.Answer.User.name" class="col-8">
+                <div v-if="question.StatusId === 2" class="col-8">
                   <h4 class="text-left">{{question.Answer.User.name}}</h4>
                   <h1 style="color:#c03546">{{question.Status.name}}</h1>
+                </div>
+                <div v-else-if="question.StatusId === 3 ||question.StatusId === 4" class="col-8">
+                  <h4 class="text-left">{{question.Answer.User.name}}</h4>
+                  <h1 style="color:#c03546">{{question.Status.name}}</h1>
+                  <button
+                    @click="showAnswerDetail(question.id)"
+                    type="button"
+                    class="btn btn-primary text-center pb-0"
+                    data-toggle="modal"
+                    data-target="#answerD"
+                  >
+                    <h4>Review Answer</h4>
+                  </button>
                 </div>
                 <div v-else class="col-8">
                   <br />
@@ -112,6 +126,7 @@
 <script>
 import NavTabs from "./../components/NavTabs";
 import PostQuestionM from "./../components/PostQuestionM";
+import AnswerDetailM from "./../components/AnswerDetailM";
 import { Filter } from "./../utils/mixins";
 const dummyData1 = {
   questions: [
@@ -402,6 +417,7 @@ export default {
   components: {
     NavTabs,
     PostQuestionM,
+    AnswerDetailM,
   },
   data() {
     return {
@@ -409,6 +425,7 @@ export default {
       subjects: [],
       scopes: [],
       visibility: "unSolved",
+      targetId: "",
     };
   },
   created() {
@@ -430,10 +447,18 @@ export default {
       console.log(visibility);
       this.visibility = visibility;
     },
+    showAnswerDetail(id) {
+      this.targetId = id;
+    },
   },
   computed: {
     filteredQuestions() {
       return filters[this.visibility](this.questions);
+    },
+    getQuestion() {
+      return this.questions.filter(
+        (question) => Number(question.id) === Number(this.targetId)
+      )[0];
     },
   },
 };

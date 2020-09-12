@@ -2,7 +2,7 @@
   <div class="container py-4">
     <div class="d-flex justify-content-center mt-2">
       <QestionDetailM :getQuestion="getQuestion" @after-submit="handleAfterSubmitPost" />
-      <AnswerM :uploadAnswer="uploadAnswer" @after-submit="handleAfterSubmitPut" />
+      <PostAnswerM :uploadAnswer="uploadAnswer" @after-submit="handleAfterSubmitPut" />
       <NavTabs />
     </div>
     <div class="row">
@@ -108,7 +108,7 @@
 import NavTabs from "./../components/NavTabs";
 import FilterBar from "./../components/FilterBar";
 import QestionDetailM from "./../components/QestionDetailM";
-import AnswerM from "./../components/AnswerM";
+import PostAnswerM from "./../components/PostAnswerM";
 import { Filter } from "./../utils/mixins";
 const dummyData1 = {
   subjects: [
@@ -341,7 +341,7 @@ export default {
     NavTabs,
     FilterBar,
     QestionDetailM,
-    AnswerM,
+    PostAnswerM,
   },
   data() {
     return {

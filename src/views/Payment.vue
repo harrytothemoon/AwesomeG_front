@@ -1,10 +1,13 @@
 <template>
   <div class="container py-5 text-primary">
     <div class="d-flex flex-column align-items-center">
+      <router-link :to="{name: 'orders', params: {id: userId}}" class="nav-link text-center">
+        <h4>＜ Back to My Orders</h4>
+      </router-link>
       <h1 class="display-2" style="color:#c03546">Payment</h1>
       <form name="Spgateway" :action="tradeInfo.PayGateWay" method="POST">
         <h4 class="text-center">Please Confirm Following Information</h4>
-        <div class="card w-100 text-center">
+        <div class="card w-75 mx-auto text-center">
           <h2 class="mt-2" style="color:#c03546">'{{order.Product.name}}'</h2>
           <h2>NT$ {{order.amount}}</h2>
           <h4>Number of questions</h4>
@@ -68,6 +71,7 @@ export default {
       order: {},
       tradeInfo: {},
       orderId: "",
+      userId: "",
     };
   },
   created() {
@@ -80,6 +84,7 @@ export default {
       console.log("fetchUser id: ", orderId);
       this.order = dummyData.order;
       this.tradeInfo = dummyData.tradeInfo;
+      this.userId = dummyData.order.UserId;
     },
   },
 };
