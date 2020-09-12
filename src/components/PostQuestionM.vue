@@ -16,7 +16,7 @@
         </div>
         <h1 class="modal-title" id="postQLabel" style="color:#c03546">Ask your question</h1>
         <div class="modal-body mt-2">
-          <form class="w-100" @submit.prevent.stop="handleSubmit">
+          <form class="w-100" v-show="!isLoading" @submit.prevent.stop="handleSubmit">
             <div class="form-group">
               <label for="subject">
                 <h4>Subject</h4>
@@ -25,7 +25,7 @@
                 class="form-control w-75 mx-auto"
                 id="subject"
                 required
-                name="subject"
+                name="subjectId"
                 style="cursor:pointer"
               >
                 <option value selected disabled>Please Choose</option>
@@ -44,7 +44,7 @@
                 class="form-control w-75 mx-auto"
                 id="scope"
                 required
-                name="scope"
+                name="scopeId"
                 style="cursor:pointer"
               >
                 <option value selected disabled>Please Choose</option>
@@ -103,26 +103,50 @@
 </template>
 
 <script>
+import subjectsAPI from "./../apis/subjects";
+import scopesAPI from "./../apis/scopes";
+import { Toast } from "./../utils/helpers";
 export default {
-  props: {
-    subjects: {
-      type: Array,
-      required: true,
-    },
-    scopes: {
-      type: Array,
-      required: true,
-    },
-  },
   data() {
     return {
+      subjects: [],
+      scopes: [],
       subject: "",
       scope: "",
       description: "",
       image: "",
+      isLoading: true,
     };
   },
+  created() {
+    this.fetchScopes();
+    this.fetchSubjects();
+  },
   methods: {
+    async fetchSubjects() {
+      try {
+        const response = await subjectsAPI.getSubjects();
+        this.subjects = response.data.subjects;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "Can't not get subject data, please try again later",
+        });
+      }
+    },
+    async fetchScopes() {
+      try {
+        const response = await scopesAPI.getScopes();
+        this.scopes = response.data.scopes;
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        Toast.fire({
+          icon: "warning",
+          title: "Can't not get Scope data, please try again later",
+        });
+      }
+    },
     handleFileChange(e) {
       const { files } = e.target;
       if (files.length === 0) {

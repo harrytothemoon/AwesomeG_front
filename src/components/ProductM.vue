@@ -41,26 +41,8 @@
 </template>
 
 <script>
-const dummyData = {
-  products: [
-    {
-      id: 1,
-      name: "Easy Learning",
-      description: "20",
-      price: 990,
-      createdAt: "2020-09-05T15:28:32.000Z",
-      updatedAt: "2020-09-05T15:28:32.000Z",
-    },
-    {
-      id: 2,
-      name: "Become a master",
-      description: "66",
-      price: 2990,
-      createdAt: "2020-09-05T15:28:47.000Z",
-      updatedAt: "2020-09-05T15:28:47.000Z",
-    },
-  ],
-};
+import productsAPI from "./../apis/products";
+import { Toast } from "./../utils/helpers";
 export default {
   data() {
     return {
@@ -68,11 +50,19 @@ export default {
     };
   },
   created() {
-    this.fetchFeeds();
+    this.fetchProducts();
   },
   methods: {
-    fetchFeeds() {
-      this.products = dummyData.products;
+    async fetchProducts() {
+      try {
+        const response = await productsAPI.getProducts();
+        this.products = response.data.products;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "Can't not get products data, please try again later",
+        });
+      }
     },
     handleSubmit(e) {
       const form = e.target;

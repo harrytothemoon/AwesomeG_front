@@ -1,7 +1,7 @@
 <template>
   <div class="container py-5">
     <div class="d-flex justify-content-center mt-2">
-      <PostQuestionM :subjects="subjects" :scopes="scopes" @after-submit="handleAfterSubmit" />
+      <PostQuestionM @after-submit="handleAfterSubmit" />
       <AnswerDetailM :getQuestion="getQuestion" />
       <NavTabs />
     </div>
@@ -52,8 +52,17 @@
               <div class="row w-100">
                 <div class="col-5 mt-1">
                   <img
+                    v-if="question.image"
                     class="rounded"
                     :src="question.image"
+                    alt="Card image cap"
+                    width="180px"
+                    height="180px"
+                  />
+                  <img
+                    v-else
+                    class="rounded"
+                    src="https://image.damanwoo.com/files/media/c/h/r/o/m/e/d/i/n/o/chrome_dino_set-2.jpg"
                     alt="Card image cap"
                     width="180px"
                     height="180px"
@@ -128,280 +137,9 @@ import NavTabs from "./../components/NavTabs";
 import PostQuestionM from "./../components/PostQuestionM";
 import AnswerDetailM from "./../components/AnswerDetailM";
 import { Filter } from "./../utils/mixins";
-const dummyData1 = {
-  questions: [
-    {
-      id: 6,
-      description: "This is postman first test.",
-      image: "https://i.imgur.com/ndwUsWvb.jpg",
-      UserId: 1,
-      SubjectId: 3,
-      ScopeId: 8,
-      StatusId: 2,
-      AnswerId: 2,
-      createdAt: "2020-09-05T15:17:54.000Z",
-      updatedAt: "2020-09-05T15:17:54.000Z",
-      Status: {
-        id: 2,
-        name: "working on it !",
-        createdAt: "2020-09-05T15:12:13.000Z",
-        updatedAt: "2020-09-05T15:12:13.000Z",
-      },
-      Answer: {
-        id: 2,
-        answer: "",
-        image: "",
-        UserId: 4,
-        QuestionId: 6,
-        createdAt: "2020-09-05T15:26:38.000Z",
-        updatedAt: "2020-09-05T15:27:11.000Z",
-        User: {
-          id: 4,
-          name: "Yvonne King",
-          email: "user2@example.com",
-          password:
-            "$2a$10$zSKk9Rc4Wm2t9zwLESl4X.rmxpGW2gadfEdSpVH40M4NLVmyZohN.",
-          introduction: null,
-          role: "teacher",
-          avatar:
-            "https://loremflickr.com/320/240/people/?lock=12.575275831175459",
-          gender: null,
-          quantity: null,
-          grade: null,
-          bankaccount: null,
-          createdAt: "2020-09-05T15:12:13.000Z",
-          updatedAt: "2020-09-05T15:12:13.000Z",
-        },
-      },
-      Subject: {
-        id: 3,
-        name: "Chemical",
-        createdAt: "2020-09-05T15:12:13.000Z",
-        updatedAt: "2020-09-05T15:12:13.000Z",
-      },
-      Scope: {
-        id: 8,
-        name: "middle school 2nd",
-        createdAt: "2020-09-05T15:12:13.000Z",
-        updatedAt: "2020-09-05T15:12:13.000Z",
-      },
-    },
-    {
-      id: 7,
-      description: "This is postman second test.",
-      image: "https://i.imgur.com/VXEzRi4.png",
-      UserId: 1,
-      SubjectId: 2,
-      ScopeId: 10,
-      StatusId: 3,
-      AnswerId: 3,
-      createdAt: "2020-09-05T16:22:36.000Z",
-      updatedAt: "2020-09-05T16:22:36.000Z",
-      Status: {
-        id: 3,
-        name: "done",
-        createdAt: "2020-09-05T15:12:13.000Z",
-        updatedAt: "2020-09-05T15:12:13.000Z",
-      },
-      Answer: {
-        id: 3,
-        answer: "postman solve test",
-        image: "https://i.imgur.com/eZv9Bya.jpeg",
-        UserId: 5,
-        QuestionId: 7,
-        createdAt: "2020-09-05T15:26:38.000Z",
-        updatedAt: "2020-09-05T15:27:11.000Z",
-        User: {
-          id: 5,
-          name: "Orlando Steuber PhD",
-          email: "user3@example.com",
-          password:
-            "$2a$10$M89tguOMO1fSNoSqUWki3uyGeUIBmR14cY2./jZU57kptqJSLeD2S",
-          introduction: null,
-          role: "teacher",
-          avatar:
-            "https://loremflickr.com/320/240/people/?lock=98.62510707357808",
-          gender: null,
-          quantity: null,
-          grade: null,
-          bankaccount: null,
-          createdAt: "2020-09-05T15:12:13.000Z",
-          updatedAt: "2020-09-05T15:12:13.000Z",
-        },
-      },
-      Subject: {
-        id: 2,
-        name: "Physical",
-        createdAt: "2020-09-05T15:12:13.000Z",
-        updatedAt: "2020-09-05T15:12:13.000Z",
-      },
-      Scope: {
-        id: 10,
-        name: "high school 1st",
-        createdAt: "2020-09-05T15:12:13.000Z",
-        updatedAt: "2020-09-05T15:12:13.000Z",
-      },
-    },
-    {
-      id: 8,
-      description: "This is postman third test.",
-      image: "https://i.imgur.com/zZlGXCDb.jpg",
-      UserId: 1,
-      SubjectId: 1,
-      ScopeId: 12,
-      StatusId: 1,
-      AnswerId: null,
-      createdAt: "2020-09-05T16:22:36.000Z",
-      updatedAt: "2020-09-05T16:22:36.000Z",
-      Status: {
-        id: 1,
-        name: "wait for teacher ...",
-        createdAt: "2020-09-05T15:12:13.000Z",
-        updatedAt: "2020-09-05T15:12:13.000Z",
-      },
-      Answer: {
-        id: null,
-        answer: null,
-        image: null,
-        UserId: null,
-        QuestionId: null,
-        createdAt: null,
-        updatedAt: null,
-        User: {
-          id: null,
-          name: null,
-          email: null,
-          password: null,
-          introduction: null,
-          role: null,
-          avatar: null,
-          gender: null,
-          quantity: null,
-          grade: null,
-          bankaccount: null,
-          createdAt: null,
-          updatedAt: null,
-        },
-      },
-      Subject: {
-        id: 1,
-        name: "Math",
-        createdAt: "2020-09-05T15:12:13.000Z",
-        updatedAt: "2020-09-05T15:12:13.000Z",
-      },
-      Scope: {
-        id: 12,
-        name: "high school 3rd",
-        createdAt: "2020-09-05T15:12:13.000Z",
-        updatedAt: "2020-09-05T15:12:13.000Z",
-      },
-    },
-  ],
-};
-const dummyData2 = {
-  subjects: [
-    {
-      id: 1,
-      name: "Math",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-    {
-      id: 2,
-      name: "Physical",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-    {
-      id: 3,
-      name: "Chemical",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-  ],
-};
-const dummyData3 = {
-  scopes: [
-    {
-      id: 1,
-      name: "primary school 1st",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-    {
-      id: 2,
-      name: "primary school 2nd",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-    {
-      id: 3,
-      name: "primary school 3rd",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-    {
-      id: 4,
-      name: "primary school 4th",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-    {
-      id: 5,
-      name: "primary school 5th",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-    {
-      id: 6,
-      name: "primary school 6th",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-    {
-      id: 7,
-      name: "middle school 1st",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-    {
-      id: 8,
-      name: "middle school 2nd",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-    {
-      id: 9,
-      name: "middle school 3rd",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-    {
-      id: 10,
-      name: "high school 1st",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-    {
-      id: 11,
-      name: "high school 2nd",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-    {
-      id: 12,
-      name: "high school 3rd",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-    {
-      id: 13,
-      name: "university or others",
-      createdAt: "2020-09-05T15:12:13.000Z",
-      updatedAt: "2020-09-05T15:12:13.000Z",
-    },
-  ],
-};
+import questionsAPI from "./../apis/questions";
+import { Toast } from "./../utils/helpers";
+
 const filters = {
   unSolved: (questions) =>
     questions.filter(
@@ -422,25 +160,44 @@ export default {
   data() {
     return {
       questions: [],
-      subjects: [],
-      scopes: [],
       visibility: "unSolved",
       targetId: "",
     };
   },
   created() {
-    this.fetchFeeds();
+    this.fetchQuestions();
   },
   methods: {
-    fetchFeeds() {
-      this.questions = dummyData1.questions;
-      this.subjects = dummyData2.subjects;
-      this.scopes = dummyData3.scopes;
+    async fetchQuestions() {
+      try {
+        const response = await questionsAPI.getStudentQuestions();
+        this.questions = response.data.questions;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "Can't not get questions data, please try again later",
+        });
+      }
     },
-    handleAfterSubmit(formData) {
-      // TODO: 透過 API 將表單資料送到伺服器
-      for (let [name, value] of formData.entries()) {
-        console.log(name + ": " + value);
+    async handleAfterSubmit(formData) {
+      try {
+        const { data } = await questionsAPI.postQuestion.create({ formData });
+        if (data.status === "success") {
+          Toast.fire({
+            icon: "success",
+            title: data.message,
+          });
+        } else if (data.status === "warning") {
+          Toast.fire({
+            icon: "warning",
+            title: data.message,
+          });
+        }
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "Can't not post question, please try again later",
+        });
       }
     },
     setVisibility(visibility) {

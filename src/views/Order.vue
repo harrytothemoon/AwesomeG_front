@@ -52,64 +52,8 @@
 
 <script>
 import NavTabs from "../components/NavTabs";
-const dummyData = {
-  orders: [
-    {
-      id: 3,
-      amount: 2990,
-      sn: null,
-      payment_status: "0",
-      UserId: 1,
-      ProductId: 2,
-      createdAt: "2020-09-11T09:45:43.000Z",
-      updatedAt: "2020-09-11T09:45:43.000Z",
-      Product: {
-        id: 2,
-        name: "Become a master",
-        description: "66",
-        price: 2990,
-        createdAt: "2020-09-05T15:28:47.000Z",
-        updatedAt: "2020-09-05T15:28:47.000Z",
-      },
-    },
-    {
-      id: 1,
-      amount: 2990,
-      sn: "1599817543452",
-      payment_status: "1",
-      UserId: 1,
-      ProductId: 2,
-      createdAt: "2020-09-05T15:30:25.000Z",
-      updatedAt: "2020-09-11T09:45:43.000Z",
-      Product: {
-        id: 2,
-        name: "Become a master",
-        description: "66",
-        price: 2990,
-        createdAt: "2020-09-05T15:28:47.000Z",
-        updatedAt: "2020-09-05T15:28:47.000Z",
-      },
-    },
-    {
-      id: 2,
-      amount: 990,
-      sn: "1599321095229",
-      payment_status: "1",
-      UserId: 1,
-      ProductId: 1,
-      createdAt: "2020-09-05T15:30:25.000Z",
-      updatedAt: "2020-09-05T15:52:26.000Z",
-      Product: {
-        id: 1,
-        name: "Easy Learning",
-        description: "20",
-        price: 990,
-        createdAt: "2020-09-05T15:28:32.000Z",
-        updatedAt: "2020-09-05T15:28:32.000Z",
-      },
-    },
-  ],
-};
+import ordersAPI from "./../apis/orders";
+import { Toast } from "./../utils/helpers";
 
 export default {
   name: "User",
@@ -125,12 +69,19 @@ export default {
   created() {
     const { id: userId } = this.$route.params;
     this.userId = userId;
-    this.fetchUser(userId);
+    this.fetchOrders();
   },
   methods: {
-    fetchUser(userId) {
-      console.log("fetchUser id: ", userId);
-      this.orders = dummyData.orders;
+    async fetchOrders() {
+      try {
+        const response = await ordersAPI.getOrders();
+        this.orders = response.data.orders;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "Can't not get orders data, please try again later",
+        });
+      }
     },
   },
   filters: {

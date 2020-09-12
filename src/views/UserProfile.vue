@@ -91,109 +91,8 @@
 <script>
 import ProductM from "../components/ProductM";
 import NavTabs from "../components/NavTabs";
-const dummyData = {
-  user: {
-    id: 1,
-    name: "Harry",
-    email: "root@example.com",
-    password: "$2a$10$6yKNPqJoqzE5wKtTrqPmrudymYafQAx.Uyu51oI/QwP/d0uE9tHCq",
-    introduction: "I'm a math teacher.",
-    role: "admin",
-    avatar: "https://loremflickr.com/320/240/girl/?lock=20.382921098228923",
-    gender: "male",
-    quantity: 20,
-    grade: "High School 3rd",
-    bankaccount: "1000-2220-2213-2342",
-    createdAt: "2020-09-05T15:12:12.000Z",
-    updatedAt: "2020-09-05T16:22:25.000Z",
-    Answers: [
-      {
-        id: 1,
-        answer: "postman first solve test",
-        image: "https://i.imgur.com/eZv9Bya.jpeg",
-        UserId: 1,
-        QuestionId: 5,
-        createdAt: "2020-09-05T15:26:38.000Z",
-        updatedAt: "2020-09-05T15:27:11.000Z",
-        Question: {
-          id: 5,
-          description:
-            "Voluptatibus in dolor dolor minus sequi aliquam quidem omnis. Odio perferendis laudantium rerum quia quod. Non voluptas reprehenderit molestias consectetur autem et atque aut est. Voluptates sunt sequi totam.\n \rQuaerat id ea id error. Ea eum possimus. Sunt dignissimos in. Quasi voluptas cum et. Consequatur sit omnis omnis eligendi.\n \rDeserunt nesciunt aspernatur sed totam. Sed fugiat at eum illo. Dicta et praesentium nihil est. Voluptates quidem rerum optio dicta incidunt nulla dolor veniam.",
-          image:
-            "https://loremflickr.com/320/240/question/?lock=50.938774552393994",
-          UserId: 14,
-          SubjectId: 2,
-          ScopeId: 1,
-          StatusId: 3,
-          AnswerId: 1,
-          createdAt: "2020-09-05T15:12:13.000Z",
-          updatedAt: "2020-09-05T15:27:11.000Z",
-        },
-      },
-      {
-        id: 4,
-        answer: "",
-        image: "",
-        UserId: 1,
-        QuestionId: 4,
-        createdAt: "2020-09-05T17:26:38.000Z",
-        updatedAt: "2020-09-05T17:26:38.000Z",
-        Question: {
-          id: 4,
-          description:
-            "Aut facilis consequatur alias velit. Maxime consequuntur facere at. Est officiis consectetur quos asperiores. Dolor qui itaque aperiam nemo culpa consectetur ut.",
-          image:
-            "https://loremflickr.com/320/240/question/?lock=40.08937818432135",
-          UserId: 10,
-          SubjectId: 3,
-          ScopeId: 2,
-          StatusId: 2,
-          AnswerId: 4,
-          createdAt: "2020-09-05T15:12:13.000Z",
-          updatedAt: "2020-09-10T13:43:09.000Z",
-        },
-      },
-    ],
-    Questions: [
-      {
-        id: 6,
-        description: "This is postman first test.",
-        image: "https://i.imgur.com/ndwUsWvb.jpg",
-        UserId: 1,
-        SubjectId: 3,
-        ScopeId: 8,
-        StatusId: 2,
-        AnswerId: 2,
-        createdAt: "2020-09-05T15:17:54.000Z",
-        updatedAt: "2020-09-05T15:17:54.000Z",
-      },
-      {
-        id: 7,
-        description: "This is postman second test.",
-        image: "https://i.imgur.com/VXEzRi4.png",
-        UserId: 1,
-        SubjectId: 2,
-        ScopeId: 10,
-        StatusId: 3,
-        AnswerId: 3,
-        createdAt: "2020-09-05T16:22:36.000Z",
-        updatedAt: "2020-09-05T16:22:36.000Z",
-      },
-      {
-        id: 8,
-        description: "This is postman third test.",
-        image: "https://i.imgur.com/zZlGXCDb.jpg",
-        UserId: 1,
-        SubjectId: 1,
-        ScopeId: 12,
-        StatusId: 1,
-        AnswerId: null,
-        createdAt: "2020-09-05T16:22:36.000Z",
-        updatedAt: "2020-09-05T16:22:36.000Z",
-      },
-    ],
-  },
-};
+import usersAPI from "./../apis/users";
+import { Toast } from "./../utils/helpers";
 
 export default {
   name: "User",
@@ -225,24 +124,33 @@ export default {
     this.fetchUser(userId);
   },
   methods: {
-    fetchUser(userId) {
-      console.log("fetchUser id: ", userId);
-
-      this.user = {
-        id: dummyData.user.id,
-        name: dummyData.user.name,
-        email: dummyData.user.email,
-        password: dummyData.user.password,
-        introduction: dummyData.user.introduction,
-        role: dummyData.user.role,
-        avatar: dummyData.user.avatar,
-        gender: dummyData.user.gender,
-        quantity: dummyData.user.quantity,
-        grade: dummyData.user.grade,
-        bankaccount: dummyData.user.bankaccount,
-      };
-      this.answers = dummyData.user.Answers.length;
-      this.questions = dummyData.user.Questions.length;
+    async fetchUser(userId) {
+      try {
+        const response = await usersAPI.getUser({ userId });
+        if (response.status === "error") {
+          throw new Error(response.message);
+        }
+        this.user = {
+          id: response.data.user.id,
+          name: response.data.user.name,
+          email: response.data.user.email,
+          password: response.data.user.password,
+          introduction: response.data.user.introduction,
+          role: response.data.user.role,
+          avatar: response.data.user.avatar,
+          gender: response.data.user.gender,
+          quantity: response.data.user.quantity,
+          grade: response.data.user.grade,
+          bankaccount: response.data.user.bankaccount,
+        };
+        this.answers = response.data.user.Answers.length;
+        this.questions = response.data.user.Questions.length;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "Can't not get data, please try again later",
+        });
+      }
     },
     handleAfterSubmit(formData) {
       // TODO: 透過 API 將表單資料送到伺服器
