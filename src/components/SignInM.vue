@@ -50,7 +50,11 @@
               />
             </div>
 
-            <button class="btn btn-primary btn-block mt-4 mb-3 w-25 mx-auto" type="submit">
+            <button
+              class="btn btn-primary btn-block mt-4 mb-3 w-25 mx-auto"
+              type="submit"
+              :disabled="isProcessing"
+            >
               <h4 class="m-0">Submit</h4>
             </button>
 
@@ -74,22 +78,55 @@
 </template>
 
 <script>
+import authorizationAPI from "./../apis/authorization";
+import { Toast } from "./../utils/helpers";
 export default {
   data() {
     return {
       email: "",
       password: "",
+      isProcessing: false,
     };
   },
   methods: {
     handleSubmit() {
-      const data = JSON.stringify({
-        email: this.email,
-        password: this.password,
-      });
+      if (!this.email || !this.password) {
+        Toast.fire({
+          icon: "warning",
+          title: "Please Enter Email and Password",
+        });
+        return;
+      }
+      this.isProcessing = true;
 
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log("data", data);
+      authorizationAPI
+        .signIn({
+          email: this.email,
+          password: this.password,
+        })
+        .then((response) => {
+          const { data } = response;
+          if (data.status !== "success") {
+            throw new Error(data.message);
+          }
+          localStorage.setItem("token", data.token);
+          if (data.user.role === "teacher") {
+            this.$router.push("/teacher/questions");
+          } else if (data.user.role === "student") {
+            this.$router.push("/student/questions");
+          } else {
+            this.$router.push("/home");
+          }
+        })
+        .catch(() => {
+          //顯示錯誤訊息
+          this.password = "";
+          this.isProcessing = false;
+          Toast.fire({
+            icon: "warning",
+            title: "Email or Password Incorrect!",
+          });
+        });
     },
   },
 };
