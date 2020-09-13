@@ -38,16 +38,26 @@
               <label for="password">
                 <h4>Password</h4>
               </label>
-              <input
-                id="password"
-                v-model="password"
-                name="password"
-                type="password"
-                class="form-control w-75 mx-auto"
-                placeholder="Password"
-                autocomplete="current-password"
-                required
-              />
+              <div class="form-group w-75 mx-auto">
+                <div class="input-group mb-3">
+                  <input
+                    id="password"
+                    v-model="password"
+                    name="password"
+                    :type="pwdType"
+                    class="form-control"
+                    placeholder="Password"
+                    autocomplete="current-password"
+                    @on-change="password"
+                    required
+                  />
+                  <div class="input-group-append">
+                    <span class="input-group-text" style="height:40px">
+                      <img style="cursor:pointer" :src="src" @click="changeType()" />
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <button
@@ -80,15 +90,19 @@
 <script>
 import authorizationAPI from "./../apis/authorization";
 import { Toast } from "./../utils/helpers";
+import $ from "jquery";
 export default {
   data() {
     return {
       email: "",
       password: "",
       isProcessing: false,
+      pwdType: "password",
+      src: require("../assets/close_eyes.png"),
     };
   },
   methods: {
+    //TODO change to async/await
     handleSubmit() {
       if (!this.email || !this.password) {
         Toast.fire({
@@ -108,13 +122,21 @@ export default {
           const { data } = response;
           if (data.status !== "success") {
             throw new Error(data.message);
+          } else {
+            localStorage.setItem("token", data.token);
+            Toast.fire({
+              icon: "success",
+              title: data.message,
+            });
           }
-          localStorage.setItem("token", data.token);
           if (data.user.role === "teacher") {
+            $("#signin").modal("hide");
             this.$router.push("/teacher/questions");
           } else if (data.user.role === "student") {
+            $("#signin").modal("hide");
             this.$router.push("/student/questions");
           } else {
+            $("#signin").modal("hide");
             this.$router.push("/home");
           }
         })
@@ -127,6 +149,13 @@ export default {
             title: "Email or Password Incorrect!",
           });
         });
+    },
+    changeType() {
+      this.pwdType = this.pwdType === "password" ? "text" : "password";
+      this.src =
+        this.src == require("../assets/close_eyes.png")
+          ? require("../assets/open_eyes.png")
+          : require("../assets/close_eyes.png");
     },
   },
 };

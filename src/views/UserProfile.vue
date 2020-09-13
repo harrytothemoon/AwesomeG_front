@@ -1,6 +1,6 @@
 <template>
   <div class="container py-5 text-primary" style="max-width:950px">
-    <ProductM @after-submit="handleAfterSubmit" />
+    <ProductM :userId="userId" />
     <ul class="nav nav-tabs mt-1 mb-4 d-flex justify-content-center">
       <li class="nav-item w-25" style="cursor:pointer">
         <router-link :to="{name: 'user', params: {id: user.id}}" class="nav-link text-center">
@@ -15,16 +15,25 @@
     </ul>
 
     <div class="row">
-      <div class="col-3 mt-1 d-flex justify-content-start align-items-center">
+      <div class="col-3 pl-0 mt-1 d-flex justify-content-start align-items-center">
         <img
+          v-if="user.avatar"
           class="rounded-circle"
           :src="user.avatar"
           alt="Card image cap"
           width="200px"
           height="200px"
         />
+        <img
+          v-else
+          class="rounded-circle"
+          src="https://www.kpsq.org/wp-content/uploads/2019/07/Community-hour-blank-face.jpg"
+          alt="Card image cap"
+          width="200px"
+          height="200px"
+        />
       </div>
-      <div class="col-4 mt-1 d-flex flex-column align-items-start justify-content-center">
+      <div class="col-5 mt-1 d-flex flex-column align-items-start justify-content-center">
         <h2>
           Role :
           <span>{{user.role}}</span>
@@ -33,12 +42,12 @@
       </div>
       <div
         v-if="user.role === 'teacher'"
-        class="col-5 pr-5 mt-1 d-flex flex-column align-items-end justify-content-center"
+        class="col-4 mt-1 d-flex flex-column align-items-end justify-content-center"
       >
         <h2>Solved Problems</h2>
         <h1 class="display-4" style="color:#c03546">{{answers}}</h1>
       </div>
-      <div v-else class="col-5 pr-5 mt-1 d-flex flex-column align-items-end justify-content-center">
+      <div v-else class="col-4 mt-1 d-flex flex-column align-items-end justify-content-center">
         <h2>Asked Problems</h2>
         <h1 class="display-4" style="color:#c03546">{{questions}}</h1>
       </div>
@@ -46,29 +55,29 @@
 
     <div class="card d-flex flex-row row border-0 mt-5" style="background-color:#fffbf0">
       <div class="col-6 m-2">
-        <h3>Gender</h3>
+        <h3 style="color: #4f86c6">Gender</h3>
         <h5>{{user.gender}}</h5>
-        <h3>Email</h3>
+        <h3 style="color: #4f86c6">Email</h3>
         <h5>{{user.email}}</h5>
-        <h3>Password</h3>
-        <h5>{{user.password}}</h5>
+        <h3 style="color: #4f86c6">Password</h3>
+        <h5>{{user.password | filterPassword}}</h5>
         <template v-if="user.role === 'teacher'">
-          <h3>Bank Account</h3>
+          <h3 style="color: #4f86c6">Bank Account</h3>
           <h5>{{user.bankaccount}}</h5>
         </template>
-        <template v-else>
-          <h3>Grade</h3>
+        <template v-else-if="user.role === 'student'">
+          <h3 style="color: #4f86c6">Grade</h3>
           <h5>{{user.grade}}</h5>
         </template>
       </div>
       <div v-if="user.role === 'teacher'" class="col-5 m-2">
-        <h3>About Me</h3>
+        <h3 style="color: #4f86c6">About Me</h3>
         <div class="card rounded p-3" style="height:270px">
           <h5>{{user.introduction}}</h5>
         </div>
       </div>
-      <div v-else class="col-5 m-2">
-        <h3>Available Questions</h3>
+      <div v-else-if="user.role === 'student'" class="col-5 m-2">
+        <h3 style="color: #4f86c6">Available Questions</h3>
         <h5>{{user.quantity}}</h5>
         <br />
         <button
@@ -117,6 +126,7 @@ export default {
       },
       answers: "",
       questions: "",
+      userId: "",
     };
   },
   created() {
@@ -145,6 +155,7 @@ export default {
         };
         this.answers = response.data.user.Answers.length;
         this.questions = response.data.user.Questions.length;
+        this.userId = response.data.user.id;
       } catch (error) {
         Toast.fire({
           icon: "error",
@@ -152,18 +163,11 @@ export default {
         });
       }
     },
-    handleAfterSubmit(formData) {
-      // TODO: 透過 API 將表單資料送到伺服器
-      for (let [name, value] of formData.entries()) {
-        console.log(name + ": " + value);
-      }
+  },
+  filters: {
+    filterPassword() {
+      return "．．．．．．．．";
     },
   },
 };
 </script>
-
-<style>
-h3 {
-  color: #4f86c6;
-}
-</style>

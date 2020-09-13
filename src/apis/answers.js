@@ -7,4 +7,16 @@ export default {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
+  postAnswer(questionId) {
+    return apiHelper.post('teacher/answer', questionId, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+  },
+  putAnswer: {
+    create({ formData }) {
+      return apiHelper.put('/teacher/answer', formData, {
+        headers: { Authorization: `Bearer ${getToken()}` }
+      })
+    }
+  },
 }

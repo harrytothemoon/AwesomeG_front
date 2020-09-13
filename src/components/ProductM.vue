@@ -29,7 +29,11 @@
               <input name="amount" type="hidden" :value="product.price" />
               <input name="productId" type="hidden" :value="product.id" />
               <input name="payment_status" type="hidden" value="0" />
-              <button class="btn btn-lg btn-primary mb-3 w-75 mx-auto" type="submit">
+              <button
+                :disabled="isProcessing"
+                class="btn btn-lg btn-primary mb-3 w-75 mx-auto"
+                type="submit"
+              >
                 <h4 class="m-0">Choose</h4>
               </button>
             </form>
@@ -42,11 +46,20 @@
 
 <script>
 import productsAPI from "./../apis/products";
+import ordersAPI from "./../apis/orders";
 import { Toast } from "./../utils/helpers";
+import $ from "jquery";
 export default {
+  props: {
+    userId: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       products: [],
+      isProcessing: false,
     };
   },
   created() {
@@ -64,10 +77,25 @@ export default {
         });
       }
     },
-    handleSubmit(e) {
+    async handleSubmit(e) {
       const form = e.target;
       const formData = new FormData(form);
-      this.$emit("after-submit", formData);
+      try {
+        const { data } = await ordersAPI.postOrder.create({ formData });
+        if (data.status === "success") {
+          Toast.fire({
+            icon: "success",
+            title: data.message,
+          });
+          $("#product").modal("hide");
+          this.$router.push(`/users/${this.userId}/orders`);
+        }
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "Can't not post question, please try again later",
+        });
+      }
     },
   },
 };

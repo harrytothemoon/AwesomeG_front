@@ -17,8 +17,17 @@
         <div class="modal-body mt-2">
           <div class="card mb-3 border-0 d-flex flex-row rounded">
             <img
+              v-if="uploadAnswer.Question.image"
               class="rounded"
               :src="uploadAnswer.Question.image"
+              alt="Card image cap"
+              height="200px"
+              width="300px"
+            />
+            <img
+              v-else
+              class="rounded"
+              src="https://image.damanwoo.com/files/media/c/h/r/o/m/e/d/i/n/o/chrome_dino_set-2.jpg"
               alt="Card image cap"
               height="200px"
               width="300px"
@@ -38,11 +47,11 @@
               <div class="form-group col-6">
                 <textarea
                   class="form-control"
-                  id="description"
+                  id="answer"
                   rows="8"
                   placeholder="Please describe your answer..."
-                  name="description"
-                  v-model="description"
+                  name="answer"
+                  v-model="answer"
                 ></textarea>
               </div>
 
@@ -92,7 +101,7 @@ export default {
   },
   data() {
     return {
-      description: "",
+      answer: "",
       image: "",
     };
   },

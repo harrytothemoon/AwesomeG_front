@@ -93,9 +93,3 @@ export default {
   },
 };
 </script>
-
-<style>
-h3 {
-  color: #4f86c6;
-}
-</style>

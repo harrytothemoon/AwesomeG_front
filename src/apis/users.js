@@ -6,5 +6,14 @@ export default {
     return apiHelper.get(`/users/${userId}`, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
+  },
+  signUp({ role, name, email, password, passwordCheck }) {
+    return apiHelper.post('/signup', {
+      role,
+      name,
+      email,
+      password,
+      passwordCheck
+    })
   }
 }

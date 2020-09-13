@@ -100,10 +100,10 @@
                 >
                   <h6 class="m-0">Upload</h6>
                 </button>
-                <h6 class="d-inline text-right m-2" style="color:#4F86C6">
+                <p class="d-inline text-right m-2" style="color:#4F86C6">
                   <span style="color:black">Case is taken :</span>
                   {{answer.createdAt | fromNow}}
-                </h6>
+                </p>
               </div>
             </div>
           </div>
@@ -123,6 +123,7 @@ import questionsAPI from "./../apis/questions";
 import subjectsAPI from "./../apis/subjects";
 import answersAPI from "./../apis/answers";
 import { Toast } from "./../utils/helpers";
+import $ from "jquery";
 
 export default {
   name: "teacherQuestion",
@@ -189,14 +190,45 @@ export default {
     clickUpload(id) {
       this.uploadId = id;
     },
-    handleAfterSubmitPost(Data) {
-      // TODO: 透過 API 將表單資料送到伺服器
-      console.log(Data);
+    //TODO change to async/await
+    handleAfterSubmitPost(data) {
+      answersAPI
+        .postAnswer({ questionId: data })
+        .then((response) => {
+          if (response.data.status === "success") {
+            Toast.fire({
+              icon: "success",
+              title: response.data.message,
+            });
+            window.setTimeout(function () {
+              location.reload();
+            }, 3000);
+          } else if (response.data.status !== "success") {
+            throw new Error(response.data.message);
+          }
+        })
+        .catch(() => {
+          Toast.fire({
+            icon: "error",
+            title: "Can't not post question, please try again later",
+          });
+        });
     },
-    handleAfterSubmitPut(formData) {
-      // TODO: 透過 API 將表單資料送到伺服器
-      for (let [name, value] of formData.entries()) {
-        console.log(name + ": " + value);
+    async handleAfterSubmitPut(formData) {
+      try {
+        const { data } = await answersAPI.putAnswer.create({ formData });
+        if (data.status === "success") {
+          Toast.fire({
+            icon: "success",
+            title: data.message,
+          });
+          $("#answerUpload").modal("hide");
+        }
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "Can't not post question, please try again later",
+        });
       }
     },
     handleAfterFilter(subjectId) {

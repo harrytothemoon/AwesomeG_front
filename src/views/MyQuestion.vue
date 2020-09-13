@@ -139,6 +139,7 @@ import AnswerDetailM from "./../components/AnswerDetailM";
 import { Filter } from "./../utils/mixins";
 import questionsAPI from "./../apis/questions";
 import { Toast } from "./../utils/helpers";
+import $ from "jquery";
 
 const filters = {
   unSolved: (questions) =>
@@ -187,6 +188,7 @@ export default {
             icon: "success",
             title: data.message,
           });
+          $("#postQ").modal("hide");
         } else if (data.status === "warning") {
           Toast.fire({
             icon: "warning",
@@ -201,7 +203,6 @@ export default {
       }
     },
     setVisibility(visibility) {
-      console.log(visibility);
       this.visibility = visibility;
     },
     showAnswerDetail(id) {

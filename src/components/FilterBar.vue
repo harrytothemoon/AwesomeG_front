@@ -37,7 +37,6 @@ export default {
   },
   methods: {
     setVisibility(subjectId) {
-      console.log(subjectId);
       this.subjectId = subjectId;
       this.$emit("after-filter", this.subjectId);
     },

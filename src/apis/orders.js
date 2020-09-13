@@ -11,5 +11,12 @@ export default {
     return apiHelper.get(`/student/order/${orderId}/payment`, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
+  },
+  postOrder: {
+    create({ formData }) {
+      return apiHelper.post('/student/order', formData, {
+        headers: { Authorization: `Bearer ${getToken()}` }
+      })
+    }
   }
 }

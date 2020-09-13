@@ -16,7 +16,20 @@
         </div>
         <div class="modal-body mt-2">
           <div class="card mb-3 border-0">
-            <img class="card-img-top" :src="getQuestion.image" alt="Card image cap" height="350px" />
+            <img
+              v-if="getQuestion.image"
+              class="card-img-top"
+              :src="getQuestion.image"
+              alt="Card image cap"
+              height="350px"
+            />
+            <img
+              v-else
+              class="card-img-top"
+              src="https://image.damanwoo.com/files/media/c/h/r/o/m/e/d/i/n/o/chrome_dino_set-2.jpg"
+              alt="Card image cap"
+              height="350px"
+            />
             <div class="card-body">
               <h4 class="card-title mb-0" style="color:#c03546">{{getQuestion.Subject.name}}</h4>
               <small class="text-mute mb-3">{{getQuestion.Scope.name}}</small>
@@ -54,10 +67,7 @@ export default {
   },
   methods: {
     handleSubmit() {
-      const data = JSON.stringify({
-        questionId: this.getQuestion.id,
-      });
-      this.$emit("after-submit", data);
+      this.$emit("after-submit", this.getQuestion.id);
     },
   },
 };

@@ -112,7 +112,11 @@
               />
             </div>
 
-            <button class="btn btn-primary btn-block mt-4 mb-3 w-25 mx-auto" type="submit">
+            <button
+              class="btn btn-primary btn-block mt-4 mb-3 w-25 mx-auto"
+              type="submit"
+              :disabled="isProcessing"
+            >
               <h5 class="m-0">Submit</h5>
             </button>
 
@@ -136,6 +140,9 @@
 </template>
 
 <script>
+import usersAPI from "./../apis/users";
+import { Toast } from "./../utils/helpers";
+import $ from "jquery";
 export default {
   data() {
     return {
@@ -144,20 +151,43 @@ export default {
       email: "",
       password: "",
       passwordCheck: "",
+      isProcessing: false,
     };
   },
   methods: {
+    //TODO change to async/await
     handleSubmit() {
-      const data = JSON.stringify({
-        role: this.role,
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        passwordCheck: this.passwordCheck,
-      });
-
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log("data", data);
+      this.isProcessing = true;
+      usersAPI
+        .signUp({
+          role: this.role,
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          passwordCheck: this.passwordCheck,
+        })
+        .then((response) => {
+          if (response.data.status === "success") {
+            Toast.fire({
+              icon: "success",
+              title: response.data.message,
+            });
+            $("#signup").modal("hide");
+          } else if (response.data.status === "warning") {
+            this.isProcessing = false;
+            Toast.fire({
+              icon: "warning",
+              title: response.data.message,
+            });
+          }
+        })
+        .catch(() => {
+          this.isProcessing = false;
+          Toast.fire({
+            icon: "error",
+            title: "Can't not sign up, please try again later",
+          });
+        });
     },
   },
 };
