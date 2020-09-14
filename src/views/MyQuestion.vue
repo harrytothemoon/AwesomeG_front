@@ -104,11 +104,11 @@
                 </div>
                 <div v-if="question.StatusId === 2" class="col-8">
                   <h4 class="text-left">{{question.Answer.User.name}}</h4>
-                  <h1 style="color:#c03546">{{question.Status.name}}</h1>
+                  <h2 style="color:#c03546">{{question.Status.name}}</h2>
                 </div>
                 <div v-else-if="question.StatusId === 3 ||question.StatusId === 4" class="col-8">
                   <h4 class="text-left">{{question.Answer.User.name}}</h4>
-                  <h1 style="color:#c03546">{{question.Status.name}}</h1>
+                  <h2 style="color:#c03546">{{question.Status.name}}</h2>
                   <button
                     @click="showAnswerDetail(question.id)"
                     type="button"
@@ -121,7 +121,7 @@
                 </div>
                 <div v-else class="col-8">
                   <br />
-                  <h1 class="mt-2" style="color:#c03546">{{question.Status.name}}</h1>
+                  <h2 class="mt-2" style="color:#c03546">{{question.Status.name}}</h2>
                 </div>
               </div>
             </div>
@@ -163,6 +163,7 @@ export default {
       questions: [],
       visibility: "unSolved",
       targetId: "",
+      userId: "",
     };
   },
   created() {
@@ -173,6 +174,7 @@ export default {
       try {
         const response = await questionsAPI.getStudentQuestions();
         this.questions = response.data.questions;
+        this.userId = response.data.questions[0].UserId;
       } catch (error) {
         Toast.fire({
           icon: "error",
@@ -194,6 +196,8 @@ export default {
             icon: "warning",
             title: data.message,
           });
+          $("#postQ").modal("hide");
+          this.$router.push(`/users/${this.userId}`);
         }
       } catch (error) {
         Toast.fire({

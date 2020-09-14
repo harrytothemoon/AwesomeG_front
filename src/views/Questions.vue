@@ -100,10 +100,10 @@
                 >
                   <h6 class="m-0">Upload</h6>
                 </button>
-                <p class="d-inline text-right m-2" style="color:#4F86C6">
+                <small class="d-inline text-right m-2" style="color:#4F86C6">
                   <span style="color:black">Case is taken :</span>
                   {{answer.createdAt | fromNow}}
-                </p>
+                </small>
               </div>
             </div>
           </div>

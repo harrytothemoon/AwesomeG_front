@@ -56,18 +56,21 @@
     <div class="card d-flex flex-row row border-0 mt-5" style="background-color:#fffbf0">
       <div class="col-6 m-2">
         <h3 style="color: #4f86c6">Gender</h3>
-        <h5>{{user.gender}}</h5>
+        <h5 v-if="user.gender">{{user.gender}}</h5>
+        <br v-else />
         <h3 style="color: #4f86c6">Email</h3>
         <h5>{{user.email}}</h5>
         <h3 style="color: #4f86c6">Password</h3>
         <h5>{{user.password | filterPassword}}</h5>
         <template v-if="user.role === 'teacher'">
           <h3 style="color: #4f86c6">Bank Account</h3>
-          <h5>{{user.bankaccount}}</h5>
+          <h5 v-if="user.bankaccount">{{user.bankaccount}}</h5>
+          <br v-else />
         </template>
         <template v-else-if="user.role === 'student'">
           <h3 style="color: #4f86c6">Grade</h3>
-          <h5>{{user.grade}}</h5>
+          <h5 v-if="user.grade">{{user.grade}}</h5>
+          <br v-else />
         </template>
       </div>
       <div v-if="user.role === 'teacher'" class="col-5 m-2">
@@ -77,12 +80,13 @@
         </div>
       </div>
       <div v-else-if="user.role === 'student'" class="col-5 m-2">
-        <h3 style="color: #4f86c6">Available Questions</h3>
-        <h5>{{user.quantity}}</h5>
+        <h3 style="color: #4f86c6">Available Balance</h3>
+        <h5 v-if="user.quantity">{{user.quantity}}</h5>
+        <h4 class="mb-0" v-else>0</h4>
         <br />
         <button
           type="button"
-          class="btn btn-success btn-lg ml-5"
+          class="btn btn-success btn-lg ml-5 mb-3"
           style="height:150px;max-width:350px"
           data-toggle="modal"
           data-target="#product"

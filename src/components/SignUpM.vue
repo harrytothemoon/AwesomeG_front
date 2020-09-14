@@ -116,6 +116,8 @@
               class="btn btn-primary btn-block mt-4 mb-3 w-25 mx-auto"
               type="submit"
               :disabled="isProcessing"
+              data-toggle="modal"
+              data-target="#signin"
             >
               <h5 class="m-0">Submit</h5>
             </button>
