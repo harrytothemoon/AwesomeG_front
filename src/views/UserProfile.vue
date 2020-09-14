@@ -27,7 +27,7 @@
         <img
           v-else
           class="rounded-circle"
-          src="https://www.kpsq.org/wp-content/uploads/2019/07/Community-hour-blank-face.jpg"
+          src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
           alt="Card image cap"
           width="200px"
           height="200px"

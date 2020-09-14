@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import NotFound from '../views/NotFound.vue'
 // import SignIn from '../views/SignIn.vue'
 import Home from '../views/Home.vue'
+import store from './../store'
 
 Vue.use(VueRouter)
 const routes = [
@@ -11,16 +12,6 @@ const routes = [
     name: 'root',
     redirect: '/home'
   },
-  // {
-  //   path: '/signin',
-  //   name: 'sign-in',
-  //   component: SignIn
-  // },
-  // {
-  //   path: '/signup',
-  //   name: 'sign-up',
-  //   component: () => import('../views/SignUp.vue')
-  // },
   {
     path: '/home',
     name: 'home',
@@ -76,6 +67,12 @@ const routes = [
 const router = new VueRouter({
   linkExactActiveClass: 'active',
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  // 使用 dispatch 呼叫 Vuex 內的 actions
+  store.dispatch('fetchCurrentUser')
+  next()
 })
 
 export default router

@@ -2,8 +2,8 @@
   <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary border-0">
     <router-link class="navbar-brand" to="/">Awesome G</router-link>
     <div>
-      <template v-if="false">
-        <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0 ml-4">
+      <template v-if="isAuthenticated">
+        <button @click="logout" type="button" class="btn btn-sm btn-secondary my-2 my-sm-0 ml-4">
           <h6 class="m-0">Sign out</h6>
         </button>
       </template>
@@ -53,10 +53,19 @@
             class="text-white mr-1 p-0 nav-link"
           >
             <h6 class="m-0">
-              Hello, {{currentUser.name || '訪客'}} !
+              Hello, {{currentUser.name || 'Guest'}} !
               <img
+                v-if="currentUser.image"
                 class="rounded-circle ml-2"
                 :src="currentUser.image"
+                alt="Card image cap"
+                width="40px"
+                height="40px"
+              />
+              <img
+                v-else
+                class="rounded-circle ml-2"
+                src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
                 alt="Card image cap"
                 width="40px"
                 height="40px"
@@ -71,40 +80,20 @@
 
 <script>
 /* eslint-disable */
-const dummyUser = {
-  currentUser: {
-    id: 1,
-    name: "Harry",
-    email: "root@example.com",
-    image: "https://i.imgur.com/H37kxPH.jpeg",
-    role: "admin",
-  },
-  isAuthenticated: true,
-};
+import { mapState } from "vuex";
+import { Toast } from "./../utils/helpers";
 export default {
-  // Vue 會在沒有資料時使用此預設值
-  data() {
-    return {
-      currentUser: {
-        id: -1,
-        name: "",
-        email: "",
-        image: "",
-        role: "",
-      },
-      isAuthenticated: false,
-    };
-  },
-  created() {
-    this.fetchUser();
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   methods: {
-    fetchUser() {
-      this.currentUser = {
-        ...this.currentUser,
-        ...dummyUser.currentUser,
-      };
-      this.isAuthenticated = dummyUser.isAuthenticated;
+    logout() {
+      this.$store.commit("revokeAuthentication");
+      this.$router.push("/home");
+      Toast.fire({
+        icon: "success",
+        title: "Sign out successfully!",
+      });
     },
   },
 };

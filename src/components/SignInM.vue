@@ -124,6 +124,7 @@ export default {
             throw new Error(data.message);
           } else {
             localStorage.setItem("token", data.token);
+            this.$store.commit("setCurrentUser", data.user);
             Toast.fire({
               icon: "success",
               title: data.message,
