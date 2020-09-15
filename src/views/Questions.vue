@@ -15,7 +15,8 @@
     </div>
     <div class="row">
       <div class="col-3">
-        <FilterBar :subjects="subjects" @after-filter="handleAfterFilter" />
+        <Spinner v-if="subjectisLoading" />
+        <FilterBar v-else :subjects="subjects" @after-filter="handleAfterFilter" />
       </div>
       <div class="col-5">
         <div
@@ -23,7 +24,9 @@
           style="border-radius: 0px; border:6px inset #b6b8ba; height:650px"
         >
           <h1 class="text-center">Questions</h1>
+          <Spinner v-if="questionsisLoading" />
           <div
+            v-else
             v-for="question in fiteredQuestion"
             :key="question.id"
             class="card border-primary text-primary p-2 m-1"
@@ -83,7 +86,9 @@
           style="border-radius: 0px; border:6px inset #b6b8ba; height:650px"
         >
           <h1 class="text-center">Your Work</h1>
+          <Spinner v-if="workisLoading" />
           <div
+            v-else
             v-for="answer in showWorkAnswer"
             :key="answer.id"
             class="card border-primary text-primary p-2 m-1"
@@ -125,6 +130,7 @@
 import NavTabs from "./../components/NavTabs";
 import FilterBar from "./../components/FilterBar";
 import QestionDetailM from "./../components/QestionDetailM";
+import Spinner from "./../components/Spinner";
 import PostAnswerM from "./../components/PostAnswerM";
 import { Filter } from "./../utils/mixins";
 import questionsAPI from "./../apis/questions";
@@ -141,6 +147,7 @@ export default {
     FilterBar,
     QestionDetailM,
     PostAnswerM,
+    Spinner,
   },
   data() {
     return {
@@ -151,6 +158,9 @@ export default {
       uploadId: "",
       subjectId: 0,
       isProcessing: false,
+      subjectisLoading: true,
+      questionsisLoading: true,
+      workisLoading: true,
     };
   },
   created() {
@@ -163,33 +173,39 @@ export default {
       try {
         const response = await questionsAPI.getTeacherQuestions();
         this.questions = response.data.questions;
+        this.questionsisLoading = false;
       } catch (error) {
         Toast.fire({
           icon: "error",
           title: "Can't not get question data, please try again later",
         });
+        this.questionsisLoading = false;
       }
     },
     async fetchSubjects() {
       try {
         const response = await subjectsAPI.getSubjects();
         this.subjects = response.data.subjects;
+        this.subjectisLoading = false;
       } catch (error) {
         Toast.fire({
           icon: "error",
           title: "Can't not get subject data, please try again later",
         });
+        this.subjectisLoading = false;
       }
     },
     async fetchAnswers() {
       try {
         const response = await answersAPI.getAnswers();
         this.answers = response.data.answers;
+        this.workisLoading = false;
       } catch (error) {
         Toast.fire({
           icon: "error",
           title: "Can't not get answer data, please try again later",
         });
+        this.workisLoading = false;
       }
     },
 

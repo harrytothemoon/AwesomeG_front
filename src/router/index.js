@@ -36,17 +36,41 @@ const routes = [
   {
     path: '/users/:id/orders',
     name: 'orders',
-    component: () => import('../views/Order.vue')
+    component: () => import('../views/Order.vue'),
+    beforeEnter: (to, from, next) => {
+      const currentUser = store.state.currentUser
+      if (Number(to.params.id) !== Number(currentUser.id)) {
+        next('/not-found')
+        return
+      }
+      next()
+    }
   },
   {
     path: '/users/:id',
     name: 'user',
-    component: () => import('../views/UserProfile.vue')
+    component: () => import('../views/UserProfile.vue'),
+    beforeEnter: (to, from, next) => {
+      const currentUser = store.state.currentUser
+      if (Number(to.params.id) !== Number(currentUser.id)) {
+        next('/not-found')
+        return
+      }
+      next()
+    }
   },
   {
     path: '/order/:id',
     name: 'payment',
-    component: () => import('../views/Payment.vue')
+    component: () => import('../views/Payment.vue'),
+    beforeEnter: (to, from, next) => {
+      const currentUser = store.state.currentUser
+      if (currentUser.role !== 'student') {
+        next('/not-found')
+        return
+      }
+      next()
+    }
   },
   {
     path: '/student/questions',
@@ -75,7 +99,6 @@ router.beforeEach(async (to, from, next) => {
   const tokenInLocalStorage = localStorage.getItem('token')
   const tokenInStore = store.state.token
   const tokenRole = store.state.currentUser.role
-  const tokenId = store.state.currentUser.id
   let isAuthenticated = store.state.isAuthenticated
   if (tokenInLocalStorage && tokenInLocalStorage !== tokenInStore) {
     isAuthenticated = await store.dispatch('fetchCurrentUser')
@@ -103,10 +126,6 @@ router.beforeEach(async (to, from, next) => {
       icon: "warning",
       title: "Please sign in with the student's account.",
     });
-    return
-  }
-  if (to.name === "user" && Number(to.params.id) !== Number(tokenId)) {
-    next('/not-found')
     return
   }
   next()

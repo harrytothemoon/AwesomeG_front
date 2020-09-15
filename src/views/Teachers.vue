@@ -6,10 +6,12 @@
     <h1 class="mb-5 text-center mt-5">T e a c h e r s</h1>
     <div class="row">
       <div class="col-3">
-        <FilterBar :subjects="subjects" @after-filter="handleAfterFilter" />
+        <Spinner v-if="subjectisLoading" />
+        <FilterBar v-else :subjects="subjects" @after-filter="handleAfterFilter" />
       </div>
       <div class="col-9">
-        <TeacherCard :teachers="teachers" />
+        <Spinner v-if="teacherCardisLoading" />
+        <TeacherCard v-else :teachers="teachers" />
       </div>
     </div>
   </div>
@@ -19,6 +21,7 @@
 import NavTabs from "./../components/NavTabs";
 import FilterBar from "./../components/FilterBar";
 import TeacherCard from "./../components/TeacherCard";
+import Spinner from "./../components/Spinner";
 import subjectsAPI from "./../apis/subjects";
 import teachersAPI from "./../apis/teachers";
 import { Toast } from "./../utils/helpers";
@@ -28,12 +31,15 @@ export default {
     NavTabs,
     FilterBar,
     TeacherCard,
+    Spinner,
   },
   data() {
     return {
       teachers: [],
       subjects: [],
       subjectId: 0,
+      subjectisLoading: true,
+      teacherCardisLoading: true,
     };
   },
   created() {
@@ -45,22 +51,26 @@ export default {
       try {
         const response = await subjectsAPI.getSubjects();
         this.subjects = response.data.subjects;
+        this.subjectisLoading = false;
       } catch (error) {
         Toast.fire({
           icon: "error",
           title: "Can't not get data, please try again later",
         });
+        this.subjectisLoading = false;
       }
     },
     async fetchTeachers() {
       try {
         const response = await teachersAPI.getTeachers();
         this.teachers = response.data.teachers;
+        this.teacherCardisLoading = false;
       } catch (error) {
         Toast.fire({
           icon: "error",
           title: "Can't not get data, please try again later",
         });
+        this.teacherCardisLoading = false;
       }
     },
     handleAfterFilter(subjectId) {

@@ -49,7 +49,6 @@ export default new Vuex.Store({
         })
         return true
       } catch (error) {
-        console.log('error', error)
         console.error('can not fetch user information')
         commit('revokeAuthentication')
         return false

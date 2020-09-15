@@ -8,7 +8,8 @@
     ria-hidden="true"
   >
     <div class="modal-dialog container py-5" style="max-width:800px">
-      <div class="modal-content" style="background-color:#fffbf0">
+      <Spinner v-if="isLoading" />
+      <div v-else class="modal-content" style="background-color:#fffbf0">
         <div class="d-flex justify-content-end">
           <button type="button" class="close m-0 mr-3 mt-3" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -48,8 +49,12 @@
 import productsAPI from "./../apis/products";
 import ordersAPI from "./../apis/orders";
 import { Toast } from "./../utils/helpers";
+import Spinner from "./../components/Spinner";
 import $ from "jquery";
 export default {
+  components: {
+    Spinner,
+  },
   props: {
     userId: {
       type: String,
@@ -60,6 +65,7 @@ export default {
     return {
       products: [],
       isProcessing: false,
+      isLoading: true,
     };
   },
   created() {
@@ -70,11 +76,13 @@ export default {
       try {
         const response = await productsAPI.getProducts();
         this.products = response.data.products;
+        this.isLoading = false;
       } catch (error) {
         Toast.fire({
           icon: "error",
           title: "Can't not get products data, please try again later",
         });
+        this.isLoading = false;
       }
     },
     async handleSubmit(e) {

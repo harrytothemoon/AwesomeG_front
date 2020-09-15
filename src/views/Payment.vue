@@ -1,5 +1,6 @@
 <template>
-  <div class="container py-5 text-primary">
+  <Spinner v-if="isLoading" />
+  <div v-else class="container py-5 text-primary">
     <div class="d-flex flex-column align-items-center">
       <router-link :to="{name: 'orders', params: {id: userId}}" class="nav-link text-center">
         <h4>＜ Back to My Orders</h4>
@@ -30,6 +31,7 @@
 
 <script>
 import NavTabs from "../components/NavTabs";
+import Spinner from "./../components/Spinner";
 import ordersAPI from "./../apis/orders";
 import { Toast } from "./../utils/helpers";
 
@@ -37,6 +39,7 @@ export default {
   name: "User",
   components: {
     NavTabs,
+    Spinner,
   },
   data() {
     return {
@@ -44,6 +47,7 @@ export default {
       tradeInfo: {},
       orderId: "",
       userId: "",
+      isLoading: true,
     };
   },
   created() {
@@ -56,16 +60,19 @@ export default {
       try {
         const response = await ordersAPI.getPayment({ orderId });
         if (response.status === "error") {
+          this.isLoading = false;
           throw new Error(response.message);
         }
         this.order = response.data.order;
         this.tradeInfo = response.data.tradeInfo;
         this.userId = response.data.order.UserId;
+        this.isLoading = false;
       } catch (error) {
         Toast.fire({
           icon: "error",
           title: "Can't not get order data, please try again later",
         });
+        this.isLoading = false;
       }
     },
   },

@@ -1,100 +1,103 @@
 <template>
   <div class="container py-5 text-primary" style="max-width:950px">
     <ProductM :userId="userId" />
-    <ul class="nav nav-tabs mt-1 mb-4 d-flex justify-content-center">
-      <li class="nav-item w-25" style="cursor:pointer">
-        <router-link :to="{name: 'user', params: {id: user.id}}" class="nav-link text-center">
-          <h4>My Information</h4>
-        </router-link>
-      </li>
-      <li v-if="user.role==='student'" class="nav-item w-25" style="cursor:pointer">
-        <router-link :to="{name: 'orders', params: {id: user.id}}" class="nav-link text-center">
-          <h4>My Orders</h4>
-        </router-link>
-      </li>
-    </ul>
+    <Spinner v-if="isLoading" />
+    <template v-else>
+      <ul class="nav nav-tabs mt-1 mb-4 d-flex justify-content-center">
+        <li class="nav-item w-25" style="cursor:pointer">
+          <router-link :to="{name: 'user', params: {id: user.id}}" class="nav-link text-center">
+            <h4>My Information</h4>
+          </router-link>
+        </li>
+        <li v-if="user.role==='student'" class="nav-item w-25" style="cursor:pointer">
+          <router-link :to="{name: 'orders', params: {id: user.id}}" class="nav-link text-center">
+            <h4>My Orders</h4>
+          </router-link>
+        </li>
+      </ul>
 
-    <div class="row">
-      <div class="col-3 pl-0 mt-1 d-flex justify-content-start align-items-center">
-        <img
-          v-if="user.avatar"
-          class="rounded-circle"
-          :src="user.avatar"
-          alt="Card image cap"
-          width="200px"
-          height="200px"
-        />
-        <img
-          v-else
-          class="rounded-circle"
-          src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-          alt="Card image cap"
-          width="200px"
-          height="200px"
-        />
-      </div>
-      <div class="col-5 mt-1 d-flex flex-column align-items-start justify-content-center">
-        <h2>
-          Role :
-          <span>{{user.role}}</span>
-        </h2>
-        <h1 class="display-4" style="color:black">{{user.name}}</h1>
-      </div>
-      <div
-        v-if="user.role === 'teacher'"
-        class="col-4 mt-1 d-flex flex-column align-items-end justify-content-center"
-      >
-        <h2>Solved Problems</h2>
-        <h1 class="display-4" style="color:#c03546">{{answers}}</h1>
-      </div>
-      <div v-else class="col-4 mt-1 d-flex flex-column align-items-end justify-content-center">
-        <h2>Asked Problems</h2>
-        <h1 class="display-4" style="color:#c03546">{{questions}}</h1>
-      </div>
-    </div>
-
-    <div class="card d-flex flex-row row border-0 mt-5" style="background-color:#fffbf0">
-      <div class="col-6 m-2">
-        <h3 style="color: #4f86c6">Gender</h3>
-        <h5 v-if="user.gender">{{user.gender}}</h5>
-        <br v-else />
-        <h3 style="color: #4f86c6">Email</h3>
-        <h5>{{user.email}}</h5>
-        <h3 style="color: #4f86c6">Password</h3>
-        <h5>{{user.password | filterPassword}}</h5>
-        <template v-if="user.role === 'teacher'">
-          <h3 style="color: #4f86c6">Bank Account</h3>
-          <h5 v-if="user.bankaccount">{{user.bankaccount}}</h5>
-          <br v-else />
-        </template>
-        <template v-else-if="user.role === 'student'">
-          <h3 style="color: #4f86c6">Grade</h3>
-          <h5 v-if="user.grade">{{user.grade}}</h5>
-          <br v-else />
-        </template>
-      </div>
-      <div v-if="user.role === 'teacher'" class="col-5 m-2">
-        <h3 style="color: #4f86c6">About Me</h3>
-        <div class="card rounded p-3" style="height:270px">
-          <h5>{{user.introduction}}</h5>
+      <div class="row">
+        <div class="col-3 pl-0 mt-1 d-flex justify-content-start align-items-center">
+          <img
+            v-if="user.avatar"
+            class="rounded-circle"
+            :src="user.avatar"
+            alt="Card image cap"
+            width="200px"
+            height="200px"
+          />
+          <img
+            v-else
+            class="rounded-circle"
+            src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+            alt="Card image cap"
+            width="200px"
+            height="200px"
+          />
+        </div>
+        <div class="col-5 mt-1 d-flex flex-column align-items-start justify-content-center">
+          <h2>
+            Role :
+            <span>{{user.role}}</span>
+          </h2>
+          <h1 class="display-4" style="color:black">{{user.name}}</h1>
+        </div>
+        <div
+          v-if="user.role === 'teacher'"
+          class="col-4 mt-1 d-flex flex-column align-items-end justify-content-center"
+        >
+          <h2>Solved Problems</h2>
+          <h1 class="display-4" style="color:#c03546">{{answers}}</h1>
+        </div>
+        <div v-else class="col-4 mt-1 d-flex flex-column align-items-end justify-content-center">
+          <h2>Asked Problems</h2>
+          <h1 class="display-4" style="color:#c03546">{{questions}}</h1>
         </div>
       </div>
-      <div v-else-if="user.role === 'student'" class="col-5 m-2">
-        <h3 style="color: #4f86c6">Available Balance</h3>
-        <h5 v-if="user.quantity">{{user.quantity}}</h5>
-        <h4 class="mb-0" v-else>0</h4>
-        <br />
-        <button
-          type="button"
-          class="btn btn-success btn-lg ml-5 mb-3"
-          style="height:150px;max-width:350px"
-          data-toggle="modal"
-          data-target="#product"
-        >
-          <h1 class="m-0 display-3">Deposit !</h1>
-        </button>
+
+      <div class="card d-flex flex-row row border-0 mt-5" style="background-color:#fffbf0">
+        <div class="col-6 m-2">
+          <h3 style="color: #4f86c6">Gender</h3>
+          <h5 v-if="user.gender">{{user.gender}}</h5>
+          <br v-else />
+          <h3 style="color: #4f86c6">Email</h3>
+          <h5>{{user.email}}</h5>
+          <h3 style="color: #4f86c6">Password</h3>
+          <h5>{{user.password | filterPassword}}</h5>
+          <template v-if="user.role === 'teacher'">
+            <h3 style="color: #4f86c6">Bank Account</h3>
+            <h5 v-if="user.bankaccount">{{user.bankaccount}}</h5>
+            <br v-else />
+          </template>
+          <template v-else-if="user.role === 'student'">
+            <h3 style="color: #4f86c6">Grade</h3>
+            <h5 v-if="user.grade">{{user.grade}}</h5>
+            <br v-else />
+          </template>
+        </div>
+        <div v-if="user.role === 'teacher'" class="col-5 m-2">
+          <h3 style="color: #4f86c6">About Me</h3>
+          <div class="card rounded p-3" style="height:270px">
+            <h5>{{user.introduction}}</h5>
+          </div>
+        </div>
+        <div v-else-if="user.role === 'student'" class="col-5 m-2">
+          <h3 style="color: #4f86c6">Available Balance</h3>
+          <h5 v-if="user.quantity">{{user.quantity}}</h5>
+          <h4 class="mb-0" v-else>0</h4>
+          <br />
+          <button
+            type="button"
+            class="btn btn-success btn-lg ml-5 mb-3"
+            style="height:150px;max-width:350px"
+            data-toggle="modal"
+            data-target="#product"
+          >
+            <h1 class="m-0 display-3">Deposit !</h1>
+          </button>
+        </div>
       </div>
-    </div>
+    </template>
     <div class="d-flex justify-content-center mt-4">
       <NavTabs />
     </div>
@@ -104,6 +107,7 @@
 <script>
 import ProductM from "../components/ProductM";
 import NavTabs from "../components/NavTabs";
+import Spinner from "./../components/Spinner";
 import usersAPI from "./../apis/users";
 import { Toast } from "./../utils/helpers";
 
@@ -112,6 +116,7 @@ export default {
   components: {
     ProductM,
     NavTabs,
+    Spinner,
   },
   data() {
     return {
@@ -131,6 +136,7 @@ export default {
       answers: "",
       questions: "",
       userId: "",
+      isLoading: true,
     };
   },
   created() {
@@ -142,6 +148,7 @@ export default {
       try {
         const response = await usersAPI.getUser({ userId });
         if (response.status === "error") {
+          this.isLoading = false;
           throw new Error(response.message);
         }
         this.user = {
@@ -160,11 +167,13 @@ export default {
         this.answers = response.data.user.Answers.length;
         this.questions = response.data.user.Questions.length;
         this.userId = String(response.data.user.id);
+        this.isLoading = false;
       } catch (error) {
         Toast.fire({
           icon: "error",
           title: "Can't not get data, please try again later",
         });
+        this.isLoading = false;
       }
     },
   },

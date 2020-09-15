@@ -55,9 +55,9 @@
             <h6 class="m-0">
               Hello, {{currentUser.name || 'Guest'}} !
               <img
-                v-if="currentUser.image"
+                v-if="currentUser.avatar"
                 class="rounded-circle ml-2"
-                :src="currentUser.image"
+                :src="currentUser.avatar"
                 alt="Card image cap"
                 width="40px"
                 height="40px"

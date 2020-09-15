@@ -12,7 +12,8 @@
         </router-link>
       </li>
     </ul>
-    <div class="overflow-auto" style="height:500px">
+    <Spinner v-if="isLoading" />
+    <div v-else class="overflow-auto" style="height:500px">
       <table class="table table-hover text-center overflow-auto" style="max-height:500px">
         <thead>
           <tr class="table-warning">
@@ -52,6 +53,7 @@
 
 <script>
 import NavTabs from "../components/NavTabs";
+import Spinner from "./../components/Spinner";
 import ordersAPI from "./../apis/orders";
 import { Toast } from "./../utils/helpers";
 
@@ -59,11 +61,13 @@ export default {
   name: "User",
   components: {
     NavTabs,
+    Spinner,
   },
   data() {
     return {
       orders: [],
       userId: "",
+      isLoading: true,
     };
   },
   created() {
@@ -76,11 +80,13 @@ export default {
       try {
         const response = await ordersAPI.getOrders();
         this.orders = response.data.orders;
+        this.isLoading = false;
       } catch (error) {
         Toast.fire({
           icon: "error",
           title: "Can't not get orders data, please try again later",
         });
+        this.isLoading = false;
       }
     },
   },
