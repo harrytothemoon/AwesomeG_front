@@ -1,5 +1,5 @@
 <template>
-  <div class="container py-5">
+  <div class="container py-4">
     <div class="d-flex justify-content-center mt-2">
       <PostQuestionM :isProcessing="isProcessing" @after-submit="handleAfterSubmit" />
       <AnswerDetailM :getQuestion="getQuestion" />

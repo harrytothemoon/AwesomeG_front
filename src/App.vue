@@ -5,6 +5,7 @@
     <SignUpM />
     <main role="main" class="mt-5">
       <router-view />
+      <h6 class="mt-5 mb-3 text-secondary text-center">Awesome G &copy; 2020</h6>
     </main>
   </div>
 </template>

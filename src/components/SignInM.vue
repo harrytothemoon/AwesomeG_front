@@ -130,6 +130,7 @@ export default {
               icon: "success",
               title: data.message,
             });
+            this.password = "";
           }
           if (data.user.role === "teacher") {
             $("#signin").modal("hide");
