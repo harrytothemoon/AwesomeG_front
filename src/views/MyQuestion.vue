@@ -1,7 +1,7 @@
 <template>
   <div class="container py-5">
     <div class="d-flex justify-content-center mt-2">
-      <PostQuestionM @after-submit="handleAfterSubmit" />
+      <PostQuestionM :isProcessing="isProcessing" @after-submit="handleAfterSubmit" />
       <AnswerDetailM :getQuestion="getQuestion" />
       <NavTabs />
     </div>
@@ -164,6 +164,7 @@ export default {
       visibility: "unSolved",
       targetId: "",
       userId: "",
+      isProcessing: false,
     };
   },
   created() {
@@ -184,14 +185,18 @@ export default {
     },
     async handleAfterSubmit(formData) {
       try {
+        this.isProcessing = true;
         const { data } = await questionsAPI.postQuestion.create({ formData });
         if (data.status === "success") {
+          this.isProcessing = false;
           Toast.fire({
             icon: "success",
             title: data.message,
           });
+          this.fetchQuestions();
           $("#postQ").modal("hide");
         } else if (data.status === "warning") {
+          this.isProcessing = false;
           Toast.fire({
             icon: "warning",
             title: data.message,
@@ -200,6 +205,7 @@ export default {
           this.$router.push(`/users/${this.userId}`);
         }
       } catch (error) {
+        this.isProcessing = false;
         Toast.fire({
           icon: "error",
           title: "Can't not post question, please try again later",

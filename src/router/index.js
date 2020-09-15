@@ -4,6 +4,7 @@ import NotFound from '../views/NotFound.vue'
 // import SignIn from '../views/SignIn.vue'
 import Home from '../views/Home.vue'
 import store from './../store'
+import { Toast } from "./../utils/helpers";
 
 Vue.use(VueRouter)
 const routes = [
@@ -69,9 +70,45 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // 使用 dispatch 呼叫 Vuex 內的 actions
-  store.dispatch('fetchCurrentUser')
+  const tokenInLocalStorage = localStorage.getItem('token')
+  const tokenInStore = store.state.token
+  const tokenRole = store.state.currentUser.role
+  const tokenId = store.state.currentUser.id
+  let isAuthenticated = store.state.isAuthenticated
+  if (tokenInLocalStorage && tokenInLocalStorage !== tokenInStore) {
+    isAuthenticated = await store.dispatch('fetchCurrentUser')
+  }
+  const pathsWithoutAuthentication = ['home', 'home-about', 'home-Qa', 'users-teacher']
+  if (!isAuthenticated && !pathsWithoutAuthentication.includes(to.name)) {
+    Toast.fire({
+      icon: "warning",
+      title: "Please sign in first!",
+    });
+    next('/home')
+    return
+  }
+  const pathsStudent = ["orders", "payment", "student-question"]
+  const pathsTeacher = ["teacher-question"]
+  if (pathsTeacher.includes(to.name) && tokenRole === 'student') {
+    Toast.fire({
+      icon: "warning",
+      title: "Please sign in with the teacher's account.",
+    });
+    return
+  }
+  if (pathsStudent.includes(to.name) && tokenRole === 'teacher') {
+    Toast.fire({
+      icon: "warning",
+      title: "Please sign in with the student's account.",
+    });
+    return
+  }
+  if (to.name === "user" && Number(to.params.id) !== Number(tokenId)) {
+    next('/not-found')
+    return
+  }
   next()
 })
 

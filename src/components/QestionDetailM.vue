@@ -39,11 +39,12 @@
           <form class="w-100" @submit.prevent.stop="handleSubmit">
             <div class="row mt-4"></div>
             <button
+              :disabled="isProcessing"
               class="btn btn-primary btn-block mb-3 w-25 mx-auto"
               type="submit"
               style="background-color:#c03546"
             >
-              <h4 class="m-0">Solve it !</h4>
+              <h4 class="m-0">Get a Question!</h4>
             </button>
           </form>
         </div>
@@ -56,7 +57,11 @@
 export default {
   props: {
     getQuestion: {
-      type: Array,
+      type: Object,
+      required: true,
+    },
+    isProcessing: {
+      type: Boolean,
       required: true,
     },
   },

@@ -170,6 +170,7 @@ export default {
         })
         .then((response) => {
           if (response.data.status === "success") {
+            this.isProcessing = false;
             Toast.fire({
               icon: "success",
               title: response.data.message,

@@ -123,6 +123,7 @@ export default {
           if (data.status !== "success") {
             throw new Error(data.message);
           } else {
+            this.isProcessing = false;
             localStorage.setItem("token", data.token);
             this.$store.commit("setCurrentUser", data.user);
             Toast.fire({

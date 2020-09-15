@@ -17,8 +17,16 @@
         <div class="modal-body mt-2">
           <div class="card mb-3 border-0">
             <img
+              v-if="getQuestion.Answer.image"
               class="card-img-top"
               :src="getQuestion.Answer.image"
+              alt="Card image cap"
+              height="350px"
+            />
+            <img
+              v-else
+              class="card-img-top"
+              src="https://image.damanwoo.com/files/media/c/h/r/o/m/e/d/i/n/o/chrome_dino_set-2.jpg"
               alt="Card image cap"
               height="350px"
             />
@@ -37,7 +45,7 @@
 export default {
   props: {
     getQuestion: {
-      type: Array,
+      type: Object,
       required: true,
     },
   },

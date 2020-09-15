@@ -78,6 +78,7 @@
               </div>
             </div>
             <button
+              :disabled="isProcessing"
               class="btn btn-primary btn-block mb-3 w-25 mx-auto"
               type="submit"
               style="background-color:#c03546"
@@ -95,7 +96,11 @@
 export default {
   props: {
     uploadAnswer: {
-      type: Array,
+      type: Object,
+      required: true,
+    },
+    isProcessing: {
+      type: Boolean,
       required: true,
     },
   },
@@ -121,6 +126,7 @@ export default {
       const form = e.target;
       const formData = new FormData(form);
       this.$emit("after-submit", formData);
+      this.answer = "";
     },
   },
 };

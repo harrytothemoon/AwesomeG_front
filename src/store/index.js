@@ -13,7 +13,8 @@ export default new Vuex.Store({
       avatar: '',
       role: ''
     },
-    isAuthenticated: false
+    isAuthenticated: false,
+    token: ''
   },
   mutations: {
     setCurrentUser(state, currentUser) {
@@ -23,11 +24,13 @@ export default new Vuex.Store({
         ...currentUser
       }
       // 將使用者的登入狀態改為 true
+      state.token = localStorage.getItem('token')
       state.isAuthenticated = true
     },
     revokeAuthentication(state) {
       state.currentUser = {}
       state.isAuthenticated = false
+      state.token = ''
       localStorage.removeItem('token')
     }
   },
@@ -44,9 +47,12 @@ export default new Vuex.Store({
           avatar,
           role
         })
+        return true
       } catch (error) {
         console.log('error', error)
         console.error('can not fetch user information')
+        commit('revokeAuthentication')
+        return false
       }
     }
   },

@@ -16,9 +16,9 @@
       <table class="table table-hover text-center overflow-auto" style="max-height:500px">
         <thead>
           <tr class="table-warning">
-            <th scope="col">Order Id</th>
             <th scope="col">Order Date</th>
             <th scope="col">Product Name</th>
+            <th scope="col">Number of questions</th>
             <th scope="col">Amount</th>
             <th scope="col">Payment Status</th>
             <th scope="col">Get Payment</th>
@@ -26,10 +26,10 @@
         </thead>
         <tbody>
           <tr v-for="order in orders" :key="order.id" class="table-light">
-            <th scope="row">{{order.id}}</th>
-            <td>{{order.createdAt | filterDate}}</td>
+            <th scope="row">{{order.createdAt | filterDate}}</th>
             <td>"{{order.Product.name}}" Package</td>
-            <td>{{order.amount}}</td>
+            <td>{{order.Product.description}}</td>
+            <td>NT$ {{order.amount}}</td>
             <td v-if="Number(order.payment_status)">Paid</td>
             <td v-else>Unpaid</td>
             <td>

@@ -89,6 +89,7 @@
               </div>
             </div>
             <button
+              :disabled="isProcessing"
               class="btn btn-primary btn-block mb-3 w-25 mx-auto"
               type="submit"
               style="background-color:#c03546"
@@ -107,6 +108,12 @@ import subjectsAPI from "./../apis/subjects";
 import scopesAPI from "./../apis/scopes";
 import { Toast } from "./../utils/helpers";
 export default {
+  props: {
+    isProcessing: {
+      type: Boolean,
+      required: true,
+    },
+  },
   data() {
     return {
       subjects: [],
@@ -162,6 +169,7 @@ export default {
       const form = e.target;
       const formData = new FormData(form);
       this.$emit("after-submit", formData);
+      this.description = "";
     },
   },
 };

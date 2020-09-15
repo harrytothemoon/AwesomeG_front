@@ -7,7 +7,7 @@
           <h4>My Information</h4>
         </router-link>
       </li>
-      <li class="nav-item w-25" style="cursor:pointer">
+      <li v-if="user.role==='student'" class="nav-item w-25" style="cursor:pointer">
         <router-link :to="{name: 'orders', params: {id: user.id}}" class="nav-link text-center">
           <h4>My Orders</h4>
         </router-link>
@@ -159,7 +159,7 @@ export default {
         };
         this.answers = response.data.user.Answers.length;
         this.questions = response.data.user.Questions.length;
-        this.userId = response.data.user.id;
+        this.userId = String(response.data.user.id);
       } catch (error) {
         Toast.fire({
           icon: "error",

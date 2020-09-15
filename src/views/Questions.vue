@@ -1,8 +1,16 @@
 <template>
   <div class="container py-4">
     <div class="d-flex justify-content-center mt-2">
-      <QestionDetailM :getQuestion="getQuestion" @after-submit="handleAfterSubmitPost" />
-      <PostAnswerM :uploadAnswer="uploadAnswer" @after-submit="handleAfterSubmitPut" />
+      <QestionDetailM
+        :getQuestion="getQuestion"
+        :isProcessing="isProcessing"
+        @after-submit="handleAfterSubmitPost"
+      />
+      <PostAnswerM
+        :uploadAnswer="uploadAnswer"
+        :isProcessing="isProcessing"
+        @after-submit="handleAfterSubmitPut"
+      />
       <NavTabs />
     </div>
     <div class="row">
@@ -142,6 +150,7 @@ export default {
       targetId: "",
       uploadId: "",
       subjectId: 0,
+      isProcessing: false,
     };
   },
   created() {
@@ -192,22 +201,26 @@ export default {
     },
     //TODO change to async/await
     handleAfterSubmitPost(data) {
+      this.isProcessing = true;
       answersAPI
         .postAnswer({ questionId: data })
         .then((response) => {
           if (response.data.status === "success") {
+            this.isProcessing = false;
             Toast.fire({
               icon: "success",
               title: response.data.message,
             });
-            window.setTimeout(function () {
-              location.reload();
-            }, 3000);
+            this.fetchQuestions();
+            this.fetchAnswers();
+            $("#questionD").modal("hide");
           } else if (response.data.status !== "success") {
+            this.isProcessing = false;
             throw new Error(response.data.message);
           }
         })
         .catch(() => {
+          this.isProcessing = false;
           Toast.fire({
             icon: "error",
             title: "Can't not post question, please try again later",
@@ -216,15 +229,19 @@ export default {
     },
     async handleAfterSubmitPut(formData) {
       try {
+        this.isProcessing = true;
         const { data } = await answersAPI.putAnswer.create({ formData });
         if (data.status === "success") {
+          this.isProcessing = false;
           Toast.fire({
             icon: "success",
             title: data.message,
           });
+          this.fetchAnswers();
           $("#answerUpload").modal("hide");
         }
       } catch (error) {
+        this.isProcessing = false;
         Toast.fire({
           icon: "error",
           title: "Can't not post question, please try again later",
