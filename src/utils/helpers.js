@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
-const baseURL = 'http://749b00436840.ngrok.io/api'
+const baseURL = 'https://young-hollows-22995.herokuapp.com/api'
 
 const axiosInstance = axios.create({
   baseURL
