@@ -176,6 +176,10 @@ export default {
               title: response.data.message,
             });
             $("#signup").modal("hide");
+            this.name = "";
+            this.email = "";
+            this.password = "";
+            this.passwordCheck = "";
           } else if (response.data.status === "warning") {
             this.isProcessing = false;
             Toast.fire({
@@ -190,6 +194,11 @@ export default {
             icon: "error",
             title: "Can't not sign up, please try again later",
           });
+          this.role = "";
+          this.name = "";
+          this.email = "";
+          this.password = "";
+          this.passwordCheck = "";
         });
     },
   },

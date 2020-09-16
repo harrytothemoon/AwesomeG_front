@@ -3,8 +3,17 @@
     <div v-for="teacher in teachers" :key="teacher.id" class="col-md-4 col-lg-4">
       <div class="card mb-3 text-center align-items-center" style="background-color:#fffbf0">
         <img
+          v-if="teacher.avatar"
           class="rounded-circle mt-3"
           :src="teacher.avatar"
+          alt="Card image cap"
+          width="100px"
+          height="100px"
+        />
+        <img
+          v-else
+          class="rounded-circle mt-3"
+          src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
           alt="Card image cap"
           width="100px"
           height="100px"
