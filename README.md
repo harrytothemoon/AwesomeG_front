@@ -64,6 +64,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 #### In progress
 
 * 後台管理，包含商品、類別和科目等的新增/瀏覽/修改/刪除功能
+* 使用者編輯個人資訊功能
 * 題目或解答時的即時通知
 * 點選圖片放大功能
 * 上傳檔案方式多元，如錄音/拍照等等
