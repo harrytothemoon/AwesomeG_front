@@ -1,4 +1,4 @@
-# awesomeg-front
+# AwesomeG-front
 
 [GitHub Page - Awesome G](https://harry811016.github.io/AwesomeG_front/)
 
