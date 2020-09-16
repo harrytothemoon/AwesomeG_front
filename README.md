@@ -1,7 +1,6 @@
 # awesomeg-front
 
-[GitHub Page - Awesome G]
-(https://harry811016.github.io/AwesomeG_front/)
+[GitHub Page - Awesome G](https://harry811016.github.io/AwesomeG_front/)
 
 ## 專案setup
 ```
