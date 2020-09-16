@@ -84,3 +84,13 @@ password: 1234
 email: user6@example.com ~ user11@example.com (共6組)
 
 password: 1234
+
+* 測試用信用卡
+
+信用卡號 4000-2211-1111-1111 
+
+到期日:都可以 
+
+隨機碼:都可以
+
+```
