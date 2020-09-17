@@ -1,6 +1,7 @@
 <template>
   <div class="container py-5 text-primary" style="max-width:950px">
     <ProductM :userId="userId" />
+    <UserEditM :isProcessing="isProcessing" :initialUser="user" @after-update="handleAfterUpdate" />
     <Spinner v-if="isLoading" />
     <template v-else>
       <ul class="nav nav-tabs mt-1 mb-4 d-flex justify-content-center">
@@ -54,8 +55,20 @@
           <h1 class="display-4" style="color:#c03546">{{questions}}</h1>
         </div>
       </div>
-
-      <div class="card d-flex flex-row row border-0 mt-5" style="background-color:#fffbf0">
+      <div class="text-right">
+        <form action>
+          <button
+            class="btn btn-outline-primary"
+            type="submit"
+            data-toggle="modal"
+            data-target="#useredit"
+          >
+            <font-awesome-icon icon="pencil-alt" size="2x" />
+            <h6 class="d-inline">EDIT PROFILE</h6>
+          </button>
+        </form>
+      </div>
+      <div class="card d-flex flex-row row border-0 mt-3" style="background-color:#fffbf0">
         <div class="col-6 m-2">
           <h3 style="color: #4f86c6">Gender</h3>
           <h5 v-if="user.gender">{{user.gender}}</h5>
@@ -108,8 +121,10 @@
 import ProductM from "../components/ProductM";
 import NavTabs from "../components/NavTabs";
 import Spinner from "./../components/Spinner";
+import UserEditM from "../components/UserEditM";
 import usersAPI from "./../apis/users";
 import { Toast } from "./../utils/helpers";
+import $ from "jquery";
 
 export default {
   name: "User",
@@ -117,6 +132,7 @@ export default {
     ProductM,
     NavTabs,
     Spinner,
+    UserEditM,
   },
   data() {
     return {
@@ -137,6 +153,7 @@ export default {
       questions: "",
       userId: "",
       isLoading: true,
+      isProcessing: false,
     };
   },
   created() {
@@ -174,6 +191,41 @@ export default {
           title: "Can't not get data, please try again later",
         });
         this.isLoading = false;
+      }
+    },
+    //TODO 送出後照片不會更新
+    async handleAfterUpdate(formData) {
+      try {
+        this.isProcessing = true;
+        const { data } = await usersAPI.putUser.update({
+          id: this.userId,
+          formData,
+        });
+        if (data.status === "success") {
+          this.isProcessing = false;
+          Toast.fire({
+            icon: "success",
+            title: data.message,
+          });
+          this.fetchUser(this.userId);
+          $("#useredit").modal("hide");
+        } else if (data.status === "warning") {
+          this.isProcessing = false;
+          Toast.fire({
+            icon: "warning",
+            title: data.message,
+          });
+        } else {
+          this.isProcessing = false;
+          $("#useredit").modal("hide");
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        this.isProcessing = false;
+        Toast.fire({
+          icon: "error",
+          title: "Can't not update, please try again later",
+        });
       }
     },
   },
