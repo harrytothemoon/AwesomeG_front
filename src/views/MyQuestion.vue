@@ -144,6 +144,7 @@ import { Filter } from "./../utils/mixins";
 import questionsAPI from "./../apis/questions";
 import { Toast } from "./../utils/helpers";
 import $ from "jquery";
+import store from "./../store";
 
 const filters = {
   unSolved: (questions) =>
@@ -168,7 +169,6 @@ export default {
       questions: [],
       visibility: "unSolved",
       targetId: "",
-      userId: "",
       isProcessing: false,
       isLoading: true,
     };
@@ -181,7 +181,6 @@ export default {
       try {
         const response = await questionsAPI.getStudentQuestions();
         this.questions = response.data.questions;
-        this.userId = response.data.questions[0].UserId;
         this.isLoading = false;
       } catch (error) {
         Toast.fire({
@@ -210,7 +209,7 @@ export default {
             title: data.message,
           });
           $("#postQ").modal("hide");
-          this.$router.push(`/users/${this.userId}`);
+          this.$router.push(`/users/${store.state.currentUser.id}`);
         }
       } catch (error) {
         this.isProcessing = false;
