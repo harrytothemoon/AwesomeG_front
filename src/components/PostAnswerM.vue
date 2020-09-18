@@ -97,7 +97,24 @@ export default {
   props: {
     uploadAnswer: {
       type: Object,
-      required: true,
+      default: () => {
+        return {
+          id: null,
+          answer: null,
+          image: null,
+          Question: {
+            id: null,
+            description: null,
+            image: null,
+            Subject: {
+              name: null,
+            },
+            Scope: {
+              name: null,
+            },
+          },
+        };
+      },
     },
     isProcessing: {
       type: Boolean,

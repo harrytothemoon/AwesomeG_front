@@ -124,6 +124,7 @@ import Spinner from "./../components/Spinner";
 import UserEditM from "../components/UserEditM";
 import usersAPI from "./../apis/users";
 import { Toast } from "./../utils/helpers";
+import store from "./../store";
 import $ from "jquery";
 
 export default {
@@ -208,6 +209,7 @@ export default {
             title: data.message,
           });
           this.fetchUser(this.userId);
+          store.dispatch("fetchCurrentUser");
           $("#useredit").modal("hide");
         } else if (data.status === "warning") {
           this.isProcessing = false;

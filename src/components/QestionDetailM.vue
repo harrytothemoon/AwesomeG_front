@@ -58,7 +58,19 @@ export default {
   props: {
     getQuestion: {
       type: Object,
-      required: true,
+      default: () => {
+        return {
+          id: null,
+          description: null,
+          image: null,
+          Subject: {
+            name: null,
+          },
+          Scope: {
+            name: null,
+          },
+        };
+      },
     },
     isProcessing: {
       type: Boolean,

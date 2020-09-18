@@ -46,7 +46,15 @@ export default {
   props: {
     getQuestion: {
       type: Object,
-      required: true,
+      default: () => {
+        return {
+          id: null,
+          Answer: {
+            answer: null,
+            image: null,
+          },
+        };
+      },
     },
   },
   data() {

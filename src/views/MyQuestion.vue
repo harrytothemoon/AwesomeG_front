@@ -14,7 +14,7 @@
             @click="setVisibility('unSolved')"
             :class="{active:visibility === 'unSolved'}"
           >
-            <h3>My Questions</h3>
+            <h3>UnSolved Questions</h3>
           </a>
         </li>
         <li class="nav-item w-50" style="cursor:pointer">
