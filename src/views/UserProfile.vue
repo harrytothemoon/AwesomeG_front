@@ -56,17 +56,15 @@
         </div>
       </div>
       <div class="text-right">
-        <form action>
-          <button
-            class="btn btn-outline-primary"
-            type="submit"
-            data-toggle="modal"
-            data-target="#useredit"
-          >
-            <font-awesome-icon icon="pencil-alt" size="2x" />
-            <h6 class="d-inline">EDIT PROFILE</h6>
-          </button>
-        </form>
+        <button
+          class="btn btn-outline-primary"
+          type="button"
+          data-toggle="modal"
+          data-target="#useredit"
+        >
+          <font-awesome-icon icon="pencil-alt" size="2x" />
+          <h6 class="d-inline">EDIT PROFILE</h6>
+        </button>
       </div>
       <div class="card d-flex flex-row row border-0 mt-3" style="background-color:#fffbf0">
         <div class="col-6 m-2">
@@ -194,7 +192,6 @@ export default {
         this.isLoading = false;
       }
     },
-    //TODO 送出後照片不會更新
     async handleAfterUpdate(formData) {
       try {
         this.isProcessing = true;
