@@ -15,7 +15,19 @@ const routes = [
   {
     path: '/home',
     name: 'home',
-    component: Home
+    component: Home,
+    beforeEnter: (to, from, next) => {
+      const currentUser = store.state.currentUser
+      if (currentUser.role === 'student') {
+        next('/student/questions')
+        return
+      }
+      if (currentUser.role === 'teacher') {
+        next('/teacher/questions')
+        return
+      }
+      next()
+    }
   },
   {
     path: '/home/about',
