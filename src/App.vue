@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <Navbar />
+  <div id="app" @click="closeNotifyBox">
+    <Navbar :notifyShow="notifyShow" @showbox="openNotifyBox" />
     <SignInM />
     <SignUpM />
     <main role="main" class="mt-5">
@@ -17,10 +17,23 @@ import Navbar from "./components/Navbar";
 import SignInM from "./components/SignInM";
 import SignUpM from "./components/SignUpM";
 export default {
+  data() {
+    return {
+      notifyShow: false,
+    };
+  },
   components: {
     Navbar,
     SignInM,
     SignUpM,
+  },
+  methods: {
+    closeNotifyBox() {
+      this.notifyShow = false;
+    },
+    openNotifyBox() {
+      this.notifyShow = !this.notifyShow;
+    },
   },
 };
 </script>
