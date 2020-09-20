@@ -12,7 +12,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: 'http://localhost:3000',
+  connection: 'https://young-hollows-22995.herokuapp.com',
   // vuex: {
   //   store,
   //   actionPrefix: 'SOCKET_', //为vuex设置的两个前缀
