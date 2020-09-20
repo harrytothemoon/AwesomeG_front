@@ -13,7 +13,7 @@
       />
       <NavTabs />
     </div>
-    <div class="row">
+    <div class="row mt-4">
       <div class="col-3">
         <Spinner v-if="subjectisLoading" />
         <FilterBar v-else :subjects="subjects" @after-filter="handleAfterFilter" />
@@ -137,6 +137,7 @@ import questionsAPI from "./../apis/questions";
 import subjectsAPI from "./../apis/subjects";
 import answersAPI from "./../apis/answers";
 import { Toast } from "./../utils/helpers";
+import store from "./../store";
 import $ from "jquery";
 
 export default {
@@ -167,6 +168,11 @@ export default {
     this.fetchQuestions();
     this.fetchSubjects();
     this.fetchAnswers();
+  },
+  sockets: {
+    postQuestions: function () {
+      this.fetchQuestions();
+    },
   },
   methods: {
     async fetchQuestions() {
@@ -216,10 +222,10 @@ export default {
       this.uploadId = id;
     },
     //TODO change to async/await
-    handleAfterSubmitPost(data) {
+    handleAfterSubmitPost(questionId, UserId, StatusId) {
       this.isProcessing = true;
       answersAPI
-        .postAnswer({ questionId: data })
+        .postAnswer({ questionId: questionId })
         .then((response) => {
           if (response.data.status === "success") {
             this.isProcessing = false;
@@ -230,6 +236,17 @@ export default {
             this.fetchQuestions();
             this.fetchAnswers();
             $("#questionD").modal("hide");
+            //socket通知
+            this.$socket.emit(
+              "postAnswers",
+              store.state.currentUser.id,
+              store.state.currentUser.role,
+              store.state.currentUser.name,
+              store.state.currentUser.avatar,
+              UserId,
+              StatusId,
+              Date.now()
+            );
           } else if (response.data.status !== "success") {
             this.isProcessing = false;
             throw new Error(response.data.message);
@@ -243,7 +260,7 @@ export default {
           });
         });
     },
-    async handleAfterSubmitPut(formData) {
+    async handleAfterSubmitPut(formData, UserId, StatusId) {
       try {
         this.isProcessing = true;
         const { data } = await answersAPI.putAnswer.create({ formData });
@@ -255,6 +272,17 @@ export default {
           });
           this.fetchAnswers();
           $("#answerUpload").modal("hide");
+          //socket通知
+          this.$socket.emit(
+            "putAnswers",
+            store.state.currentUser.id,
+            store.state.currentUser.role,
+            store.state.currentUser.name,
+            store.state.currentUser.avatar,
+            UserId,
+            StatusId,
+            Date.now()
+          );
         }
       } catch (error) {
         this.isProcessing = false;

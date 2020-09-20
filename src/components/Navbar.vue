@@ -46,14 +46,77 @@
             <h6 class="m-0">Back Ground</h6>
           </button>
         </router-link>
+
         <template v-if="isAuthenticated">
+          <div class="mr-2" style="position: relative">
+            <button @click.stop="openNotifyBox" class="btn btn-primary m-0 p-0">
+              <img style="cursor:pointer" src="../assets/icons/bell.png" width="30px" height="30px" />
+              <span
+                v-if="unRead"
+                class="badge badge-pill badge-danger p-0"
+                id="notify-badge"
+                style="border-radius:100%;width:14px;height:14px;position: absolute;top:1px;right:1px"
+              >{{unRead}}</span>
+            </button>
+            <div
+              @click.stop
+              v-show="notifyShow"
+              class="card border-primary mb-3 text-primary border-0"
+              style="width:300px;position:absolute;right:10px; background-color:#fffbf0;box-shadow:3px 3px 3px #292823;"
+            >
+              <div class="card-body overflow-auto p-1 pr-2" style="max-height:500px;">
+                <div class="list-group">
+                  <div
+                    v-if="notifications.length===0"
+                    class="list-group-item list-group-item-action d-flex justify-content-center"
+                  >
+                    <h5 class="text-muted m-0">No new message ...</h5>
+                  </div>
+                  <router-link
+                    v-else
+                    v-for="notification in notifications"
+                    :key="notification.id"
+                    to="/home"
+                    class="list-group-item list-group-item-action d-flex"
+                  >
+                    <div class="col-4 d-flex align-items-center justify-content-center">
+                      <img
+                        class="rounded-circle"
+                        width="60px"
+                        height="60px"
+                        :src="notification.avatar"
+                      />
+                    </div>
+                    <div v-if="currentUser.role==='teacher'" class="col-8">
+                      <h6>
+                        <span class="text-info">{{notification.name}}</span> post a new question!
+                      </h6>
+                      <h6 class="text-muted">{{notification.date | fromNow}}</h6>
+                    </div>
+                    <div v-else-if="notification.StatusId === 1" class="col-8">
+                      <h6>
+                        <span class="text-info">{{notification.name}}</span> get your question!
+                      </h6>
+                      <h6 class="text-muted">{{notification.date | fromNow}}</h6>
+                    </div>
+                    <div v-else-if="notification.StatusId === 2" class="col-8">
+                      <h6>
+                        <span class="text-info">{{notification.name}}</span> has answered your question!
+                      </h6>
+                      <h6 class="text-muted">{{notification.date | fromNow}}</h6>
+                    </div>
+                  </router-link>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- is user is login -->
           <router-link
             :to="{name: 'user', params: {id: currentUser.id}}"
             class="text-white mr-1 p-0 nav-link"
           >
             <h6 class="m-0">
-              Hello, {{currentUser.name || 'Guest'}} !
+              {{currentUser.name}}
               <img
                 v-if="currentUser.avatar"
                 class="rounded-circle ml-2"
@@ -82,7 +145,46 @@
 /* eslint-disable */
 import { mapState } from "vuex";
 import { Toast } from "./../utils/helpers";
+import { Filter } from "./../utils/mixins";
 export default {
+  mixins: [Filter],
+  props: {
+    notifyShow: {
+      type: Boolean,
+    },
+  },
+  data() {
+    return {
+      notifications: [],
+      unRead: 0,
+    };
+  },
+  sockets: {
+    connect: function () {
+      console.log("socket connected");
+    },
+    openNotifyBox: function (data) {
+      this.unRead = data;
+    },
+    postQuestions: function (userInfo) {
+      if (!this.notifyShow) {
+        this.unRead++;
+      }
+      this.notifications.unshift(userInfo);
+    },
+    postAnswers: function (userInfo) {
+      if (!this.notifyShow) {
+        this.unRead++;
+      }
+      this.notifications.unshift(userInfo);
+    },
+    putAnswers: function (userInfo) {
+      if (!this.notifyShow) {
+        this.unRead++;
+      }
+      this.notifications.unshift(userInfo);
+    },
+  },
   computed: {
     ...mapState(["currentUser", "isAuthenticated"]),
   },
@@ -95,6 +197,18 @@ export default {
         title: "Sign out successfully!",
       });
     },
+    openNotifyBox() {
+      this.$emit("showbox");
+      this.$socket.emit("openNotifyBox", 0);
+    },
+  },
+  watch: {
+    notifyShow(newValue) {
+      this.notifyShow = newValue;
+    },
+  },
+  updated() {
+    this.$socket.emit("userInfo", this.currentUser.id, this.currentUser.role);
   },
 };
 </script>

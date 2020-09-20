@@ -5,7 +5,7 @@
       <AnswerDetailM :getQuestion="getQuestion" />
       <NavTabs />
     </div>
-    <div class="d-flex flex-column justify-content-center mt-5">
+    <div class="d-flex flex-column justify-content-center mt-4">
       <!-- navtag -->
       <ul class="nav nav-tabs">
         <li class="nav-item w-50" style="cursor:pointer">
@@ -176,6 +176,14 @@ export default {
   created() {
     this.fetchQuestions();
   },
+  sockets: {
+    postAnswers: function () {
+      this.fetchQuestions();
+    },
+    putAnswers: function () {
+      this.fetchQuestions();
+    },
+  },
   methods: {
     async fetchQuestions() {
       try {
@@ -202,6 +210,15 @@ export default {
           });
           this.fetchQuestions();
           $("#postQ").modal("hide");
+          //socket通知
+          this.$socket.emit(
+            "postQuestions",
+            store.state.currentUser.id,
+            store.state.currentUser.role,
+            store.state.currentUser.name,
+            store.state.currentUser.avatar,
+            Date.now()
+          );
         } else if (data.status === "warning") {
           this.isProcessing = false;
           Toast.fire({
