@@ -5,7 +5,7 @@
       <AnswerDetailM :getQuestion="getQuestion" />
       <NavTabs />
     </div>
-    <div class="d-flex flex-column justify-content-center mt-5">
+    <div class="d-flex flex-column justify-content-center mt-4">
       <!-- navtag -->
       <ul class="nav nav-tabs">
         <li class="nav-item w-50" style="cursor:pointer">

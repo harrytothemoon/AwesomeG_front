@@ -13,7 +13,7 @@
       />
       <NavTabs />
     </div>
-    <div class="row">
+    <div class="row mt-4">
       <div class="col-3">
         <Spinner v-if="subjectisLoading" />
         <FilterBar v-else :subjects="subjects" @after-filter="handleAfterFilter" />
