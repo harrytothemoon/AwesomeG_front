@@ -106,6 +106,8 @@ export default {
             id: null,
             description: null,
             image: null,
+            StatusId: null,
+            UserId: null,
             Subject: {
               name: null,
             },
@@ -142,7 +144,12 @@ export default {
     handleSubmit(e) {
       const form = e.target;
       const formData = new FormData(form);
-      this.$emit("after-submit", formData);
+      this.$emit(
+        "after-submit",
+        formData,
+        this.uploadAnswer.Question.UserId,
+        this.uploadAnswer.Question.StatusId
+      );
       this.answer = "";
     },
   },

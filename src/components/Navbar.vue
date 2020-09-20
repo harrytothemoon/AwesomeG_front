@@ -87,9 +87,21 @@
                         :src="notification.avatar"
                       />
                     </div>
-                    <div class="col-8">
+                    <div v-if="currentUser.role==='teacher'" class="col-8">
                       <h6>
                         <span class="text-info">{{notification.name}}</span> post a new question!
+                      </h6>
+                      <h6 class="text-muted">{{notification.date | fromNow}}</h6>
+                    </div>
+                    <div v-else-if="notification.StatusId === 1" class="col-8">
+                      <h6>
+                        <span class="text-info">{{notification.name}}</span> get your question!
+                      </h6>
+                      <h6 class="text-muted">{{notification.date | fromNow}}</h6>
+                    </div>
+                    <div v-else-if="notification.StatusId === 2" class="col-8">
+                      <h6>
+                        <span class="text-info">{{notification.name}}</span> has answered your question!
                       </h6>
                       <h6 class="text-muted">{{notification.date | fromNow}}</h6>
                     </div>
@@ -158,7 +170,19 @@ export default {
       if (!this.notifyShow) {
         this.unRead++;
       }
-      this.notifications.push(userInfo);
+      this.notifications.unshift(userInfo);
+    },
+    postAnswers: function (userInfo) {
+      if (!this.notifyShow) {
+        this.unRead++;
+      }
+      this.notifications.unshift(userInfo);
+    },
+    putAnswers: function (userInfo) {
+      if (!this.notifyShow) {
+        this.unRead++;
+      }
+      this.notifications.unshift(userInfo);
     },
   },
   computed: {

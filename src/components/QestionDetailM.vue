@@ -62,6 +62,8 @@ export default {
         return {
           id: null,
           description: null,
+          UserId: null,
+          StatusId: null,
           image: null,
           Subject: {
             name: null,
@@ -84,7 +86,12 @@ export default {
   },
   methods: {
     handleSubmit() {
-      this.$emit("after-submit", this.getQuestion.id);
+      this.$emit(
+        "after-submit",
+        this.getQuestion.id,
+        this.getQuestion.UserId,
+        this.getQuestion.StatusId
+      );
     },
   },
 };

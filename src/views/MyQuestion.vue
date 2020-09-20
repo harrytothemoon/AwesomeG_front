@@ -176,6 +176,14 @@ export default {
   created() {
     this.fetchQuestions();
   },
+  sockets: {
+    postAnswers: function () {
+      this.fetchQuestions();
+    },
+    putAnswers: function () {
+      this.fetchQuestions();
+    },
+  },
   methods: {
     async fetchQuestions() {
       try {
