@@ -202,6 +202,15 @@ export default {
           });
           this.fetchQuestions();
           $("#postQ").modal("hide");
+          //socket通知
+          this.$socket.emit(
+            "postQuestions",
+            store.state.currentUser.id,
+            store.state.currentUser.role,
+            store.state.currentUser.name,
+            store.state.currentUser.avatar,
+            Date.now()
+          );
         } else if (data.status === "warning") {
           this.isProcessing = false;
           Toast.fire({

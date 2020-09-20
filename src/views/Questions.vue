@@ -168,6 +168,11 @@ export default {
     this.fetchSubjects();
     this.fetchAnswers();
   },
+  sockets: {
+    postQuestions: function () {
+      this.fetchQuestions();
+    },
+  },
   methods: {
     async fetchQuestions() {
       try {

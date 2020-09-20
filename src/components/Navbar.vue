@@ -52,10 +52,11 @@
             <button @click.stop="openNotifyBox" class="btn btn-primary m-0 p-0">
               <img style="cursor:pointer" src="../assets/icons/bell.png" width="30px" height="30px" />
               <span
+                v-if="unRead"
                 class="badge badge-pill badge-danger p-0"
                 id="notify-badge"
                 style="border-radius:100%;width:14px;height:14px;position: absolute;top:1px;right:1px"
-              >2</span>
+              >{{unRead}}</span>
             </button>
             <div
               @click.stop
@@ -65,34 +66,34 @@
             >
               <div class="card-body overflow-auto p-1 pr-2" style="max-height:500px;">
                 <div class="list-group">
-                  <a href="#" class="list-group-item list-group-item-action d-flex">
+                  <div
+                    v-if="notifications.length===0"
+                    class="list-group-item list-group-item-action d-flex justify-content-center"
+                  >
+                    <h5 class="text-muted m-0">No new message ...</h5>
+                  </div>
+                  <router-link
+                    v-else
+                    v-for="notification in notifications"
+                    :key="notification.id"
+                    to="/home"
+                    class="list-group-item list-group-item-action d-flex"
+                  >
                     <div class="col-4 d-flex align-items-center justify-content-center">
                       <img
                         class="rounded-circle"
                         width="60px"
                         height="60px"
-                        src="https://i.imgur.com/H37kxPH.jpg"
+                        :src="notification.avatar"
                       />
                     </div>
                     <div class="col-8">
-                      <h6>Harry post a new question!</h6>
-                      <h6 class="text-muted">a few minute age</h6>
+                      <h6>
+                        <span class="text-info">{{notification.name}}</span> post a new question!
+                      </h6>
+                      <h6 class="text-muted">{{notification.date | fromNow}}</h6>
                     </div>
-                  </a>
-                  <a href="#" class="list-group-item list-group-item-action d-flex">
-                    <div class="col-4 d-flex align-items-center justify-content-center">
-                      <img
-                        class="rounded-circle"
-                        width="60px"
-                        height="60px"
-                        src="https://i.imgur.com/H37kxPH.jpg"
-                      />
-                    </div>
-                    <div class="col-8">
-                      <h6>Harry post a new question!</h6>
-                      <h6 class="text-muted">a few minute age</h6>
-                    </div>
-                  </a>
+                  </router-link>
                 </div>
               </div>
             </div>
@@ -132,10 +133,32 @@
 /* eslint-disable */
 import { mapState } from "vuex";
 import { Toast } from "./../utils/helpers";
+import { Filter } from "./../utils/mixins";
 export default {
+  mixins: [Filter],
   props: {
     notifyShow: {
       type: Boolean,
+    },
+  },
+  data() {
+    return {
+      notifications: [],
+      unRead: 0,
+    };
+  },
+  sockets: {
+    connect: function () {
+      console.log("socket connected");
+    },
+    openNotifyBox: function (data) {
+      this.unRead = data;
+    },
+    postQuestions: function (userInfo) {
+      if (!this.notifyShow) {
+        this.unRead++;
+      }
+      this.notifications.push(userInfo);
     },
   },
   computed: {
@@ -152,12 +175,16 @@ export default {
     },
     openNotifyBox() {
       this.$emit("showbox");
+      this.$socket.emit("openNotifyBox", 0);
     },
   },
   watch: {
     notifyShow(newValue) {
       this.notifyShow = newValue;
     },
+  },
+  updated() {
+    this.$socket.emit("userInfo", this.currentUser.id, this.currentUser.role);
   },
 };
 </script>
