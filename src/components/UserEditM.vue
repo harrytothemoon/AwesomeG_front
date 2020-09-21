@@ -99,6 +99,45 @@
                 class="form-control w-75 mx-auto"
                 placeholder="bankaccount"
               />
+              <fieldset class="form-group mt-3">
+                <h5>Expertise</h5>
+                <div class="form-check d-inline px-0">
+                  <label class="form-check-label">
+                    <input
+                      v-model="user.expertise"
+                      class="form-check-input"
+                      type="radio"
+                      name="expertise"
+                      value="Math"
+                    />
+                    Math
+                  </label>
+                </div>
+                <div class="form-check d-inline">
+                  <label class="form-check-label">
+                    <input
+                      v-model="user.expertise"
+                      class="form-check-input"
+                      type="radio"
+                      name="expertise"
+                      value="Physical"
+                    />
+                    Physical
+                  </label>
+                </div>
+                <div class="form-check d-inline">
+                  <label class="form-check-label">
+                    <input
+                      v-model="user.expertise"
+                      class="form-check-input"
+                      type="radio"
+                      name="expertise"
+                      value="Chemical"
+                    />
+                    Chemical
+                  </label>
+                </div>
+              </fieldset>
             </div>
             <div v-else class="form-label-group mb-2">
               <label for="grade">
@@ -203,6 +242,7 @@ export default {
           gender: "",
           grade: "",
           bankaccount: "",
+          expertise: "",
         };
       },
     },

@@ -1,6 +1,6 @@
 <template>
   <div class="row overflow-auto" style="height:600px">
-    <div v-for="teacher in teachers" :key="teacher.id" class="col-md-4 col-lg-4">
+    <div v-for="teacher in fiteredTeachers" :key="teacher.id" class="col-md-4 col-lg-4">
       <div class="card mb-3 text-center align-items-center" style="background-color:#fffbf0">
         <img
           v-if="teacher.avatar"
@@ -20,8 +20,11 @@
         />
         <div class="card-body">
           <h5 class="card-text title-wrap" style="color:black">{{teacher.name}}</h5>
-          <span class="badge badge-pill badge-secondary m-1" style="cursor:default">Math</span>
-          <span class="badge badge-pill badge-info m-1" style="cursor:default">Chemical</span>
+          <span
+            class="badge badge-pill m-1"
+            :class="{'badge-info': teacher.expertise==='Math','badge-success': teacher.expertise==='Physical','badge-secondary': teacher.expertise==='Chemical'}"
+            style="cursor:default"
+          >{{teacher.expertise}}</span>
         </div>
         <div class="card-footer w-75" style="background-color:#fffbf0">
           <!-- <button type="button" class="btn btn-danger like mr-2">Unlike</button>
@@ -38,7 +41,7 @@
 <script>
 export default {
   props: {
-    teachers: {
+    fiteredTeachers: {
       type: Array,
       required: true,
     },

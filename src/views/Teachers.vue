@@ -11,7 +11,7 @@
       </div>
       <div class="col-9">
         <Spinner v-if="teacherCardisLoading" />
-        <TeacherCard v-else :teachers="teachers" />
+        <TeacherCard v-else :fiteredTeachers="fiteredTeachers" />
       </div>
     </div>
   </div>
@@ -78,12 +78,15 @@ export default {
     },
   },
   computed: {
-    //TODO 老師新增教學科目
-    fiteredTeacher() {
+    fiteredTeachers() {
       if (this.subjectId) {
-        return this.teachers.filter((teacher) =>
-          [teacher.SubjectId].includes(this.subjectId)
-        );
+        return this.teachers.filter((teacher) => {
+          if (Number(this.subjectId) === 1) return teacher.expertise === "Math";
+          if (Number(this.subjectId) === 2)
+            return teacher.expertise === "Physical";
+          if (Number(this.subjectId) === 3)
+            return teacher.expertise === "Chemical";
+        });
       } else {
         return this.teachers;
       }

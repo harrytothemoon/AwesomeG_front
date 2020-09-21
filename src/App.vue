@@ -4,7 +4,8 @@
     <SignInM />
     <SignUpM />
     <main role="main" class="mt-5">
-      <router-view />
+      <Spinner v-if="isLoading" />
+      <router-view v-else />
       <h6 class="mt-5 mb-3 text-secondary text-center">Awesome G &copy; 2020</h6>
     </main>
   </div>
@@ -16,16 +17,19 @@ import "bootstrap";
 import Navbar from "./components/Navbar";
 import SignInM from "./components/SignInM";
 import SignUpM from "./components/SignUpM";
+import Spinner from "./components/Spinner";
 export default {
   data() {
     return {
       notifyShow: false,
+      isLoading: false,
     };
   },
   components: {
     Navbar,
     SignInM,
     SignUpM,
+    Spinner,
   },
   methods: {
     closeNotifyBox() {
@@ -34,6 +38,12 @@ export default {
     openNotifyBox() {
       this.notifyShow = !this.notifyShow;
     },
+  },
+  created() {
+    this.isLoading = true;
+  },
+  mounted() {
+    this.isLoading = false;
   },
 };
 </script>

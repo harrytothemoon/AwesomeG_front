@@ -42,6 +42,13 @@
             <span>{{user.role}}</span>
           </h2>
           <h1 class="display-4" style="color:black">{{user.name}}</h1>
+          <span
+            v-if="user.role==='teacher'"
+            class="badge"
+            :class="{'badge-info': user.expertise==='Math','badge-success': user.expertise==='Physical','badge-secondary': user.expertise==='Chemical'}"
+          >
+            <h6 class="m-0">{{user.expertise}}</h6>
+          </span>
         </div>
         <div
           v-if="user.role === 'teacher'"
@@ -77,7 +84,7 @@
           <h5>{{user.password | filterPassword}}</h5>
           <template v-if="user.role === 'teacher'">
             <h3 style="color: #4f86c6">Bank Account</h3>
-            <h5 v-if="user.bankaccount">{{user.bankaccount}}</h5>
+            <h5 v-if="user.bankaccount">{{user.bankaccount | filterPassword}}</h5>
             <br v-else />
           </template>
           <template v-else-if="user.role === 'student'">
@@ -89,7 +96,7 @@
         <div v-if="user.role === 'teacher'" class="col-5 m-2">
           <h3 style="color: #4f86c6">About Me</h3>
           <div class="card rounded p-3" style="height:270px">
-            <h5>{{user.introduction}}</h5>
+            <h5>{{user.introduction | ellipsis}}</h5>
           </div>
         </div>
         <div v-else-if="user.role === 'student'" class="col-5 m-2">
@@ -147,6 +154,7 @@ export default {
         quantity: "",
         grade: "",
         bankaccount: "",
+        expertise: "",
       },
       answers: "",
       questions: "",
@@ -179,6 +187,7 @@ export default {
           quantity: response.data.user.quantity,
           grade: response.data.user.grade,
           bankaccount: response.data.user.bankaccount,
+          expertise: response.data.user.expertise,
         };
         this.answers = response.data.user.Answers.length;
         this.questions = response.data.user.Questions.length;
@@ -231,6 +240,13 @@ export default {
   filters: {
     filterPassword() {
       return "．．．．．．．．";
+    },
+    ellipsis(value) {
+      if (!value) return "";
+      if (value.length > 300) {
+        return value.slice(0, 300) + " ...";
+      }
+      return value;
     },
   },
 };

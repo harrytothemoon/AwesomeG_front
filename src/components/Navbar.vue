@@ -48,7 +48,7 @@
         </router-link>
 
         <template v-if="isAuthenticated">
-          <div class="mr-2" style="position: relative">
+          <div :class="{ shake: noActivated }" class="mr-2" style="position: relative">
             <button @click.stop="openNotifyBox" class="btn btn-primary m-0 p-0">
               <img style="cursor:pointer" src="../assets/icons/bell.png" width="30px" height="30px" />
               <span
@@ -75,7 +75,7 @@
                   <router-link
                     v-else
                     v-for="notification in notifications"
-                    :key="notification.id"
+                    :key="notification.date"
                     to="/home"
                     class="list-group-item list-group-item-action d-flex"
                   >
@@ -157,6 +157,7 @@ export default {
     return {
       notifications: [],
       unRead: 0,
+      noActivated: false,
     };
   },
   sockets: {
@@ -168,18 +169,30 @@ export default {
     },
     postQuestions: function (userInfo) {
       if (!this.notifyShow) {
+        this.noActivated = true;
+        setTimeout(() => {
+          this.noActivated = false;
+        }, 820);
         this.unRead++;
       }
       this.notifications.unshift(userInfo);
     },
     postAnswers: function (userInfo) {
       if (!this.notifyShow) {
+        this.noActivated = true;
+        setTimeout(() => {
+          this.noActivated = false;
+        }, 820);
         this.unRead++;
       }
       this.notifications.unshift(userInfo);
     },
     putAnswers: function (userInfo) {
       if (!this.notifyShow) {
+        this.noActivated = true;
+        setTimeout(() => {
+          this.noActivated = false;
+        }, 820);
         this.unRead++;
       }
       this.notifications.unshift(userInfo);
@@ -212,3 +225,35 @@ export default {
   },
 };
 </script>
+
+<style>
+.shake {
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-2px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-2px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(2px, 0, 0);
+  }
+}
+</style>
