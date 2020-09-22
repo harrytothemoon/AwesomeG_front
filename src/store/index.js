@@ -11,7 +11,8 @@ export default new Vuex.Store({
       name: '',
       email: '',
       avatar: '',
-      role: ''
+      role: '',
+      unread: '',
     },
     isAuthenticated: false,
     token: ''
@@ -39,13 +40,14 @@ export default new Vuex.Store({
       try {
         // 呼叫 usersAPI.getCurrentUser() 方法，並將 response 顯示出來
         const { data } = await usersAPI.getCurrentUser()
-        const { id, name, email, avatar, role } = data.user
+        const { id, name, email, avatar, role, unread } = data.user
         commit('setCurrentUser', {
           id,
           name,
           email,
           avatar,
-          role
+          role,
+          unread,
         })
         return true
       } catch (error) {

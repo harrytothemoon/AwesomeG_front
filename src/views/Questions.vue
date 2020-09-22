@@ -222,7 +222,7 @@ export default {
       this.uploadId = id;
     },
     //TODO change to async/await
-    handleAfterSubmitPost(questionId, UserId, StatusId) {
+    handleAfterSubmitPost(questionId, UserId) {
       this.isProcessing = true;
       answersAPI
         .postAnswer({ questionId: questionId })
@@ -240,12 +240,7 @@ export default {
             this.$socket.emit(
               "postAnswers",
               store.state.currentUser.id,
-              store.state.currentUser.role,
-              store.state.currentUser.name,
-              store.state.currentUser.avatar,
-              UserId,
-              StatusId,
-              Date.now()
+              UserId
             );
           } else if (response.data.status !== "success") {
             this.isProcessing = false;
@@ -260,7 +255,7 @@ export default {
           });
         });
     },
-    async handleAfterSubmitPut(formData, UserId, StatusId) {
+    async handleAfterSubmitPut(formData, UserId) {
       try {
         this.isProcessing = true;
         const { data } = await answersAPI.putAnswer.create({ formData });
@@ -273,16 +268,7 @@ export default {
           this.fetchAnswers();
           $("#answerUpload").modal("hide");
           //socket通知
-          this.$socket.emit(
-            "putAnswers",
-            store.state.currentUser.id,
-            store.state.currentUser.role,
-            store.state.currentUser.name,
-            store.state.currentUser.avatar,
-            UserId,
-            StatusId,
-            Date.now()
-          );
+          this.$socket.emit("putAnswers", store.state.currentUser.id, UserId);
         }
       } catch (error) {
         this.isProcessing = false;

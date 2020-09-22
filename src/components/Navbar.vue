@@ -58,7 +58,9 @@
                 style="border-radius:100%;width:14px;height:14px;position: absolute;top:1px;right:1px"
               >{{unRead}}</span>
             </button>
+            <Spinner v-if="isLoading" />
             <div
+              v-else
               @click.stop
               v-show="notifyShow"
               class="card border-primary mb-3 text-primary border-0"
@@ -75,36 +77,43 @@
                   <router-link
                     v-else
                     v-for="notification in notifications"
-                    :key="notification.date"
+                    :key="notification.createdAt"
                     to="/home"
                     class="list-group-item list-group-item-action d-flex"
                   >
-                    <div class="col-4 d-flex align-items-center justify-content-center">
-                      <img
-                        class="rounded-circle"
-                        width="60px"
-                        height="60px"
-                        :src="notification.avatar"
-                      />
-                    </div>
-                    <div v-if="currentUser.role==='teacher'" class="col-8">
-                      <h6>
-                        <span class="text-info">{{notification.name}}</span> post a new question!
-                      </h6>
-                      <h6 class="text-muted">{{notification.date | fromNow}}</h6>
-                    </div>
-                    <div v-else-if="notification.StatusId === 1" class="col-8">
-                      <h6>
-                        <span class="text-info">{{notification.name}}</span> get your question!
-                      </h6>
-                      <h6 class="text-muted">{{notification.date | fromNow}}</h6>
-                    </div>
-                    <div v-else-if="notification.StatusId === 2" class="col-8">
-                      <h6>
-                        <span class="text-info">{{notification.name}}</span> has answered your question!
-                      </h6>
-                      <h6 class="text-muted">{{notification.date | fromNow}}</h6>
-                    </div>
+                    <template v-if="currentUser.role==='teacher'">
+                      <div class="col-4 d-flex align-items-center justify-content-center">
+                        <img
+                          class="rounded-circle"
+                          width="60px"
+                          height="60px"
+                          :src="notification.avatar"
+                        />
+                      </div>
+                      <div class="col-8">
+                        <h6>
+                          <span class="text-info">{{notification.name}}</span> post a new question!
+                        </h6>
+                        <h6 class="text-muted">{{notification.createdAt | fromNow}}</h6>
+                      </div>
+                    </template>
+                    <template v-else-if="currentUser.role==='student'">
+                      <div class="col-4 d-flex align-items-center justify-content-center">
+                        <img
+                          class="rounded-circle"
+                          width="60px"
+                          height="60px"
+                          :src="notification.teacher.avatar"
+                        />
+                      </div>
+                      <div class="col-8">
+                        <h6>
+                          <span class="text-info">{{notification.teacher.name}}</span>
+                          {{notification.msg}}
+                        </h6>
+                        <h6 class="text-muted">{{notification.createdAt | fromNow}}</h6>
+                      </div>
+                    </template>
                   </router-link>
                 </div>
               </div>
@@ -146,6 +155,8 @@
 import { mapState } from "vuex";
 import { Toast } from "./../utils/helpers";
 import { Filter } from "./../utils/mixins";
+import Spinner from "./../components/Spinner";
+import notificationsAPI from "./../apis/notifications";
 export default {
   mixins: [Filter],
   props: {
@@ -153,11 +164,15 @@ export default {
       type: Boolean,
     },
   },
+  components: {
+    Spinner,
+  },
   data() {
     return {
       notifications: [],
       unRead: 0,
       noActivated: false,
+      isLoading: false,
     };
   },
   sockets: {
@@ -185,7 +200,7 @@ export default {
         }, 820);
         this.unRead++;
       }
-      this.notifications.unshift(userInfo);
+      this.notifications = userInfo;
     },
     putAnswers: function (userInfo) {
       if (!this.notifyShow) {
@@ -195,13 +210,29 @@ export default {
         }, 820);
         this.unRead++;
       }
-      this.notifications.unshift(userInfo);
+      this.notifications = userInfo;
     },
   },
   computed: {
     ...mapState(["currentUser", "isAuthenticated"]),
   },
   methods: {
+    async fetchNotifications() {
+      try {
+        const response = await notificationsAPI.getNotifications();
+        if (response.data.notifications.length !== 0) {
+          this.notifications = response.data.notifications;
+          this.unRead = response.data.notifications[0].User.unread;
+        }
+        this.isLoading = false;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "Can't not get notifications data, please try again later",
+        });
+        this.isLoading = false;
+      }
+    },
     logout() {
       this.$store.commit("revokeAuthentication");
       this.$router.push("/home");
@@ -212,12 +243,17 @@ export default {
     },
     openNotifyBox() {
       this.$emit("showbox");
-      this.$socket.emit("openNotifyBox", 0);
+      this.$socket.emit("openNotifyBox", this.currentUser.id);
     },
   },
   watch: {
     notifyShow(newValue) {
       this.notifyShow = newValue;
+    },
+    isAuthenticated(newValue) {
+      if (newValue === true && this.currentUser.role === "student") {
+        this.fetchNotifications();
+      }
     },
   },
   updated() {

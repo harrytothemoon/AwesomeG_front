@@ -86,12 +86,7 @@ export default {
   },
   methods: {
     handleSubmit() {
-      this.$emit(
-        "after-submit",
-        this.getQuestion.id,
-        this.getQuestion.UserId,
-        this.getQuestion.StatusId
-      );
+      this.$emit("after-submit", this.getQuestion.id, this.getQuestion.UserId);
     },
   },
 };
