@@ -94,7 +94,7 @@
               type="submit"
               style="background-color:#c03546"
             >
-              <h4 class="m-0">Submit</h4>
+              <h4 class="m-0 text-center">Submit</h4>
             </button>
           </form>
         </div>

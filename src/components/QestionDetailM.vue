@@ -21,17 +21,20 @@
               class="card-img-top"
               :src="getQuestion.image"
               alt="Card image cap"
-              height="350px"
+              max-height="350px"
             />
             <img
               v-else
               class="card-img-top"
               src="https://image.damanwoo.com/files/media/c/h/r/o/m/e/d/i/n/o/chrome_dino_set-2.jpg"
               alt="Card image cap"
-              height="350px"
+              max-height="350px"
             />
             <div class="card-body">
-              <h4 class="card-title mb-0" style="color:#c03546">{{getQuestion.Subject.name}}</h4>
+              <h4
+                class="card-title mb-0 text-center"
+                style="color:#c03546"
+              >{{getQuestion.Subject.name}}</h4>
               <small class="text-mute mb-3">{{getQuestion.Scope.name}}</small>
               <p class="card-text">{{getQuestion.description}}</p>
             </div>
@@ -44,7 +47,7 @@
               type="submit"
               style="background-color:#c03546"
             >
-              <h4 class="m-0">Get a Question!</h4>
+              <h4 id="getquestionbtn" class="m-0 text-center">Get a Question!</h4>
             </button>
           </form>
         </div>
@@ -91,3 +94,16 @@ export default {
   },
 };
 </script>
+
+<style >
+@media (min-width: 370px) {
+  #getquestionbtn {
+    font-size: 0.8rem;
+  }
+}
+@media (min-width: 576px) {
+  #getquestionbtn {
+    font-size: 1.5rem;
+  }
+}
+</style>

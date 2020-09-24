@@ -117,7 +117,7 @@
               type="submit"
               :disabled="isProcessing"
             >
-              <h5 class="m-0">Submit</h5>
+              <h5 class="m-0 text-center">Submit</h5>
             </button>
 
             <div class="ext-center mt-4">
@@ -129,7 +129,7 @@
                 data-toggle="modal"
                 data-target="#signin"
               >
-                <h6 class="m-0">Sign in</h6>
+                <h6 class="m-0 text-center">Sign in</h6>
               </button>
             </div>
           </form>

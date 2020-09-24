@@ -1,5 +1,5 @@
 <template>
-  <ul class="nav nav-pills">
+  <ul class="nav nav-pills d-flex justify-content-center align-items-center">
     <li v-for="tab in tabs" :key="tab.id" class="nav-item ml-3" style="color:azure">
       <router-link class="nav-link" :to="tab.path">
         <h5>{{tab.title}}</h5>

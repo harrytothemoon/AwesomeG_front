@@ -25,7 +25,7 @@
               <h2>Package</h2>
               <h2>NT</h2>
               <h2>$ {{product.price}}</h2>
-              <h4>Number of questions</h4>
+              <h4 class="text-center">Number of questions</h4>
               <h2>{{product.description}}</h2>
               <input name="amount" type="hidden" :value="product.price" />
               <input name="productId" type="hidden" :value="product.id" />

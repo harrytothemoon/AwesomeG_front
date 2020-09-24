@@ -1,12 +1,12 @@
 <template>
   <div class="container py-5 text-primary" style="max-width:950px">
     <ul class="nav nav-tabs mt-1 mb-4 d-flex justify-content-center">
-      <li class="nav-item w-25" style="cursor:pointer">
+      <li class="nav-item w-50" style="cursor:pointer">
         <router-link :to="{name: 'user', params: {id: userId}}" class="nav-link text-center">
           <h4>My Information</h4>
         </router-link>
       </li>
-      <li class="nav-item w-25" style="cursor:pointer">
+      <li class="nav-item w-50" style="cursor:pointer">
         <router-link :to="{name: 'orders', params: {id: userId}}" class="nav-link text-center">
           <h4>My Orders</h4>
         </router-link>
@@ -99,3 +99,26 @@ export default {
   },
 };
 </script>
+
+<style >
+@media (min-width: 370px) {
+  table {
+    font-size: 0.6rem;
+  }
+}
+@media (min-width: 576px) {
+  table {
+    font-size: 0.8rem;
+  }
+}
+@media (min-width: 760px) {
+  table {
+    font-size: 1rem;
+  }
+}
+@media (min-width: 1200px) {
+  table {
+    font-size: 1.3rem;
+  }
+}
+</style>

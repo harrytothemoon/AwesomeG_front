@@ -31,7 +31,7 @@
               height="350px"
             />
             <div class="card-body">
-              <h4 class="card-title mb-0" style="color:#c03546">Answer</h4>
+              <h4 class="card-title mb-0 text-center" style="color:#c03546">Answer</h4>
               <p class="card-text">{{getQuestion.Answer.answer}}</p>
             </div>
           </div>

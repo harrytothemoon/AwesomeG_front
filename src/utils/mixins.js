@@ -7,8 +7,8 @@ export const Filter = {
     },
     ellipsis(value) {
       if (!value) return "";
-      if (value.length > 80) {
-        return value.slice(0, 80) + " ...";
+      if (value.length > 70) {
+        return value.slice(0, 70) + " ...";
       }
       return value;
     },

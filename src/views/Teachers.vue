@@ -5,11 +5,11 @@
     </div>
     <h1 class="mb-5 text-center mt-5">T e a c h e r s</h1>
     <div class="row">
-      <div class="col-3">
+      <div class="col-12 col-sm-4 col-md-4 col-lg-3">
         <Spinner v-if="subjectisLoading" />
         <FilterBar v-else :subjects="subjects" @after-filter="handleAfterFilter" />
       </div>
-      <div class="col-9">
+      <div class="col-12 col-sm-8 col-md-8 col-lg-9">
         <Spinner v-if="teacherCardisLoading" />
         <TeacherCard v-else :fiteredTeachers="fiteredTeachers" />
       </div>

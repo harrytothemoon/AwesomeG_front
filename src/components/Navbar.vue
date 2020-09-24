@@ -7,24 +7,6 @@
           <h6 class="m-0">Sign out</h6>
         </button>
       </template>
-      <template v-else>
-        <button
-          type="button"
-          class="btn btn-sm btn-secondary my-2 my-sm-0 ml-4 mr-2"
-          data-toggle="modal"
-          data-target="#signin"
-        >
-          <h6 class="m-0">Sign in</h6>
-        </button>
-        <button
-          type="button"
-          class="btn btn-sm btn-secondary my-2 my-sm-0"
-          data-toggle="modal"
-          data-target="#signup"
-        >
-          <h6 class="m-0">Sign up</h6>
-        </button>
-      </template>
     </div>
     <button
       class="navbar-toggler"
@@ -40,6 +22,24 @@
 
     <div id="navbarColor02" class="navbar-collapse collapse">
       <div class="ml-auto d-flex align-items-center">
+        <template v-if="!isAuthenticated">
+          <button
+            type="button"
+            class="btn btn-sm btn-secondary my-2 my-sm-0 ml-4 mr-2"
+            data-toggle="modal"
+            data-target="#signin"
+          >
+            <h6 class="m-0">Sign in</h6>
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-secondary my-2 my-sm-0"
+            data-toggle="modal"
+            data-target="#signup"
+          >
+            <h6 class="m-0">Sign up</h6>
+          </button>
+        </template>
         <!-- is user is admin -->
         <router-link v-if="currentUser.role === 'admin'" to="#" class="nav-link text-white mr-1">
           <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0">
@@ -61,6 +61,7 @@
             <Spinner v-if="isLoading" />
             <div
               v-else
+              id="notifybox"
               @click.stop
               v-show="notifyShow"
               class="card border-primary mb-3 text-primary border-0"
@@ -290,6 +291,12 @@ export default {
   40%,
   60% {
     transform: translate3d(2px, 0, 0);
+  }
+}
+@media (max-width: 990px) {
+  #notifybox {
+    position: absolute;
+    left: 10px;
   }
 }
 </style>

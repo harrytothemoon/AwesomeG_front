@@ -14,7 +14,7 @@
             @click="setVisibility('unSolved')"
             :class="{active:visibility === 'unSolved'}"
           >
-            <h3>UnSolved Questions</h3>
+            <h3>UnSolved</h3>
           </a>
         </li>
         <li class="nav-item w-50" style="cursor:pointer">
@@ -23,7 +23,7 @@
             @click="setVisibility('Solved')"
             :class="{active:visibility === 'Solved'}"
           >
-            <h3>Solved Questions</h3>
+            <h3>Solved</h3>
           </a>
         </li>
       </ul>
@@ -46,13 +46,13 @@
           <div
             v-for="question in filteredQuestions"
             :key="question.id"
-            class="card border-primary mt-3 text-primary"
-            style="max-width: 80vw;height: 15vw;background-color:#fffbf0"
+            class="card border-primary mt-3 text-primary mx-auto"
+            style="max-width: 80vw;background-color:#fffbf0"
           >
-            <div class="card-body row p-0 pl-2 pr-2">
-              <div class="left-side d-flex align-items-center col-6 border-right">
-                <div class="row w-100">
-                  <div class="col-5 mt-1">
+            <div id="myquestioncard" class="card-body row p-2">
+              <div class="left-side d-flex align-items-center text-center col-6 border-right">
+                <div class="row w-100 m-0 d-flex align-items-center">
+                  <div class="col-12 col-sm-5 col-md-4 mt-1">
                     <img
                       v-if="question.image"
                       class="rounded"
@@ -70,33 +70,28 @@
                       height="180px"
                     />
                   </div>
-                  <div class="col-7">
-                    <h3 style="color:#c03546">
-                      {{question.Subject.name}}
-                      <span
-                        style="font-size:14px;color:gray"
-                      >{{question.Scope.name}}</span>
-                    </h3>
-                    <p style="height:80px">{{question.description | ellipsis}}</p>
-                    <br />
-                    <h6 class="text-right" style="color:#4F86C6">{{question.createdAt | fromNow}}.</h6>
+                  <div class="col-12 col-sm-7 col-md-8">
+                    <h3 class="mb-0" style="color:#c03546">{{question.Subject.name}}</h3>
+                    <span style="color:gray">{{question.Scope.name}}</span>
+                    <p style="max-height:80px">{{question.description | ellipsis}}</p>
+                    <h6 style="color:#4F86C6">{{question.createdAt | fromNow}}.</h6>
                   </div>
                 </div>
               </div>
               <div class="right-side text-center col-6">
-                <h3 class="border-bottom" style="color:#004e66">Status</h3>
+                <h3 class="border-bottom mb-0" style="color:#004e66">Status</h3>
                 <div class="row">
-                  <div v-if="question.Answer.User.avatar" class="col-3 mt-2 ml-4">
+                  <div class="col-12 col-md-4 my-2">
                     <img
+                      v-if="question.Answer.User.avatar"
                       class="rounded-circle"
                       :src="question.Answer.User.avatar"
                       alt="Card image cap"
                       width="100px"
                       height="100px"
                     />
-                  </div>
-                  <div v-else class="col-3 mt-2 ml-4">
                     <img
+                      v-else
                       class="rounded-circle"
                       src="https://i.imgflip.com/213ss9.jpg"
                       alt="Card image cap"
@@ -104,11 +99,17 @@
                       height="100px"
                     />
                   </div>
-                  <div v-if="question.StatusId === 2" class="col-8">
+                  <div
+                    v-if="question.StatusId === 2"
+                    class="col-12 col-md-8 d-flex flex-column align-items-center justify-content-center"
+                  >
                     <h4 class="text-left">{{question.Answer.User.name}}</h4>
                     <h2 style="color:#c03546">{{question.Status.name}}</h2>
                   </div>
-                  <div v-else-if="question.StatusId === 3 ||question.StatusId === 4" class="col-8">
+                  <div
+                    v-else-if="question.StatusId === 3 ||question.StatusId === 4"
+                    class="col-12 col-md-8 d-flex flex-column align-items-center justify-content-center"
+                  >
                     <h4 class="text-left">{{question.Answer.User.name}}</h4>
                     <h2 style="color:#c03546">{{question.Status.name}}</h2>
                     <button
@@ -121,9 +122,11 @@
                       <h4>Review Answer</h4>
                     </button>
                   </div>
-                  <div v-else class="col-8">
-                    <br />
-                    <h2 class="mt-2" style="color:#c03546">{{question.Status.name}}</h2>
+                  <div
+                    v-else
+                    class="col-12 col-md-8 d-flex flex-column align-items-center justify-content-center"
+                  >
+                    <h2 style="color:#c03546">{{question.Status.name}}</h2>
                   </div>
                 </div>
               </div>
@@ -257,4 +260,97 @@ export default {
 </script>
 
 <style>
+@media (max-width: 370px) {
+  #myquestioncard img {
+    width: 50px;
+    height: 50px;
+  }
+  #myquestioncard h3,
+  #myquestioncard h2,
+  #myquestioncard h4 {
+    font-size: 0.7rem;
+  }
+  #myquestioncard {
+    font-size: 0.5rem;
+  }
+}
+@media (min-width: 370px) {
+  #myquestioncard img {
+    width: 50px;
+    height: 50px;
+  }
+  #myquestioncard h3,
+  #myquestioncard h2,
+  #myquestioncard h4 {
+    font-size: 0.7rem;
+  }
+  #myquestioncard p,
+  #myquestioncard span {
+    font-size: 0.5rem;
+  }
+}
+@media (min-width: 570px) {
+  #myquestioncard img {
+    width: 70px;
+    height: 70px;
+  }
+  #myquestioncard h3,
+  #myquestioncard h2,
+  #myquestioncard h4 {
+    font-size: 1rem;
+  }
+  #myquestioncard p,
+  #myquestioncard span,
+  #myquestioncard h6 {
+    font-size: 0.6rem;
+  }
+}
+@media (min-width: 760px) {
+  #myquestioncard img {
+    width: 80px;
+    height: 80px;
+  }
+  #myquestioncard h3,
+  #myquestioncard h2,
+  #myquestioncard h4 {
+    font-size: 1rem;
+  }
+  #myquestioncard p,
+  #myquestioncard span,
+  #myquestioncard h6 {
+    font-size: 0.7rem;
+  }
+}
+@media (min-width: 990px) {
+  #myquestioncard img {
+    width: 100px;
+    height: 100px;
+  }
+  #myquestioncard h3,
+  #myquestioncard h2,
+  #myquestioncard h4 {
+    font-size: 1.3rem;
+  }
+  #myquestioncard p,
+  #myquestioncard span,
+  #myquestioncard h6 {
+    font-size: 0.9rem;
+  }
+}
+@media (min-width: 1100px) {
+  #myquestioncard img {
+    width: 120px;
+    height: 120px;
+  }
+  #myquestioncard h3,
+  #myquestioncard h2,
+  #myquestioncard h4 {
+    font-size: 1.4rem;
+  }
+  #myquestioncard p,
+  #myquestioncard span,
+  #myquestioncard h6 {
+    font-size: 1rem;
+  }
+}
 </style>

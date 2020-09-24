@@ -8,36 +8,34 @@
     aria-hidden="true"
   >
     <div class="modal-dialog text-primary text-center" role="document" style="max-width:650px">
-      <div class="modal-content" style="background-color:#fffbf0">
+      <div id="postanswer" class="modal-content" style="background-color:#fffbf0">
         <div class="d-flex justify-content-end">
           <button type="button" class="close m-0 mr-3 mt-3" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body mt-2">
-          <div class="card mb-3 border-0 d-flex flex-row rounded">
-            <img
-              v-if="uploadAnswer.Question.image"
-              class="rounded"
-              :src="uploadAnswer.Question.image"
-              alt="Card image cap"
-              height="200px"
-              width="300px"
-            />
-            <img
-              v-else
-              class="rounded"
-              src="https://image.damanwoo.com/files/media/c/h/r/o/m/e/d/i/n/o/chrome_dino_set-2.jpg"
-              alt="Card image cap"
-              height="200px"
-              width="300px"
-            />
-            <div class="card-body">
+          <div class="card border-0 row d-flex flex-row align-items-center">
+            <div class="rounded col-6">
+              <img
+                v-if="uploadAnswer.Question.image"
+                class="rounded"
+                :src="uploadAnswer.Question.image"
+                alt="Card image cap"
+              />
+              <img
+                v-else
+                class="rounded"
+                src="https://image.damanwoo.com/files/media/c/h/r/o/m/e/d/i/n/o/chrome_dino_set-2.jpg"
+                alt="Card image cap"
+              />
+            </div>
+            <div class="card-body d-flex flex-column align-items-start col-6 flex-wrap">
               <h4
                 class="card-title mb-0"
                 style="color:#c03546"
               >{{uploadAnswer.Question.Subject.name}}</h4>
-              <small class="text-mute mb-3">{{uploadAnswer.Question.Scope.name}}</small>
+              <p class="text-mute mb-3">{{uploadAnswer.Question.Scope.name}}</p>
               <p class="card-text">{{uploadAnswer.Question.description}}</p>
             </div>
           </div>
@@ -83,7 +81,7 @@
               type="submit"
               style="background-color:#c03546"
             >
-              <h4 class="m-0">Solve it !</h4>
+              <h4 class="m-0 text-center">Solve it !</h4>
             </button>
           </form>
         </div>
@@ -150,3 +148,45 @@ export default {
   },
 };
 </script>
+
+<style >
+@media (min-width: 370px) {
+  #postanswer img {
+    width: 150px;
+    height: 150px;
+  }
+  #postanswer p {
+    font-size: 0.8rem;
+    max-width: 140px;
+  }
+  #postanswer h4 {
+    font-size: 0.8rem;
+  }
+}
+@media (min-width: 570px) {
+  #postanswer img {
+    width: 180px;
+    height: 180px;
+  }
+  #postanswer p {
+    font-size: 0.9rem;
+    max-width: 240px;
+  }
+  #postanswer h4 {
+    font-size: 1.2rem;
+  }
+}
+@media (min-width: 760px) {
+  #postanswer img {
+    width: 200px;
+    height: 200px;
+  }
+  #postanswer p {
+    font-size: 0.9rem;
+    max-width: 280px;
+  }
+  #postanswer h4 {
+    font-size: 1.5rem;
+  }
+}
+</style>

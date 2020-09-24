@@ -1,11 +1,11 @@
 <template>
-  <div class="card text-white mb-3" style="max-width: 15rem;background-color:#c9d6de">
-    <h2 class="card-header">Subject</h2>
-    <div class="card-body">
-      <ul class="nav nav-pills flex-column">
+  <div class="card text-white mx-auto mb-3" style="max-width: 18rem;background-color:#c9d6de">
+    <h2 id="filterbartitle" class="card-header text-center">Subject</h2>
+    <div class="card-body m-auto">
+      <ul id="filterbar" class="nav nav-pills">
         <li class="nav-item" style="cursor:pointer">
           <a class="nav-link" :class="{ active: subjectId === 0}" @click="setVisibility(0)">
-            <h4>All</h4>
+            <span>All</span>
           </a>
         </li>
         <li v-for="subject in subjects" :key="subject.id" class="nav-item" style="cursor:pointer">
@@ -14,7 +14,7 @@
             :class="{ active: subjectId === subject.id}"
             @click="setVisibility(subject.id)"
           >
-            <h4>{{ subject.name }}</h4>
+            <span>{{ subject.name }}</span>
           </a>
         </li>
       </ul>
@@ -43,3 +43,34 @@ export default {
   },
 };
 </script>
+
+<style>
+@media (min-width: 370px) {
+  #filterbartitle {
+    font-size: 1.1rem;
+  }
+  #filterbar span {
+    font-size: 0.8rem;
+  }
+}
+@media (min-width: 576px) {
+  #filterbartitle {
+    font-size: 1.1rem;
+  }
+  #filterbar span {
+    font-size: 0.8rem;
+  }
+  #filterbar {
+    display: flex;
+    flex-direction: column;
+  }
+}
+@media (min-width: 768px) {
+  #filterbartitle {
+    font-size: 1.5rem;
+  }
+  #filterbar span {
+    font-size: 1.3rem;
+  }
+}
+</style>

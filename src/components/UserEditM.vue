@@ -15,7 +15,7 @@
           </button>
         </div>
         <h1 class="modal-title" id="usereditLabel" style="color:#c03546">User Edit</h1>
-        <div class="modal-body mt-2">
+        <div id="usereditbody" class="modal-body mt-2">
           <form class="w-100" @submit.prevent.stop="handleSubmit">
             <fieldset class="form-group">
               <div class="form-label-group mb-2 d-flex justify-content-around">
@@ -100,7 +100,7 @@
                 placeholder="bankaccount"
               />
               <fieldset class="form-group mt-3">
-                <h5>Expertise</h5>
+                <h5 class="text-center">Expertise</h5>
                 <div class="form-check d-inline px-0">
                   <label class="form-check-label">
                     <input
@@ -286,3 +286,10 @@ export default {
   },
 };
 </script>
+
+<style>
+@media (min-width: 380px) {
+  #usereditbody h5 {
+    font-size: 2rem;
+  }
+}

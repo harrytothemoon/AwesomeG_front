@@ -1,6 +1,6 @@
 <template>
   <div class="row overflow-auto" style="height:600px">
-    <div v-for="teacher in fiteredTeachers" :key="teacher.id" class="col-md-4 col-lg-4">
+    <div v-for="teacher in fiteredTeachers" :key="teacher.id" class="col-md-6 col-lg-4">
       <div class="card mb-3 text-center align-items-center" style="background-color:#fffbf0">
         <img
           v-if="teacher.avatar"

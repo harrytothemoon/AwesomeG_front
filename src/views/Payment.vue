@@ -11,7 +11,7 @@
         <div class="card w-75 mx-auto text-center">
           <h2 class="mt-2" style="color:#c03546">'{{order.Product.name}}'</h2>
           <h2>NT$ {{order.amount}}</h2>
-          <h4>Number of questions</h4>
+          <h4 class="text-center">Number of questions</h4>
           <h2>{{order.Product.description}}</h2>
         </div>
         <input type="hidden" name="MerchantID" :value="tradeInfo.MerchantID" />

@@ -5,35 +5,33 @@
     <Spinner v-if="isLoading" />
     <template v-else>
       <ul class="nav nav-tabs mt-1 mb-4 d-flex justify-content-center">
-        <li class="nav-item w-25" style="cursor:pointer">
+        <li class="nav-item w-50" style="cursor:pointer">
           <router-link :to="{name: 'user', params: {id: user.id}}" class="nav-link text-center">
-            <h4>My Information</h4>
+            <h4 id="userNav1">My Information</h4>
           </router-link>
         </li>
-        <li v-if="user.role==='student'" class="nav-item w-25" style="cursor:pointer">
+        <li v-if="user.role==='student'" class="nav-item w-50" style="cursor:pointer">
           <router-link :to="{name: 'orders', params: {id: user.id}}" class="nav-link text-center">
-            <h4>My Orders</h4>
+            <h4 id="userNav2">My Orders</h4>
           </router-link>
         </li>
       </ul>
 
       <div class="row">
-        <div class="col-3 pl-0 mt-1 d-flex justify-content-start align-items-center">
+        <div class="col-3 mt-1 d-flex justify-content-start align-items-center">
           <img
+            id="userAvatar"
             v-if="user.avatar"
             class="rounded-circle"
             :src="user.avatar"
             alt="Card image cap"
-            width="200px"
-            height="200px"
           />
           <img
             v-else
+            id="userAvatar"
             class="rounded-circle"
             src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
             alt="Card image cap"
-            width="200px"
-            height="200px"
           />
         </div>
         <div class="col-5 mt-1 d-flex flex-column align-items-start justify-content-center">
@@ -41,7 +39,7 @@
             Role :
             <span>{{user.role}}</span>
           </h2>
-          <h1 class="display-4" style="color:black">{{user.name}}</h1>
+          <h1 id="username" class="display-4" style="color:black">{{user.name}}</h1>
           <span
             v-if="user.role==='teacher'"
             class="badge"
@@ -93,25 +91,26 @@
             <br v-else />
           </template>
         </div>
-        <div v-if="user.role === 'teacher'" class="col-5 m-2">
+        <div v-if="user.role === 'teacher'" class="col-5 p-2">
           <h3 style="color: #4f86c6">About Me</h3>
           <div class="card rounded p-3" style="height:270px">
             <h5>{{user.introduction | ellipsis}}</h5>
           </div>
         </div>
-        <div v-else-if="user.role === 'student'" class="col-5 m-2">
+        <div v-else-if="user.role === 'student'" class="col-5 p-2">
           <h3 style="color: #4f86c6">Available Balance</h3>
           <h5 v-if="user.quantity">{{user.quantity}}</h5>
           <h4 class="mb-0" v-else>0</h4>
           <br />
           <button
             type="button"
-            class="btn btn-success btn-lg ml-5 mb-3"
-            style="height:150px;max-width:350px"
+            class="btn btn-success btn-lg d-flex align-items-center"
+            style="max-width:400px"
             data-toggle="modal"
             data-target="#product"
+            id="depositbtn"
           >
-            <h1 class="m-0 display-3">Deposit !</h1>
+            <h1 id="depositbtntext" class="m-0 display-3 text-center">Deposit !</h1>
           </button>
         </div>
       </div>
@@ -251,3 +250,71 @@ export default {
   },
 };
 </script>
+
+<style>
+@media (max-width: 380px) {
+  #userAvatar {
+    width: 80px;
+    height: 80px;
+  }
+  #username {
+    font-size: 1rem;
+  }
+  #depositbtntext {
+    font-size: 1.2rem;
+  }
+}
+@media (min-width: 380px) {
+  #userAvatar {
+    width: 80px;
+    height: 80px;
+  }
+  #username {
+    font-size: 1.1rem;
+  }
+}
+@media (min-width: 570px) {
+  #userAvatar {
+    width: 140px;
+    height: 140px;
+  }
+  #username {
+    font-size: 1.5rem;
+  }
+  #depositbtntext {
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+  #depositbtn {
+    margin: 0;
+  }
+}
+@media (min-width: 760px) {
+  #userAvatar {
+    width: 160px;
+    height: 160px;
+  }
+  #depositbtntext {
+    font-size: 2rem;
+    height: 70px;
+    line-height: 2;
+  }
+}
+@media (min-width: 990px) {
+  #userAvatar {
+    width: 200px;
+    height: 200px;
+  }
+  #depositbtntext {
+    font-size: 3rem;
+    height: 80px;
+    line-height: 2;
+  }
+}
+@media (min-width: 1000px) {
+  #depositbtntext {
+    height: 100px;
+    line-height: 2;
+  }
+}
+</style>
