@@ -7,10 +7,23 @@
     aria-labelledby="answerUploadLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog text-primary text-center" role="document" style="max-width:650px">
-      <div id="postanswer" class="modal-content" style="background-color:#fffbf0">
+    <div
+      class="modal-dialog text-primary text-center"
+      role="document"
+      style="max-width: 650px"
+    >
+      <div
+        id="postanswer"
+        class="modal-content"
+        style="background-color: #fffbf0"
+      >
         <div class="d-flex justify-content-end">
-          <button type="button" class="close m-0 mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+          <button
+            type="button"
+            class="close m-0 mr-3 mt-3"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -22,6 +35,8 @@
                 class="rounded"
                 :src="uploadAnswer.Question.image"
                 alt="Card image cap"
+                style="cursor: zoom-in"
+                v-viewer
               />
               <img
                 v-else
@@ -30,17 +45,24 @@
                 alt="Card image cap"
               />
             </div>
-            <div class="card-body d-flex flex-column align-items-start col-6 flex-wrap">
-              <h4
-                class="card-title mb-0"
-                style="color:#c03546"
-              >{{uploadAnswer.Question.Subject.name}}</h4>
-              <p class="text-mute mb-3">{{uploadAnswer.Question.Scope.name}}</p>
-              <p class="card-text">{{uploadAnswer.Question.description}}</p>
+            <div
+              class="card-body d-flex flex-column align-items-start col-6 flex-wrap"
+            >
+              <h4 class="card-title mb-0" style="color: #c03546">
+                {{ uploadAnswer.Question.Subject.name }}
+              </h4>
+              <p class="text-mute mb-3">
+                {{ uploadAnswer.Question.Scope.name }}
+              </p>
+              <p class="card-text">{{ uploadAnswer.Question.description }}</p>
             </div>
           </div>
           <form class="w-100" @submit.prevent.stop="handleSubmit">
-            <input name="questionId" type="hidden" :value="uploadAnswer.Question.id" />
+            <input
+              name="questionId"
+              type="hidden"
+              :value="uploadAnswer.Question.id"
+            />
             <div class="row mt-4">
               <div class="form-group col-6">
                 <textarea
@@ -64,7 +86,7 @@
                   accept="image/*"
                   class="form-control-file"
                   @change="handleFileChange"
-                  style="cursor:pointer"
+                  style="cursor: pointer"
                 />
                 <img
                   v-if="image"
@@ -79,7 +101,7 @@
               :disabled="isProcessing"
               class="btn btn-primary btn-block mb-3 w-25 mx-auto"
               type="submit"
-              style="background-color:#c03546"
+              style="background-color: #c03546"
             >
               <h4 class="m-0 text-center">Solve it !</h4>
             </button>

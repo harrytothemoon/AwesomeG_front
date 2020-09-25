@@ -7,10 +7,19 @@
     aria-labelledby="postQLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog text-primary text-center" role="document" style="max-width:650px">
-      <div class="modal-content" style="background-color:#fffbf0">
+    <div
+      class="modal-dialog text-primary text-center"
+      role="document"
+      style="max-width: 650px"
+    >
+      <div class="modal-content" style="background-color: #fffbf0">
         <div class="d-flex justify-content-end">
-          <button type="button" class="close m-0 mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+          <button
+            type="button"
+            class="close m-0 mr-3 mt-3"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -22,6 +31,8 @@
               :src="getQuestion.image"
               alt="Card image cap"
               max-height="350px"
+              style="cursor: zoom-in"
+              v-viewer
             />
             <img
               v-else
@@ -31,12 +42,11 @@
               max-height="350px"
             />
             <div class="card-body">
-              <h4
-                class="card-title mb-0 text-center"
-                style="color:#c03546"
-              >{{getQuestion.Subject.name}}</h4>
-              <small class="text-mute mb-3">{{getQuestion.Scope.name}}</small>
-              <p class="card-text">{{getQuestion.description}}</p>
+              <h4 class="card-title mb-0 text-center" style="color: #c03546">
+                {{ getQuestion.Subject.name }}
+              </h4>
+              <small class="text-mute mb-3">{{ getQuestion.Scope.name }}</small>
+              <p class="card-text">{{ getQuestion.description }}</p>
             </div>
           </div>
           <form class="w-100" @submit.prevent.stop="handleSubmit">
@@ -45,9 +55,11 @@
               :disabled="isProcessing"
               class="btn btn-primary btn-block mb-3 w-25 mx-auto"
               type="submit"
-              style="background-color:#c03546"
+              style="background-color: #c03546"
             >
-              <h4 id="getquestionbtn" class="m-0 text-center">Get a Question!</h4>
+              <h4 id="getquestionbtn" class="m-0 text-center">
+                Get a Question!
+              </h4>
             </button>
           </form>
         </div>

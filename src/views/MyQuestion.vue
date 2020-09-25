@@ -1,27 +1,30 @@
 <template>
   <div class="container py-4">
     <div class="d-flex justify-content-center mt-2">
-      <PostQuestionM :isProcessing="isProcessing" @after-submit="handleAfterSubmit" />
+      <PostQuestionM
+        :isProcessing="isProcessing"
+        @after-submit="handleAfterSubmit"
+      />
       <AnswerDetailM :getQuestion="getQuestion" />
       <NavTabs />
     </div>
     <div class="d-flex flex-column justify-content-center mt-4">
       <!-- navtag -->
       <ul class="nav nav-tabs">
-        <li class="nav-item w-50" style="cursor:pointer">
+        <li class="nav-item w-50" style="cursor: pointer">
           <a
             class="nav-link text-center"
             @click="setVisibility('unSolved')"
-            :class="{active:visibility === 'unSolved'}"
+            :class="{ active: visibility === 'unSolved' }"
           >
             <h3>UnSolved</h3>
           </a>
         </li>
-        <li class="nav-item w-50" style="cursor:pointer">
+        <li class="nav-item w-50" style="cursor: pointer">
           <a
             class="nav-link text-center"
             @click="setVisibility('Solved')"
-            :class="{active:visibility === 'Solved'}"
+            :class="{ active: visibility === 'Solved' }"
           >
             <h3>Solved</h3>
           </a>
@@ -29,7 +32,7 @@
       </ul>
       <div
         class="jumbotron bg-primary pt-1 overflow-auto"
-        style="border-radius: 0px; border:6px inset #b6b8ba;height:650px"
+        style="border-radius: 0px; border: 6px inset #b6b8ba; height: 650px"
       >
         <Spinner v-if="isLoading" />
         <template v-else>
@@ -47,10 +50,12 @@
             v-for="question in filteredQuestions"
             :key="question.id"
             class="card border-primary mt-3 text-primary mx-auto"
-            style="max-width: 80vw;background-color:#fffbf0"
+            style="max-width: 80vw; background-color: #fffbf0"
           >
             <div id="myquestioncard" class="card-body row p-2">
-              <div class="left-side d-flex align-items-center text-center col-6 border-right">
+              <div
+                class="left-side d-flex align-items-center text-center col-6 border-right"
+              >
                 <div class="row w-100 m-0 d-flex align-items-center">
                   <div class="col-12 col-sm-5 col-md-4 mt-1">
                     <img
@@ -60,6 +65,8 @@
                       alt="Card image cap"
                       width="180px"
                       height="180px"
+                      style="cursor: zoom-in"
+                      v-viewer
                     />
                     <img
                       v-else
@@ -71,15 +78,23 @@
                     />
                   </div>
                   <div class="col-12 col-sm-7 col-md-8">
-                    <h3 class="mb-0" style="color:#c03546">{{question.Subject.name}}</h3>
-                    <span style="color:gray">{{question.Scope.name}}</span>
-                    <p style="max-height:80px">{{question.description | ellipsis}}</p>
-                    <h6 style="color:#4F86C6">{{question.createdAt | fromNow}}.</h6>
+                    <h3 class="mb-0" style="color: #c03546">
+                      {{ question.Subject.name }}
+                    </h3>
+                    <span style="color: gray">{{ question.Scope.name }}</span>
+                    <p style="max-height: 80px">
+                      {{ question.description | ellipsis }}
+                    </p>
+                    <h6 style="color: #4f86c6">
+                      {{ question.createdAt | fromNow }}.
+                    </h6>
                   </div>
                 </div>
               </div>
               <div class="right-side text-center col-6">
-                <h3 class="border-bottom mb-0" style="color:#004e66">Status</h3>
+                <h3 class="border-bottom mb-0" style="color: #004e66">
+                  Status
+                </h3>
                 <div class="row">
                   <div class="col-12 col-md-4 my-2">
                     <img
@@ -103,15 +118,17 @@
                     v-if="question.StatusId === 2"
                     class="col-12 col-md-8 d-flex flex-column align-items-center justify-content-center"
                   >
-                    <h4 class="text-left">{{question.Answer.User.name}}</h4>
-                    <h2 style="color:#c03546">{{question.Status.name}}</h2>
+                    <h4 class="text-left">{{ question.Answer.User.name }}</h4>
+                    <h2 style="color: #c03546">{{ question.Status.name }}</h2>
                   </div>
                   <div
-                    v-else-if="question.StatusId === 3 ||question.StatusId === 4"
+                    v-else-if="
+                      question.StatusId === 3 || question.StatusId === 4
+                    "
                     class="col-12 col-md-8 d-flex flex-column align-items-center justify-content-center"
                   >
-                    <h4 class="text-left">{{question.Answer.User.name}}</h4>
-                    <h2 style="color:#c03546">{{question.Status.name}}</h2>
+                    <h4 class="text-left">{{ question.Answer.User.name }}</h4>
+                    <h2 style="color: #c03546">{{ question.Status.name }}</h2>
                     <button
                       @click="showAnswerDetail(question.id)"
                       type="button"
@@ -126,7 +143,7 @@
                     v-else
                     class="col-12 col-md-8 d-flex flex-column align-items-center justify-content-center"
                   >
-                    <h2 style="color:#c03546">{{question.Status.name}}</h2>
+                    <h2 style="color: #c03546">{{ question.Status.name }}</h2>
                   </div>
                 </div>
               </div>

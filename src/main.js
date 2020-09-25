@@ -6,6 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import VueSocketIO from 'vue-socket.io'
+import Viewer from 'v-viewer'
+import 'viewerjs/dist/viewer.css'
+
+Vue.use(Viewer)
 
 library.add(faPencilAlt);
 Vue.component('font-awesome-icon', FontAwesomeIcon)

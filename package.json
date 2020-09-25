@@ -19,6 +19,7 @@
     "popper.js": "^1.16.1",
     "sweetalert2": "^10.0.2",
     "uuid": "^8.3.0",
+    "v-viewer": "^1.5.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vue-socket.io": "^3.0.10",

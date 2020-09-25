@@ -16,12 +16,17 @@
     <div class="row mt-4">
       <div class="col-12 col-sm-3 col-lg-2 m-0">
         <Spinner v-if="subjectisLoading" />
-        <FilterBar v-else :subjects="subjects" @after-filter="handleAfterFilter" />
+        <FilterBar
+          v-else
+          :subjects="subjects"
+          @after-filter="handleAfterFilter"
+        />
       </div>
       <div id="teacherquestioncard" class="col-6 col-sm-5 col-lg-6">
         <div
           class="bg-primary p-3 overflow-auto"
-          style="border-radius: 0px; border:6px inset #b6b8ba; height:650px"
+          style="border-radius: 0px; border: 6px inset #b6b8ba; height: 650px"
+          v-viewer
         >
           <h1 class="text-center">Questions</h1>
           <Spinner v-if="questionsisLoading" />
@@ -30,10 +35,16 @@
             v-for="question in fiteredQuestion"
             :key="question.id"
             class="card border-primary text-primary p-2 m-1 d-flex justify-content-center mx-auto"
-            style="max-width: 450px; max-height: 215px; background-color: #fffbf0"
+            style="
+              max-width: 450px;
+              max-height: 215px;
+              background-color: #fffbf0;
+            "
           >
             <div class="d-flex justify-content-center align-items-center row">
-              <div class="col-12 col-md-5 d-flex justify-content-center align-items-center my-auto">
+              <div
+                class="col-12 col-md-5 d-flex justify-content-center align-items-center my-auto"
+              >
                 <img
                   v-if="question.image"
                   class="rounded"
@@ -41,6 +52,7 @@
                   alt="Card image cap"
                   width="150px"
                   height="150px"
+                  style="cursor: zoom-in"
                 />
                 <img
                   v-else
@@ -52,11 +64,15 @@
                 />
               </div>
               <div class="col-12 col-md-7">
-                <h5 style="color:#c03546">{{question.Subject.name}}</h5>
-                <span style="color:gray">{{question.Scope.name}}</span>
-                <p class="m-0 pr-2" style="max-height:80px">{{question.description | ellipsis}}</p>
+                <h5 style="color: #c03546">{{ question.Subject.name }}</h5>
+                <span style="color: gray">{{ question.Scope.name }}</span>
+                <p class="m-0 pr-2" style="max-height: 80px">
+                  {{ question.description | ellipsis }}
+                </p>
                 <div class="text-right mr-2">
-                  <span class="m-0" style="color:#4F86C6;">{{question.createdAt | fromNow}}.</span>
+                  <span class="m-0" style="color: #4f86c6"
+                    >{{ question.createdAt | fromNow }}.</span
+                  >
                 </div>
               </div>
             </div>
@@ -65,7 +81,7 @@
                 @click="setVisibility(question.id)"
                 type="button"
                 class="btn btn-secondary text-center pb-0"
-                style="background-color:#c03546"
+                style="background-color: #c03546"
                 data-toggle="modal"
                 data-target="#questionD"
               >
@@ -78,7 +94,7 @@
       <div id="teacherquestionwork" class="col-6 col-sm-4 col-lg-4">
         <div
           class="bg-primary p-3 overflow-auto"
-          style="border-radius: 0px; border:6px inset #b6b8ba; height:650px"
+          style="border-radius: 0px; border: 6px inset #b6b8ba; height: 650px"
         >
           <h1 class="text-center">Your Work</h1>
           <Spinner v-if="workisLoading" />
@@ -87,15 +103,21 @@
             v-for="answer in showWorkAnswer"
             :key="answer.id"
             class="card border-primary text-primary p-2 m-1"
-            style="max-width: 350px;max-height: 170px;background-color:#fffbf0"
+            style="
+              max-width: 350px;
+              max-height: 170px;
+              background-color: #fffbf0;
+            "
           >
             <div class="d-flex flex-column">
-              <h4 style="color:#c03546">{{answer.Question.Subject.name}}</h4>
-              <span style="color:gray">{{answer.Question.Scope.name}}</span>
-              <p class="mb-0" style="max-height:60px">{{answer.Question.description | ellipsis}}</p>
-              <p class="mt-2 mb-0 text-right" style="color:#4F86C6">
-                <span style="color:black">Taken :</span>
-                {{answer.createdAt | fromNow}}
+              <h4 style="color: #c03546">{{ answer.Question.Subject.name }}</h4>
+              <span style="color: gray">{{ answer.Question.Scope.name }}</span>
+              <p class="mb-0" style="max-height: 60px">
+                {{ answer.Question.description | ellipsis }}
+              </p>
+              <p class="mt-2 mb-0 text-right" style="color: #4f86c6">
+                <span style="color: black">Taken :</span>
+                {{ answer.createdAt | fromNow }}
               </p>
               <div class="d-flex justify-content-center align-items-center">
                 <button
@@ -104,7 +126,7 @@
                   class="btn btn-secondary text-center pb-0"
                   data-toggle="modal"
                   data-target="#answerUpload"
-                  style="background-color:#c03546"
+                  style="background-color: #c03546"
                 >
                   <h6 class="m-0">Upload</h6>
                 </button>

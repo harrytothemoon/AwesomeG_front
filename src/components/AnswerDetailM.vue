@@ -7,10 +7,19 @@
     aria-labelledby="answerDLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog text-primary text-center" role="document" style="max-width:650px">
-      <div class="modal-content" style="background-color:#fffbf0">
+    <div
+      class="modal-dialog text-primary text-center"
+      role="document"
+      style="max-width: 650px"
+    >
+      <div class="modal-content" style="background-color: #fffbf0">
         <div class="d-flex justify-content-end">
-          <button type="button" class="close m-0 mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+          <button
+            type="button"
+            class="close m-0 mr-3 mt-3"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -22,6 +31,8 @@
               :src="getQuestion.Answer.image"
               alt="Card image cap"
               height="350px"
+              style="cursor: zoom-in"
+              v-viewer
             />
             <img
               v-else
@@ -31,8 +42,10 @@
               height="350px"
             />
             <div class="card-body">
-              <h4 class="card-title mb-0 text-center" style="color:#c03546">Answer</h4>
-              <p class="card-text">{{getQuestion.Answer.answer}}</p>
+              <h4 class="card-title mb-0 text-center" style="color: #c03546">
+                Answer
+              </h4>
+              <p class="card-text">{{ getQuestion.Answer.answer }}</p>
             </div>
           </div>
         </div>

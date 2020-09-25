@@ -1,17 +1,31 @@
 <template>
-  <div class="container py-5 text-primary" style="max-width:950px">
+  <div class="container py-5 text-primary" style="max-width: 950px">
     <ProductM :userId="userId" />
-    <UserEditM :isProcessing="isProcessing" :initialUser="user" @after-update="handleAfterUpdate" />
+    <UserEditM
+      :isProcessing="isProcessing"
+      :initialUser="user"
+      @after-update="handleAfterUpdate"
+    />
     <Spinner v-if="isLoading" />
     <template v-else>
       <ul class="nav nav-tabs mt-1 mb-4 d-flex justify-content-center">
-        <li class="nav-item w-50" style="cursor:pointer">
-          <router-link :to="{name: 'user', params: {id: user.id}}" class="nav-link text-center">
+        <li class="nav-item w-50" style="cursor: pointer">
+          <router-link
+            :to="{ name: 'user', params: { id: user.id } }"
+            class="nav-link text-center"
+          >
             <h4 id="userNav1">My Information</h4>
           </router-link>
         </li>
-        <li v-if="user.role==='student'" class="nav-item w-50" style="cursor:pointer">
-          <router-link :to="{name: 'orders', params: {id: user.id}}" class="nav-link text-center">
+        <li
+          v-if="user.role === 'student'"
+          class="nav-item w-50"
+          style="cursor: pointer"
+        >
+          <router-link
+            :to="{ name: 'orders', params: { id: user.id } }"
+            class="nav-link text-center"
+          >
             <h4 id="userNav2">My Orders</h4>
           </router-link>
         </li>
@@ -22,9 +36,11 @@
           <img
             id="userAvatar"
             v-if="user.avatar"
-            class="rounded-circle"
+            class="rounded-circle images"
             :src="user.avatar"
             alt="Card image cap"
+            style="cursor: zoom-in"
+            v-viewer
           />
           <img
             v-else
@@ -34,18 +50,26 @@
             alt="Card image cap"
           />
         </div>
-        <div class="col-5 mt-1 d-flex flex-column align-items-start justify-content-center">
+        <div
+          class="col-5 mt-1 d-flex flex-column align-items-start justify-content-center"
+        >
           <h2>
             Role :
-            <span>{{user.role}}</span>
+            <span>{{ user.role }}</span>
           </h2>
-          <h1 id="username" class="display-4" style="color:black">{{user.name}}</h1>
+          <h1 id="username" class="display-4" style="color: black">
+            {{ user.name }}
+          </h1>
           <span
-            v-if="user.role==='teacher'"
+            v-if="user.role === 'teacher'"
             class="badge"
-            :class="{'badge-info': user.expertise==='Math','badge-success': user.expertise==='Physical','badge-secondary': user.expertise==='Chemical'}"
+            :class="{
+              'badge-info': user.expertise === 'Math',
+              'badge-success': user.expertise === 'Physical',
+              'badge-secondary': user.expertise === 'Chemical',
+            }"
           >
-            <h6 class="m-0">{{user.expertise}}</h6>
+            <h6 class="m-0">{{ user.expertise }}</h6>
           </span>
         </div>
         <div
@@ -53,11 +77,14 @@
           class="col-4 mt-1 d-flex flex-column align-items-end justify-content-center"
         >
           <h2>Solved Problems</h2>
-          <h1 class="display-4" style="color:#c03546">{{answers}}</h1>
+          <h1 class="display-4" style="color: #c03546">{{ answers }}</h1>
         </div>
-        <div v-else class="col-4 mt-1 d-flex flex-column align-items-end justify-content-center">
+        <div
+          v-else
+          class="col-4 mt-1 d-flex flex-column align-items-end justify-content-center"
+        >
           <h2>Asked Problems</h2>
-          <h1 class="display-4" style="color:#c03546">{{questions}}</h1>
+          <h1 class="display-4" style="color: #c03546">{{ questions }}</h1>
         </div>
       </div>
       <div class="text-right">
@@ -71,46 +98,53 @@
           <h6 class="d-inline">EDIT PROFILE</h6>
         </button>
       </div>
-      <div class="card d-flex flex-row row border-0 mt-3" style="background-color:#fffbf0">
+      <div
+        class="card d-flex flex-row row border-0 mt-3"
+        style="background-color: #fffbf0"
+      >
         <div class="col-6 m-2">
           <h3 style="color: #4f86c6">Gender</h3>
-          <h5 v-if="user.gender">{{user.gender}}</h5>
+          <h5 v-if="user.gender">{{ user.gender }}</h5>
           <br v-else />
           <h3 style="color: #4f86c6">Email</h3>
-          <h5>{{user.email}}</h5>
+          <h5>{{ user.email }}</h5>
           <h3 style="color: #4f86c6">Password</h3>
-          <h5>{{user.password | filterPassword}}</h5>
+          <h5>{{ user.password | filterPassword }}</h5>
           <template v-if="user.role === 'teacher'">
             <h3 style="color: #4f86c6">Bank Account</h3>
-            <h5 v-if="user.bankaccount">{{user.bankaccount | filterPassword}}</h5>
+            <h5 v-if="user.bankaccount">
+              {{ user.bankaccount | filterPassword }}
+            </h5>
             <br v-else />
           </template>
           <template v-else-if="user.role === 'student'">
             <h3 style="color: #4f86c6">Grade</h3>
-            <h5 v-if="user.grade">{{user.grade}}</h5>
+            <h5 v-if="user.grade">{{ user.grade }}</h5>
             <br v-else />
           </template>
         </div>
         <div v-if="user.role === 'teacher'" class="col-5 p-2">
           <h3 style="color: #4f86c6">About Me</h3>
-          <div class="card rounded p-3" style="height:270px">
-            <h5>{{user.introduction | ellipsis}}</h5>
+          <div class="card rounded p-3" style="height: 270px">
+            <h5>{{ user.introduction | ellipsis }}</h5>
           </div>
         </div>
         <div v-else-if="user.role === 'student'" class="col-5 p-2">
           <h3 style="color: #4f86c6">Available Balance</h3>
-          <h5 v-if="user.quantity">{{user.quantity}}</h5>
+          <h5 v-if="user.quantity">{{ user.quantity }}</h5>
           <h4 class="mb-0" v-else>0</h4>
           <br />
           <button
             type="button"
             class="btn btn-success btn-lg d-flex align-items-center"
-            style="max-width:400px"
+            style="max-width: 400px"
             data-toggle="modal"
             data-target="#product"
             id="depositbtn"
           >
-            <h1 id="depositbtntext" class="m-0 display-3 text-center">Deposit !</h1>
+            <h1 id="depositbtntext" class="m-0 display-3 text-center">
+              Deposit !
+            </h1>
           </button>
         </div>
       </div>
