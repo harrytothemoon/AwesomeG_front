@@ -1,9 +1,15 @@
 <template>
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary border-0">
+  <nav
+    class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary border-0"
+  >
     <router-link class="navbar-brand" to="/">Awesome G</router-link>
     <div>
       <template v-if="isAuthenticated">
-        <button @click="logout" type="button" class="btn btn-sm btn-secondary my-2 my-sm-0 ml-4">
+        <button
+          @click="logout"
+          type="button"
+          class="btn btn-sm btn-secondary my-2 my-sm-0 ml-4"
+        >
           <h6 class="m-0">Sign out</h6>
         </button>
       </template>
@@ -41,22 +47,43 @@
           </button>
         </template>
         <!-- is user is admin -->
-        <router-link v-if="currentUser.role === 'admin'" to="#" class="nav-link text-white mr-1">
+        <router-link
+          v-if="currentUser.role === 'admin'"
+          to="#"
+          class="nav-link text-white mr-1"
+        >
           <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0">
             <h6 class="m-0">Back Ground</h6>
           </button>
         </router-link>
 
         <template v-if="isAuthenticated">
-          <div :class="{ shake: noActivated }" class="mr-2" style="position: relative">
+          <div
+            :class="{ shake: noActivated }"
+            class="mr-2"
+            style="position: relative"
+          >
             <button @click.stop="openNotifyBox" class="btn btn-primary m-0 p-0">
-              <img style="cursor:pointer" src="../assets/icons/bell.png" width="30px" height="30px" />
+              <img
+                style="cursor: pointer"
+                src="../assets/icons/bell.png"
+                width="30px"
+                height="30px"
+              />
               <span
                 v-if="unRead"
                 class="badge badge-pill badge-danger p-0"
                 id="notify-badge"
-                style="border-radius:100%;width:14px;height:14px;position: absolute;top:1px;right:1px"
-              >{{unRead}}</span>
+                style="
+                  border-radius: 100%;
+                  width: 14px;
+                  height: 14px;
+                  position: absolute;
+                  top: 1px;
+                  right: 1px;
+                "
+                >{{ unRead }}</span
+              >
             </button>
             <Spinner v-if="isLoading" />
             <div
@@ -65,12 +92,21 @@
               @click.stop
               v-show="notifyShow"
               class="card border-primary mb-3 text-primary border-0"
-              style="width:300px;position:absolute;right:10px; background-color:#fffbf0;box-shadow:3px 3px 3px #292823;"
+              style="
+                width: 300px;
+                position: absolute;
+                right: 10px;
+                background-color: #fffbf0;
+                box-shadow: 3px 3px 3px #292823;
+              "
             >
-              <div class="card-body overflow-auto p-1 pr-2" style="max-height:500px;">
+              <div
+                class="card-body overflow-auto p-1 pr-2"
+                style="max-height: 500px"
+              >
                 <div class="list-group">
                   <div
-                    v-if="notifications.length===0"
+                    v-if="notifications.length === 0"
                     class="list-group-item list-group-item-action d-flex justify-content-center"
                   >
                     <h5 class="text-muted m-0">No new message ...</h5>
@@ -82,8 +118,10 @@
                     to="/home"
                     class="list-group-item list-group-item-action d-flex"
                   >
-                    <template v-if="currentUser.role==='teacher'">
-                      <div class="col-4 d-flex align-items-center justify-content-center">
+                    <template v-if="currentUser.role === 'teacher'">
+                      <div
+                        class="col-4 d-flex align-items-center justify-content-center"
+                      >
                         <img
                           class="rounded-circle"
                           width="60px"
@@ -93,13 +131,18 @@
                       </div>
                       <div class="col-8">
                         <h6>
-                          <span class="text-info">{{notification.name}}</span> post a new question!
+                          <span class="text-info">{{ notification.name }}</span>
+                          post a new question!
                         </h6>
-                        <h6 class="text-muted">{{notification.createdAt | fromNow}}</h6>
+                        <h6 class="text-muted">
+                          {{ notification.createdAt | fromNow }}
+                        </h6>
                       </div>
                     </template>
-                    <template v-else-if="currentUser.role==='student'">
-                      <div class="col-4 d-flex align-items-center justify-content-center">
+                    <template v-else-if="currentUser.role === 'student'">
+                      <div
+                        class="col-4 d-flex align-items-center justify-content-center"
+                      >
                         <img
                           class="rounded-circle"
                           width="60px"
@@ -109,10 +152,14 @@
                       </div>
                       <div class="col-8">
                         <h6>
-                          <span class="text-info">{{notification.teacher.name}}</span>
-                          {{notification.msg}}
+                          <span class="text-info">{{
+                            notification.teacher.name
+                          }}</span>
+                          {{ notification.msg }}
                         </h6>
-                        <h6 class="text-muted">{{notification.createdAt | fromNow}}</h6>
+                        <h6 class="text-muted">
+                          {{ notification.createdAt | fromNow }}
+                        </h6>
                       </div>
                     </template>
                   </router-link>
@@ -122,11 +169,11 @@
           </div>
           <!-- is user is login -->
           <router-link
-            :to="{name: 'user', params: {id: currentUser.id}}"
+            :to="{ name: 'user', params: { id: currentUser.id } }"
             class="text-white mr-1 p-0 nav-link"
           >
             <h6 class="m-0">
-              {{currentUser.name}}
+              {{ currentUser.name }}
               <img
                 v-if="currentUser.avatar"
                 class="rounded-circle ml-2"
@@ -235,6 +282,11 @@ export default {
       }
     },
     logout() {
+      this.$socket.emit(
+        "userlogout",
+        this.currentUser.id,
+        this.currentUser.role
+      );
       this.$store.commit("revokeAuthentication");
       this.$router.push("/home");
       Toast.fire({
@@ -254,6 +306,9 @@ export default {
     isAuthenticated(newValue) {
       if (newValue === true && this.currentUser.role === "student") {
         this.fetchNotifications();
+      }
+      if (newValue === true && this.currentUser.role === "teacher") {
+        this.notifications = [];
       }
     },
   },
