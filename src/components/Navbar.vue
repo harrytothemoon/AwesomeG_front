@@ -147,14 +147,12 @@
                           class="rounded-circle"
                           width="60px"
                           height="60px"
-                          :src="notification.teacher.avatar"
+                          :src="notification.avatar"
                         />
                       </div>
                       <div class="col-8">
                         <h6>
-                          <span class="text-info">{{
-                            notification.teacher.name
-                          }}</span>
+                          <span class="text-info">{{ notification.name }}</span>
                           {{ notification.msg }}
                         </h6>
                         <h6 class="text-muted">
@@ -270,7 +268,7 @@ export default {
         const response = await notificationsAPI.getNotifications();
         if (response.data.notifications.length !== 0) {
           this.notifications = response.data.notifications;
-          this.unRead = response.data.notifications[0].User.unread;
+          this.unRead = response.data.notifications[0].unRead;
         }
         this.isLoading = false;
       } catch (error) {
@@ -304,6 +302,13 @@ export default {
       this.notifyShow = newValue;
     },
     isAuthenticated(newValue) {
+      if (newValue === true) {
+        this.$socket.emit(
+          "userInfo",
+          this.currentUser.id,
+          this.currentUser.role
+        );
+      }
       if (newValue === true && this.currentUser.role === "student") {
         this.fetchNotifications();
       }
@@ -311,9 +316,6 @@ export default {
         this.notifications = [];
       }
     },
-  },
-  updated() {
-    this.$socket.emit("userInfo", this.currentUser.id, this.currentUser.role);
   },
 };
 </script>
