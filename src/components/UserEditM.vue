@@ -8,13 +8,20 @@
     aria-hidden="true"
   >
     <div class="modal-dialog text-primary text-center" role="document">
-      <div class="modal-content" style="background-color:#fffbf0">
+      <div class="modal-content" style="background-color: #fffbf0">
         <div class="d-flex justify-content-end">
-          <button type="button" class="close m-0 mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+          <button
+            type="button"
+            class="close m-0 mr-3 mt-3"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <h1 class="modal-title" id="usereditLabel" style="color:#c03546">User Edit</h1>
+        <h1 class="modal-title" id="usereditLabel" style="color: #c03546">
+          User Edit
+        </h1>
         <div id="usereditbody" class="modal-body mt-2">
           <form class="w-100" @submit.prevent.stop="handleSubmit">
             <fieldset class="form-group">
@@ -87,7 +94,7 @@
                 autocomplete="new-password"
               />
             </div>
-            <div v-if="user.role ==='teacher'" class="form-label-group mb-2">
+            <div v-if="user.role === 'teacher'" class="form-label-group mb-2">
               <label for="bankaccount">
                 <h5>Bank Account</h5>
               </label>
@@ -152,7 +159,7 @@
                 placeholder="grade"
               />
             </div>
-            <div v-if="user.role ==='teacher'" class="row">
+            <div v-if="user.role === 'teacher'" class="row">
               <div class="form-label-group col-6">
                 <label for="introduction">
                   <h4>Introduction</h4>
@@ -167,47 +174,69 @@
                 ></textarea>
               </div>
               <div class="form-label-group mb-3 col-6">
-                <label for="avatar">
-                  <h5>User's Avatar</h5>
-                </label>
+                <h4>User's Avatar</h4>
+                <div
+                  class="avatar-upload-block btn btn-outline-secondary d-flex justify-content-center align-items-center"
+                  style="border: 3px dashed"
+                >
+                  <input
+                    id="avatar-file"
+                    type="file"
+                    name="avatar"
+                    accept="image/*"
+                    class="form-control-file"
+                    @change="handleFileChange"
+                    style="cursor: pointer"
+                  />
+                  <img
+                    v-if="user.avatar"
+                    :src="user.avatar"
+                    id="custom-avatar"
+                    class="d-block rounded"
+                    style="cursor: pointer"
+                  />
+                  <img
+                    v-else
+                    src="../assets/upload3.png"
+                    id="custom-avatar-default"
+                    class="d-block"
+                    width="70px"
+                    height="70px"
+                    style="cursor: pointer"
+                  />
+                </div>
+              </div>
+            </div>
+            <template v-else>
+              <h5 class="my-3">User's Avatar</h5>
+              <div
+                class="mx-auto avatar-upload-block btn btn-outline-secondary d-flex justify-content-center align-items-center"
+                style="border: 3px dashed"
+              >
                 <input
-                  id="avatar"
+                  id="avatar-file"
                   type="file"
                   name="avatar"
                   accept="image/*"
                   class="form-control-file"
                   @change="handleFileChange"
-                  style="cursor:pointer"
+                  style="cursor: pointer"
                 />
                 <img
                   v-if="user.avatar"
                   :src="user.avatar"
-                  class="d-block img-thumbnail mb-3"
-                  width="120px"
-                  height="120px"
-                />
-              </div>
-            </div>
-            <template v-else>
-              <label class="mt-3" for="avatar">
-                <h5 class="m-0">User's Avatar</h5>
-              </label>
-              <div class="form-label-group my-4 px-5 d-flex align-items-center">
-                <input
-                  id="avatar"
-                  type="file"
-                  name="avatar"
-                  accept="image/*"
-                  class="form-control-file ml-3"
-                  @change="handleFileChange"
-                  style="cursor:pointer"
+                  id="custom-avatar"
+                  class="d-block rounded"
+                  style="cursor: pointer"
                 />
                 <img
-                  v-if="user.avatar"
-                  :src="user.avatar"
-                  class="d-block img-thumbnail mr-5"
-                  width="120px"
-                  height="120px"
+                  v-else
+                  src="../assets/upload3.png"
+                  id="custom-avatar-default"
+                  class="d-block"
+                  width="70px"
+                  height="70px"
+                  style="cursor: pointer"
                 />
               </div>
             </template>
@@ -216,7 +245,7 @@
               type="submit"
               :disabled="isProcessing"
             >
-              <h5 class="m-0">Update</h5>
+              <h4 class="m-0">Update</h4>
             </button>
           </form>
         </div>
@@ -288,8 +317,54 @@ export default {
 </script>
 
 <style>
-@media (min-width: 380px) {
+.avatar-upload-block {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+#avatar-file {
+  position: absolute;
+  top: 10;
+  left: 0;
+  opacity: 0;
+  margin: 0;
+  direction: rtl;
+  font-size: 10px; /*make image file area large enough to click or set height and width*/
+  height: 180px;
+  cursor: pointer;
+}
+@media (min-width: 370px) {
   #usereditbody h5 {
     font-size: 2rem;
   }
+  .avatar-upload-block {
+    width: 140px;
+    height: 170px;
+    margin-top: 15px;
+  }
+  #custom-avatar {
+    width: 100px;
+    height: 100px;
+  }
+  @media (min-width: 570px) {
+    .avatar-upload-block {
+      width: 220px;
+      height: 190px;
+    }
+    #custom-avatar {
+      width: 130px;
+      height: 130px;
+    }
+  }
+  @media (min-width: 760px) {
+    .avatar-upload-block {
+      width: 210px;
+      height: 170px;
+    }
+    #custom-avatar {
+      width: 130px;
+      height: 120px;
+    }
+  }
 }
+</style>

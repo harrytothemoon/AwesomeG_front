@@ -7,16 +7,31 @@
     aria-labelledby="postQLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog text-primary text-center" role="document" style="max-width:650px">
-      <div class="modal-content" style="background-color:#fffbf0">
+    <div
+      class="modal-dialog text-primary text-center"
+      role="document"
+      style="max-width: 650px"
+    >
+      <div class="modal-content" style="background-color: #fffbf0">
         <div class="d-flex justify-content-end">
-          <button type="button" class="close m-0 mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+          <button
+            type="button"
+            class="close m-0 mr-3 mt-3"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <h1 class="modal-title" id="postQLabel" style="color:#c03546">Ask your question</h1>
+        <h1 class="modal-title" id="postQLabel" style="color: #c03546">
+          Ask your question
+        </h1>
         <div class="modal-body mt-2">
-          <form class="w-100" v-show="!isLoading" @submit.prevent.stop="handleSubmit">
+          <form
+            class="w-100"
+            v-show="!isLoading"
+            @submit.prevent.stop="handleSubmit"
+          >
             <div class="form-group">
               <label for="subject">
                 <h4>Subject</h4>
@@ -26,14 +41,16 @@
                 id="subject"
                 required
                 name="subjectId"
-                style="cursor:pointer"
+                style="cursor: pointer"
               >
                 <option value selected disabled>Please Choose</option>
                 <option
                   v-for="subject in subjects"
                   :key="subject.id"
                   :value="subject.id"
-                >{{subject.name}}</option>
+                >
+                  {{ subject.name }}
+                </option>
               </select>
             </div>
             <div class="form-group">
@@ -45,10 +62,16 @@
                 id="scope"
                 required
                 name="scopeId"
-                style="cursor:pointer"
+                style="cursor: pointer"
               >
                 <option value selected disabled>Please Choose</option>
-                <option v-for="scope in scopes" :key="scope.id" :value="scope.id">{{scope.name}}</option>
+                <option
+                  v-for="scope in scopes"
+                  :key="scope.id"
+                  :value="scope.id"
+                >
+                  {{ scope.name }}
+                </option>
               </select>
             </div>
             <div class="row mt-4">
@@ -65,34 +88,45 @@
                   v-model="description"
                 ></textarea>
               </div>
-
               <div class="form-group col-6">
-                <label for="image">
-                  <h4>Question's Image</h4>
-                </label>
-                <input
-                  id="image"
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  class="form-control-file"
-                  @change="handleFileChange"
-                  style="cursor:pointer"
-                />
-                <img
-                  v-if="image"
-                  :src="image"
-                  class="d-block img-thumbnail mb-3"
-                  width="120px"
-                  height="120px"
-                />
+                <h4>Question's Image</h4>
+                <div
+                  class="img-upload-block btn btn-outline-secondary d-flex justify-content-center align-items-center"
+                  style="border: 3px dashed"
+                >
+                  <input
+                    id="img-file"
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    class="form-control-file"
+                    @change="handleFileChange"
+                    style="cursor: pointer"
+                  />
+                  <img
+                    v-if="image"
+                    :src="image"
+                    id="custom-img"
+                    class="d-block rounded"
+                    style="cursor: pointer"
+                  />
+                  <img
+                    v-else
+                    src="../assets/upload3.png"
+                    id="custom-img-default"
+                    class="d-block"
+                    width="70px"
+                    height="70px"
+                    style="cursor: pointer"
+                  />
+                </div>
               </div>
             </div>
             <button
               :disabled="isProcessing"
               class="btn btn-primary btn-block mb-3 w-25 mx-auto"
               type="submit"
-              style="background-color:#c03546"
+              style="background-color: #c03546"
             >
               <h4 class="m-0 text-center">Submit</h4>
             </button>
@@ -174,3 +208,53 @@ export default {
   },
 };
 </script>
+
+<style>
+.img-upload-block {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+#img-file {
+  position: absolute;
+  top: 10;
+  left: 0;
+  opacity: 0;
+  margin: 0;
+  direction: rtl;
+  font-size: 10px; /*make image file area large enough to click or set height and width*/
+  height: 180px;
+  cursor: pointer;
+}
+@media (min-width: 370px) {
+  .img-upload-block {
+    width: 140px;
+    height: 170px;
+    margin-top: 15px;
+  }
+  #custom-img {
+    width: 100px;
+    height: 100px;
+  }
+}
+@media (min-width: 570px) {
+  .img-upload-block {
+    width: 230px;
+    height: 190px;
+  }
+  #custom-img {
+    width: 130px;
+    height: 130px;
+  }
+}
+@media (min-width: 760px) {
+  .img-upload-block {
+    width: 280px;
+    height: 180px;
+  }
+  #custom-img {
+    width: 160px;
+    height: 150px;
+  }
+}
+</style>

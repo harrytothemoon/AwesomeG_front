@@ -29,7 +29,7 @@
         </div>
         <div class="modal-body mt-2">
           <div class="card border-0 row d-flex flex-row align-items-center">
-            <div class="rounded col-6">
+            <div class="questionpic rounded col-6">
               <img
                 v-if="uploadAnswer.Question.image"
                 class="rounded"
@@ -65,6 +65,7 @@
             />
             <div class="row mt-4">
               <div class="form-group col-6">
+                <h4>Answer's Description</h4>
                 <textarea
                   class="form-control"
                   id="answer"
@@ -76,25 +77,37 @@
               </div>
 
               <div class="form-group col-6">
-                <label for="image">
-                  <h4>Answer's Image</h4>
-                </label>
-                <input
-                  id="image"
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  class="form-control-file"
-                  @change="handleFileChange"
-                  style="cursor: pointer"
-                />
-                <img
-                  v-if="image"
-                  :src="image"
-                  class="d-block img-thumbnail mb-3"
-                  width="120px"
-                  height="120px"
-                />
+                <h4>Answer's Image</h4>
+                <div
+                  class="img-upload-block btn btn-outline-secondary d-flex justify-content-center align-items-center"
+                  style="border: 3px dashed"
+                >
+                  <input
+                    id="img-file"
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    class="form-control-file"
+                    @change="handleFileChange"
+                    style="cursor: pointer"
+                  />
+                  <img
+                    v-if="image"
+                    :src="image"
+                    id="custom-img"
+                    class="d-block rounded"
+                    style="cursor: pointer"
+                  />
+                  <img
+                    v-else
+                    src="../assets/upload3.png"
+                    id="custom-img-default"
+                    class="d-block"
+                    width="70px"
+                    height="70px"
+                    style="cursor: pointer"
+                  />
+                </div>
               </div>
             </div>
             <button
@@ -172,8 +185,24 @@ export default {
 </script>
 
 <style >
+.img-upload-block {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+#img-file {
+  position: absolute;
+  top: 10;
+  left: 0;
+  opacity: 0;
+  margin: 0;
+  direction: rtl;
+  font-size: 10px; /*make image file area large enough to click or set height and width*/
+  height: 180px;
+  cursor: pointer;
+}
 @media (min-width: 370px) {
-  #postanswer img {
+  #postanswer .questionpic img {
     width: 150px;
     height: 150px;
   }
@@ -184,9 +213,18 @@ export default {
   #postanswer h4 {
     font-size: 0.8rem;
   }
+  .img-upload-block {
+    width: 140px;
+    height: 170px;
+    margin-top: 15px;
+  }
+  #custom-img {
+    width: 100px;
+    height: 100px;
+  }
 }
 @media (min-width: 570px) {
-  #postanswer img {
+  #postanswer .questionpic img {
     width: 180px;
     height: 180px;
   }
@@ -197,9 +235,17 @@ export default {
   #postanswer h4 {
     font-size: 1.2rem;
   }
+  .img-upload-block {
+    width: 230px;
+    height: 190px;
+  }
+  #custom-img {
+    width: 130px;
+    height: 130px;
+  }
 }
 @media (min-width: 760px) {
-  #postanswer img {
+  #postanswer .questionpic img {
     width: 200px;
     height: 200px;
   }
@@ -209,6 +255,14 @@ export default {
   }
   #postanswer h4 {
     font-size: 1.5rem;
+  }
+  .img-upload-block {
+    width: 280px;
+    height: 180px;
+  }
+  #custom-img {
+    width: 160px;
+    height: 150px;
   }
 }
 </style>
