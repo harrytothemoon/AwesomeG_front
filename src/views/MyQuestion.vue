@@ -39,7 +39,7 @@
           <div class="text-center mt-2">
             <button
               type="button"
-              class="btn btn-info btn-lg"
+              class="btn btn-success btn-lg"
               data-toggle="modal"
               data-target="#postQ"
             >
@@ -132,7 +132,7 @@
                     <button
                       @click="showAnswerDetail(question.id)"
                       type="button"
-                      class="btn btn-primary text-center pb-0"
+                      class="btn btn-info text-center pb-0"
                       data-toggle="modal"
                       data-target="#answerD"
                     >

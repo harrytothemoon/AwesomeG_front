@@ -162,56 +162,53 @@ export default {
     };
   },
   methods: {
-    //TODO change to async/await
-    handleSubmit() {
-      this.isProcessing = true;
-      usersAPI
-        .signUp({
+    async handleSubmit() {
+      try {
+        this.isProcessing = true;
+        const { data } = await usersAPI.signUp({
           role: this.role,
           name: this.name,
           email: this.email,
           password: this.password,
           passwordCheck: this.passwordCheck,
-        })
-        .then((response) => {
-          if (response.data.status === "success") {
-            this.isProcessing = false;
-            Toast.fire({
-              icon: "success",
-              title: response.data.message,
-            });
-            $("#signup").modal("hide");
-            $("#signin").modal("show");
-            this.name = "";
-            this.email = "";
-            this.password = "";
-            this.passwordCheck = "";
-          } else if (response.data.status === "warning") {
-            this.isProcessing = false;
-            Toast.fire({
-              icon: "warning",
-              title: response.data.message,
-            });
-          } else if (response.data.status === "error") {
-            this.isProcessing = false;
-            Toast.fire({
-              icon: "error",
-              title: response.data.message,
-            });
-          }
-        })
-        .catch(() => {
+        });
+        if (data.status === "success") {
           this.isProcessing = false;
           Toast.fire({
-            icon: "error",
-            title: "Can't not sign up, please try again later",
+            icon: "success",
+            title: data.message,
           });
-          this.role = "";
+          $("#signup").modal("hide");
+          $("#signin").modal("show");
           this.name = "";
           this.email = "";
           this.password = "";
           this.passwordCheck = "";
+        } else if (data.status === "warning") {
+          this.isProcessing = false;
+          Toast.fire({
+            icon: "warning",
+            title: data.message,
+          });
+        } else if (data.status === "error") {
+          this.isProcessing = false;
+          Toast.fire({
+            icon: "error",
+            title: data.message,
+          });
+        }
+      } catch (error) {
+        this.isProcessing = false;
+        Toast.fire({
+          icon: "error",
+          title: "Can't not sign up, please try again later",
         });
+        this.role = "";
+        this.name = "";
+        this.email = "";
+        this.password = "";
+        this.passwordCheck = "";
+      }
     },
   },
 };

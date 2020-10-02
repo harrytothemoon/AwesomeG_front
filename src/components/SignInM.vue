@@ -8,13 +8,20 @@
     aria-hidden="true"
   >
     <div class="modal-dialog text-primary text-center" role="document">
-      <div class="modal-content" style="background-color:#fffbf0">
+      <div class="modal-content" style="background-color: #fffbf0">
         <div class="d-flex justify-content-end">
-          <button type="button" class="close m-0 mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+          <button
+            type="button"
+            class="close m-0 mr-3 mt-3"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <h1 class="modal-title" id="signinLabel" style="color:#c03546">Sign In</h1>
+        <h1 class="modal-title" id="signinLabel" style="color: #c03546">
+          Sign In
+        </h1>
         <div class="modal-body mt-2">
           <form class="w-100" @submit.prevent.stop="handleSubmit">
             <div class="form-label-group mb-2">
@@ -52,8 +59,12 @@
                     required
                   />
                   <div class="input-group-append">
-                    <span class="input-group-text" style="height:40px">
-                      <img style="cursor:pointer" :src="src" @click="changeType()" />
+                    <span class="input-group-text" style="height: 40px">
+                      <img
+                        style="cursor: pointer"
+                        :src="src"
+                        @click="changeType()"
+                      />
                     </span>
                   </div>
                 </div>
@@ -102,8 +113,7 @@ export default {
     };
   },
   methods: {
-    //TODO change to async/await
-    handleSubmit() {
+    async handleSubmit() {
       if (!this.email || !this.password) {
         Toast.fire({
           icon: "warning",
@@ -111,47 +121,42 @@ export default {
         });
         return;
       }
-      this.isProcessing = true;
-
-      authorizationAPI
-        .signIn({
+      try {
+        this.isProcessing = true;
+        const { data } = await authorizationAPI.signIn({
           email: this.email,
           password: this.password,
-        })
-        .then((response) => {
-          const { data } = response;
-          if (data.status !== "success") {
-            throw new Error(data.message);
-          } else {
-            this.isProcessing = false;
-            localStorage.setItem("token", data.token);
-            this.$store.commit("setCurrentUser", data.user);
-            Toast.fire({
-              icon: "success",
-              title: data.message,
-            });
-            this.password = "";
-          }
-          if (data.user.role === "teacher") {
-            $("#signin").modal("hide");
-            this.$router.push("/teacher/questions");
-          } else if (data.user.role === "student") {
-            $("#signin").modal("hide");
-            this.$router.push("/student/questions");
-          } else {
-            $("#signin").modal("hide");
-            this.$router.push("/home");
-          }
-        })
-        .catch(() => {
-          //顯示錯誤訊息
-          this.password = "";
-          this.isProcessing = false;
-          Toast.fire({
-            icon: "warning",
-            title: "Email or Password Incorrect!",
-          });
         });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        } else {
+          this.isProcessing = false;
+          localStorage.setItem("token", data.token);
+          this.$store.commit("setCurrentUser", data.user);
+          Toast.fire({
+            icon: "success",
+            title: data.message,
+          });
+          this.password = "";
+        }
+        if (data.user.role === "teacher") {
+          $("#signin").modal("hide");
+          this.$router.push("/teacher/questions");
+        } else if (data.user.role === "student") {
+          $("#signin").modal("hide");
+          this.$router.push("/student/questions");
+        } else {
+          $("#signin").modal("hide");
+          this.$router.push("/home");
+        }
+      } catch (error) {
+        this.password = "";
+        this.isProcessing = false;
+        Toast.fire({
+          icon: "warning",
+          title: "Email or Password Incorrect!",
+        });
+      }
     },
     changeType() {
       this.pwdType = this.pwdType === "password" ? "text" : "password";

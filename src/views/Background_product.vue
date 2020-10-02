@@ -48,7 +48,7 @@
         <thead>
           <tr class="table-warning">
             <th scope="col">Product Name</th>
-            <th scope="col">Description</th>
+            <th scope="col">Number of Questions</th>
             <th scope="col">Price</th>
             <th scope="col">Edit</th>
             <th scope="col">Delete</th>

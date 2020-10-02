@@ -79,7 +79,7 @@
                 name="description"
                 required
                 min="0"
-                max="500"
+                max="200"
                 step="1"
                 v-model="product.description"
               />
@@ -137,40 +137,40 @@ export default {
     };
   },
   methods: {
-    //TODO change to async/await
-    handleEditSubmit() {
-      this.isProcessing = true;
-      backgroundAPI
-        .putProduct(this.product.id, {
-          name: this.product.name,
-          description: this.product.description,
-          price: this.product.price,
-        })
-        .then((response) => {
-          if (response.data.status === "success") {
-            this.isProcessing = false;
-            Toast.fire({
-              icon: "success",
-              title: response.data.message,
-            });
-            $("#productAdminEdit").modal("hide");
-            this.$emit("refetchEdit");
-          } else if (response.data.status === "error") {
-            this.isProcessing = false;
-            Toast.fire({
-              icon: "error",
-              title: response.data.message,
-            });
-            $("#productAdminEdit").modal("hide");
+    async handleEditSubmit() {
+      try {
+        this.isProcessing = true;
+        const { data, statusText } = await backgroundAPI.putProduct(
+          this.product.id,
+          {
+            name: this.product.name,
+            description: this.product.description,
+            price: this.product.price,
           }
-        })
-        .catch(() => {
+        );
+        if (statusText === "OK" || data.status === "success") {
+          this.isProcessing = false;
+          Toast.fire({
+            icon: "success",
+            title: data.message,
+          });
+          $("#productAdminEdit").modal("hide");
+          this.$emit("refetchEdit");
+        } else if (statusText !== "OK" || data.status === "error") {
           this.isProcessing = false;
           Toast.fire({
             icon: "error",
-            title: "Can't not submit, please try again later",
+            title: data.message,
           });
+          $("#productAdminEdit").modal("hide");
+        }
+      } catch (error) {
+        this.isProcessing = false;
+        Toast.fire({
+          icon: "error",
+          title: "Can't not submit, please try again later",
         });
+      }
     },
   },
   watch: {

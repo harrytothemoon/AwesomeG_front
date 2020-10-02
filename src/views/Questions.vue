@@ -234,39 +234,34 @@ export default {
     clickUpload(id) {
       this.uploadId = id;
     },
-    //TODO change to async/await
-    handleAfterSubmitPost(questionId, UserId) {
-      this.isProcessing = true;
-      answersAPI
-        .postAnswer({ questionId: questionId })
-        .then((response) => {
-          if (response.data.status === "success") {
-            this.isProcessing = false;
-            Toast.fire({
-              icon: "success",
-              title: response.data.message,
-            });
-            this.fetchQuestions();
-            this.fetchAnswers();
-            $("#questionD").modal("hide");
-            //socket通知
-            this.$socket.emit(
-              "postAnswers",
-              store.state.currentUser.id,
-              UserId
-            );
-          } else if (response.data.status !== "success") {
-            this.isProcessing = false;
-            throw new Error(response.data.message);
-          }
-        })
-        .catch(() => {
+    async handleAfterSubmitPost(questionId, UserId) {
+      try {
+        this.isProcessing = true;
+        const { data } = await answersAPI.postAnswer({
+          questionId: questionId,
+        });
+        if (data.status === "success") {
           this.isProcessing = false;
           Toast.fire({
-            icon: "error",
-            title: "Can't not post question, please try again later",
+            icon: "success",
+            title: data.message,
           });
+          this.fetchQuestions();
+          this.fetchAnswers();
+          $("#questionD").modal("hide");
+          //socket通知
+          this.$socket.emit("postAnswers", store.state.currentUser.id, UserId);
+        } else if (data.status !== "success") {
+          this.isProcessing = false;
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        this.isProcessing = false;
+        Toast.fire({
+          icon: "error",
+          title: "Can't not post question, please try again later",
         });
+      }
     },
     async handleAfterSubmitPut(formData, UserId) {
       try {
