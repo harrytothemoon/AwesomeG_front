@@ -8,7 +8,7 @@ export default {
     return apiHelper.post('/admin/scopes', name)
   },
   putScope(scopeId, name) {
-    return apiHelper.put(`/admin/scopes/${scopeId}`, name)
+    return apiHelper.put(`/admin/scopes/${scopeId}`, { name })
   },
   deleteScope({ scopeId }) {
     return apiHelper.delete(`/admin/scopes/${scopeId}`)
@@ -20,7 +20,7 @@ export default {
     return apiHelper.post('/admin/subjects', name)
   },
   putSubject(subjectId, name) {
-    return apiHelper.put(`/admin/subjects/${subjectId}`, name)
+    return apiHelper.put(`/admin/subjects/${subjectId}`, { name })
   },
   deleteSubject({ subjectId }) {
     return apiHelper.delete(`/admin/subjects/${subjectId}`)

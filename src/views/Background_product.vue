@@ -23,7 +23,7 @@
         </router-link>
       </li>
     </ul>
-    <div class="mb-3">
+    <div class="mb-3 text-center">
       <ProductAdminM @refetch="refetch" />
       <ProductAdminEditM
         :productEdit="productEdit"
@@ -36,7 +36,7 @@
         data-toggle="modal"
         data-target="#productAdmin"
       >
-        <h5 class="m-0 text-center">New</h5>
+        <h3 class="m-0 text-center">Create</h3>
       </button>
     </div>
     <Spinner v-if="isLoading" />
@@ -100,7 +100,7 @@ import backgroundAPI from "./../apis/background";
 import { Toast } from "./../utils/helpers";
 
 export default {
-  name: "Background",
+  name: "Background-product",
   components: {
     NavTabs,
     Spinner,
@@ -110,7 +110,6 @@ export default {
   data() {
     return {
       products: [],
-      userId: "",
       isLoading: true,
       isProcessing: false,
       editIsLoading: true,
@@ -118,8 +117,6 @@ export default {
     };
   },
   created() {
-    const { id: userId } = this.$route.params;
-    this.userId = userId;
     this.fetchProducts();
   },
   methods: {
