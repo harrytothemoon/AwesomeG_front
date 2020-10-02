@@ -54,11 +54,11 @@ const routes = [
     name: 'admin-subjects',
     component: () => import('../views/Background_subject.vue')
   },
-  // {
-  //   path: '/admin/background/scopes',
-  //   name: 'admin-scopes',
-  //   component: () => import('../views/Background_scope.vue')
-  // },
+  {
+    path: '/admin/background/scopes',
+    name: 'admin-scopes',
+    component: () => import('../views/Background_scope.vue')
+  },
   {
     path: '/users/:id/orders',
     name: 'orders',

@@ -27,10 +27,10 @@
       <div class="form-row d-flex justify-content-center">
         <div class="col-auto">
           <input
-            v-model="newSubjectName"
+            v-model="newScopeName"
             type="text"
             class="form-control"
-            placeholder="Create a Subject..."
+            placeholder="Create a Scope..."
           />
         </div>
         <div class="col-auto">
@@ -53,27 +53,23 @@
       >
         <thead>
           <tr class="table-warning">
-            <th scope="col">Subject Name</th>
+            <th scope="col">Scope Name</th>
             <th scope="col">Edit</th>
             <th scope="col">Delete</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="subject in subjects" :key="subject.id" class="table-light">
+          <tr v-for="scope in scopes" :key="scope.id" class="table-light">
             <td>
-              <div v-show="!subject.isEditing" class="subject-name">
-                {{ subject.name }}
+              <div v-show="!scope.isEditing" class="scope-name">
+                {{ scope.name }}
               </div>
-              <div v-show="subject.isEditing" class="subjectName">
-                <input
-                  v-model="subject.name"
-                  type="text"
-                  class="form-control"
-                />
+              <div v-show="scope.isEditing" class="scopeName">
+                <input v-model="scope.name" type="text" class="form-control" />
                 <span
-                  v-show="subject.isEditing"
+                  v-show="scope.isEditing"
                   class="cancel"
-                  @click="handleCancel(subject.id)"
+                  @click="handleCancel(scope.id)"
                 >
                   ✕
                 </span>
@@ -81,19 +77,19 @@
             </td>
             <td>
               <button
-                v-show="!subject.isEditing"
+                v-show="!scope.isEditing"
                 type="button"
                 class="btn btn-info"
-                @click.stop.prevent="toggleIsEditing(subject.id)"
+                @click.stop.prevent="toggleIsEditing(scope.id)"
                 :disabled="editIsProcessing"
               >
                 <font-awesome-icon icon="pencil-alt" />
               </button>
               <button
-                v-show="subject.isEditing"
+                v-show="scope.isEditing"
                 type="button"
                 class="btn btn-info"
-                @click.stop.prevent="updateSubject(subject.id, subject.name)"
+                @click.stop.prevent="updateScope(scope.id, scope.name)"
                 :disabled="editIsProcessing"
               >
                 Save
@@ -101,7 +97,7 @@
             </td>
             <td>
               <button
-                @click.stop.prevent="deleteSubject(subject.id)"
+                @click.stop.prevent="deleteScope(scope.id)"
                 type="button"
                 class="btn btn-danger"
                 :disabled="deleteIsProcessing"
@@ -122,35 +118,35 @@
 <script>
 import NavTabs from "../components/NavTabs";
 import Spinner from "./../components/Spinner";
-import subjectAPI from "./../apis/subjects";
+import scopeAPI from "./../apis/scopes";
 import backgroundAPI from "./../apis/background";
 import { Toast } from "./../utils/helpers";
 
 export default {
-  name: "Background-subject",
+  name: "Background-scope",
   components: {
     NavTabs,
     Spinner,
   },
   data() {
     return {
-      subjects: [],
+      scopes: [],
       isLoading: true,
       deleteIsProcessing: false,
       newIsProcessing: false,
       editIsProcessing: false,
-      newSubjectName: "",
+      newScopeName: "",
     };
   },
   created() {
-    this.fetchSubjects();
+    this.fetchScopes();
   },
   methods: {
-    async fetchSubjects() {
+    async fetchScopes() {
       try {
-        const response = await subjectAPI.getSubjects();
-        this.subjects = response.data.subjects.map((subject) => ({
-          ...subject,
+        const response = await scopeAPI.getScopes();
+        this.scopes = response.data.scopes.map((scope) => ({
+          ...scope,
           isEditing: false,
           nameCached: "",
         }));
@@ -158,7 +154,7 @@ export default {
       } catch (error) {
         Toast.fire({
           icon: "error",
-          title: "Can't not get subjects data, please try again later",
+          title: "Can't not get scopes data, please try again later",
         });
         this.isLoading = false;
       }
@@ -166,8 +162,8 @@ export default {
     async handlePostSubmit() {
       try {
         this.newIsProcessing = true;
-        const { data, statusText } = await backgroundAPI.postSubject({
-          name: this.newSubjectName,
+        const { data, statusText } = await backgroundAPI.postScope({
+          name: this.newScopeName,
         });
         if (statusText === "OK" || data.status === "success") {
           this.newIsProcessing = false;
@@ -175,8 +171,8 @@ export default {
             icon: "success",
             title: data.message,
           });
-          this.newSubjectName = "";
-          this.fetchSubjects();
+          this.newScopeName = "";
+          this.fetchScopes();
         } else if (statusText !== "OK" || data.status === "error") {
           this.newIsProcessing = false;
           Toast.fire({
@@ -190,14 +186,14 @@ export default {
           icon: "error",
           title: "Can't not submit, please try again later",
         });
-        this.newSubjectName = "";
+        this.newScopeName = "";
       }
     },
-    async updateSubject(subjectId, name) {
+    async updateScope(scopeId, name) {
       try {
         this.editIsProcessing = true;
-        const { data, statusText } = await backgroundAPI.putSubject(
-          subjectId,
+        const { data, statusText } = await backgroundAPI.putScope(
+          scopeId,
           name
         );
         if (statusText !== "OK" || data.status !== "success") {
@@ -210,23 +206,23 @@ export default {
             title: data.message,
           });
           this.editIsProcessing = false;
-          this.fetchSubjects();
+          this.fetchScopes();
         }
-        this.toggleIsEditing(subjectId);
+        this.toggleIsEditing(scopeId);
       } catch (error) {
         Toast.fire({
           icon: "error",
-          title: "Can't not update Subject, please try again later",
+          title: "Can't not update Scope, please try again later",
         });
         this.editIsProcessing = false;
       }
     },
-    async deleteSubject(subjectId) {
-      if (this.subjects.length > 3) {
+    async deleteScope(scopeId) {
+      if (this.scopes.length > 13) {
         this.deleteIsProcessing = true;
         try {
-          const { data, statusText } = await backgroundAPI.deleteSubject({
-            subjectId,
+          const { data, statusText } = await backgroundAPI.deleteScope({
+            scopeId,
           });
           if (statusText !== "OK" || data.status !== "success") {
             this.deleteIsProcessing = false;
@@ -238,7 +234,7 @@ export default {
               title: data.message,
             });
             this.deleteIsProcessing = false;
-            this.fetchSubjects();
+            this.fetchScopes();
           }
         } catch (error) {
           this.deleteIsProcessing = false;
@@ -250,47 +246,47 @@ export default {
       } else {
         Toast.fire({
           icon: "warning",
-          title: "Please keep at least three Subjects",
+          title: "Please keep at least thirteen Scopes",
         });
       }
     },
-    toggleIsEditing(subjectId) {
-      this.subjects = this.subjects.map((subject) => {
-        if (subject.id === subjectId) {
+    toggleIsEditing(scopeId) {
+      this.scopes = this.scopes.map((scope) => {
+        if (scope.id === scopeId) {
           return {
-            ...subject,
-            isEditing: !subject.isEditing,
-            nameCached: subject.name,
+            ...scope,
+            isEditing: !scope.isEditing,
+            nameCached: scope.name,
           };
         }
-        return subject;
+        return scope;
       });
     },
-    handleCancel(subjectId) {
-      this.subjects = this.subjects.map((subject) => {
-        if (subject.id === subjectId) {
+    handleCancel(scopeId) {
+      this.scopes = this.scopes.map((scope) => {
+        if (scope.id === scopeId) {
           return {
-            ...subject,
+            ...scope,
             // 把原本的餐廳類別名稱還回去
-            name: subject.nameCached,
+            name: scope.nameCached,
           };
         }
-        return subject;
+        return scope;
       });
-      this.toggleIsEditing(subjectId);
+      this.toggleIsEditing(scopeId);
     },
   },
 };
 </script>
 
 <style >
-.subject-name {
+.scope-name {
   padding: 0.375rem 0.75rem;
   border: 1px solid transparent;
   outline: 0;
   cursor: auto;
 }
-.subjectName {
+.scopeName {
   position: relative;
 }
 .cancel {
