@@ -8,13 +8,20 @@
     aria-hidden="true"
   >
     <div class="modal-dialog text-primary text-center" role="document">
-      <div class="modal-content" style="background-color:#fffbf0">
+      <div class="modal-content" style="background-color: #fffbf0">
         <div class="d-flex justify-content-end">
-          <button type="button" class="close m-0 mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+          <button
+            type="button"
+            class="close m-0 mr-3 mt-3"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <h1 class="modal-title" id="signupLabel" style="color:#c03546">Sign Up</h1>
+        <h1 class="modal-title" id="signupLabel" style="color: #c03546">
+          Sign Up
+        </h1>
         <div class="modal-body mt-2">
           <form class="w-100" @submit.prevent.stop="handleSubmit">
             <fieldset class="form-group">
@@ -183,6 +190,12 @@ export default {
             this.isProcessing = false;
             Toast.fire({
               icon: "warning",
+              title: response.data.message,
+            });
+          } else if (response.data.status === "error") {
+            this.isProcessing = false;
+            Toast.fire({
+              icon: "error",
               title: response.data.message,
             });
           }

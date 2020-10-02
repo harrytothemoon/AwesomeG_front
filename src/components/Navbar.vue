@@ -49,7 +49,7 @@
         <!-- is user is admin -->
         <router-link
           v-if="currentUser.role === 'admin'"
-          to="#"
+          to="/admin/background/products"
           class="nav-link text-white mr-1"
         >
           <button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0">

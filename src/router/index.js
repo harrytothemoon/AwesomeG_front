@@ -45,6 +45,21 @@ const routes = [
     component: () => import('../views/Teachers.vue')
   },
   {
+    path: '/admin/background/products',
+    name: 'admin-products',
+    component: () => import('../views/Background_product.vue')
+  },
+  // {
+  //   path: '/admin/background/subjects',
+  //   name: 'admin-subjects',
+  //   component: () => import('../views/Background_subject.vue')
+  // },
+  // {
+  //   path: '/admin/background/scopes',
+  //   name: 'admin-scopes',
+  //   component: () => import('../views/Background_scope.vue')
+  // },
+  {
     path: '/users/:id/orders',
     name: 'orders',
     component: () => import('../views/Order.vue'),
