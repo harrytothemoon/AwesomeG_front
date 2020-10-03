@@ -4,6 +4,28 @@
 
 [後端API專案 GitHub](https://github.com/harry811016/AwesomeG)
 
+## 測試用使用者
+
+* 老師身份
+
+email: user0@example.com ~ user5@example.com (共6組)
+
+password: 1234
+
+* 學生身份
+
+email: user6@example.com ~ user11@example.com (共6組)
+
+password: 1234
+
+* 測試用信用卡
+
+信用卡號 4000-2211-1111-1111 
+
+到期日:都可以 
+
+隨機碼:都可以
+
 ## 專案setup
 ```
 npm install
@@ -71,25 +93,3 @@ socket.io / mocha test / nyc coverage / travis CI/CD(Heroku) / 藍新金流API /
 * 點選圖片放大功能
 * 瀏覽老師頁面篩選功能
 * 網站一些基本敘述頁面
-
-## 測試用使用者
-
-* 老師身份
-
-email: user0@example.com ~ user5@example.com (共6組)
-
-password: 1234
-
-* 學生身份
-
-email: user6@example.com ~ user11@example.com (共6組)
-
-password: 1234
-
-* 測試用信用卡
-
-信用卡號 4000-2211-1111-1111 
-
-到期日:都可以 
-
-隨機碼:都可以
