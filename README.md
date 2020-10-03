@@ -30,6 +30,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 後端：Ｎode.js + express
 資料庫：MySQL
 部署：前端(GitHub Page)、後端(Heroku)
+其他技術：
+socket.io / mocha test / nyc coverage / travis CI/CD(Heroku) / 藍新金流API / RWD / RestfulAPI
 
 #### Home Page
 
@@ -61,16 +63,14 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 * 瀏覽題目時可篩選題目科目
 * 可以於個人頁面瀏覽自己個人資訊及回答的題數
 
-#### In progress
+#### 2020/10/03 Update User Story
 
 * 後台管理，包含商品、類別和科目等的新增/瀏覽/修改/刪除功能
 * 使用者編輯個人資訊功能
 * 題目或解答時的即時通知
 * 點選圖片放大功能
-* 上傳檔案方式多元，如錄音/拍照等等
 * 瀏覽老師頁面篩選功能
 * 網站一些基本敘述頁面
-* 搜尋題目功能
 
 ## 測試用使用者
 
