@@ -60,7 +60,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 其他技術：
 
-socket.io / mocha test / nyc coverage / travis CI/CD(Heroku) / 藍新金流API / RWD / RestfulAPI
+socket.io / mocha test / nyc coverage / travis CI/CD(Heroku) / 藍新金流API / RWD / RestfulAPI / Passport (JWT)
 
 #### Home Page
 
