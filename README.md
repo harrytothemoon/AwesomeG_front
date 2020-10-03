@@ -49,10 +49,15 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 #### 專案技術：
 
 前端：以Vue框架搭配Bootstrap實作
+
 後端：Ｎode.js + express
+
 資料庫：MySQL
+
 部署：前端(GitHub Page)、後端(Heroku)
+
 其他技術：
+
 socket.io / mocha test / nyc coverage / travis CI/CD(Heroku) / 藍新金流API / RWD / RestfulAPI
 
 #### Home Page
