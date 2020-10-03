@@ -32,6 +32,8 @@ npm install
 npm run serve
 ```
 
+備註: 專案中Components中以M結尾的是Modal的意思
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
