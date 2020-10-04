@@ -333,6 +333,9 @@ export default {
     height: 70px;
     line-height: 2;
   }
+  #username {
+    font-size: 2rem;
+  }
 }
 @media (min-width: 990px) {
   #userAvatar {
@@ -343,6 +346,9 @@ export default {
     font-size: 3rem;
     height: 80px;
     line-height: 2;
+  }
+  #username {
+    font-size: 3rem;
   }
 }
 @media (min-width: 1000px) {
