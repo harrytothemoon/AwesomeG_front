@@ -4,6 +4,8 @@
 
 [後端API專案 GitHub](https://github.com/harry811016/AwesomeG)
 
+[專案介紹 Medium](https://medium.com/@harry811016/awesoneg-%E5%89%8D%E5%BE%8C%E7%AB%AF%E5%88%86%E9%9B%A2%E5%B0%88%E6%A1%88%E4%BB%8B%E7%B4%B9-bfae9e3abede?source=friends_link&sk=ca77e0f6528a88a88ff2e410371cc6ea)
+
 ## 測試用使用者
 
 * 老師身份
